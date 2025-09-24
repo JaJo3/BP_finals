@@ -1,0 +1,199 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BEATPASS - Home{% endblock %}
+
+{% block body %}
+<style>
+    body {
+        margin: 0;
+        font-family: 'Montserrat Bold', Reboto Regular;
+        background-color: #F4F4F6; 
+        color: #1A3D7C; 
+    }
+
+    
+    .navbar {
+        background-color: #1A3D7C;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .navbar .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #F9B233;
+        text-decoration: none;
+    }
+    .navbar ul {
+        list-style: none;
+        display: flex;
+        gap: 1.5rem;
+        margin: 0;
+        padding: 0;
+    }
+    .navbar ul li a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .navbar .btn-tickets {
+        background-color: #F9B233;
+        color: #1A3D7C;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .hero {
+        background: url('/images/concert-bg.jpg') no-repeat center/cover;
+        color: white;
+        text-align: center;
+        padding: 6rem 2rem;
+        position: relative;
+    }
+    .hero::after {
+        content: "";
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(26, 61, 124, 0.7); /* overlay */
+    }
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+    .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    .hero p {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+    }
+    .search-bar {
+        display: inline-flex;
+        background: white;
+        border-radius: 50px;
+        padding: 0.5rem 1rem;
+        align-items: center;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    .search-bar input {
+        border: none;
+        outline: none;
+        padding: 0.5rem;
+        flex: 1;
+        font-size: 1rem;
+    }
+    .search-bar button {
+        background: #F9B233;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        color: #1A3D7C;
+    }
+
+    
+    .events {
+        max-width: 1200px;
+        margin: 3rem auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+    .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+        text-align: center;
+    }
+    .card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+    .card h3 {
+        margin: 1rem 0 0.5rem;
+        color: #1A3D7C;
+    }
+    .card p {
+        padding: 0 1rem;
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+    .card a {
+        display: inline-block;
+        background: #F9B233;
+        color: #1A3D7C;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    footer {
+        background: #1A3D7C;
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+        margin-top: 3rem;
+    }
+</style>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <a href="#" class="logo">🎵 BeatPass</a>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Events</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Login/Signup</a></li>
+    </ul>
+    <a href="#" class="btn-tickets">Find Tickets</a>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Your Access to Live Music</h1>
+        <p>Experience Unforgettable Beats</p>
+        <div class="search-bar">
+            <input type="text" placeholder="Search by Artist, Venue, or City">
+            <button>Search</button>
+        </div>
+    </div>
+</section>
+
+<section class="events">
+    <div class="card">
+        <img src="/images/concert.jpg" alt="Concerts">
+        <h3>Concerts</h3>
+        <p>Find the hottest concerts around you.</p>
+        <a href="#">Explore</a>
+    </div>
+    <div class="card">
+        <img src="/images/festival.jpg" alt="Festivals">
+        <h3>Festivals</h3>
+        <p>Join unforgettable music festivals worldwide.</p>
+        <a href="#">Explore</a>
+    </div>
+    <div class="card">
+        <img src="/images/discover.jpg" alt="Discover">
+        <h3>Discover</h3>
+        <p>Discover new artists and unique events.</p>
+        <a href="#">Explore</a>
+    </div>
+</section>
+
+<footer>
+    <p>© 2025 BeatPass. All Rights Reserved.</p>
+</footer>
+{% endblock %}
