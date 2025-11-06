@@ -1,0 +1,125 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}
+    {% if showTickets is defined and showTickets %}
+        Event Tickets - {{ event.eventName }}   
+    {% else %}
+        Event Details - {{ event.eventName }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    {% if showTickets is not defined or not showTickets %}
+        <!-- Event Details Section -->
+        <div class="card shadow-sm">
+            <div class="card-header" style="background-color: #1A3D7C; color: white">
+                <h3 class="card-title mb-0">{{ event.eventName }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th class="bg-light" width="150">Event Date</th>
+                                <td>{{ event.date ? event.date|date('M d, Y h:i A') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Venue</th>
+                                <td>{{ event.venue }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Category</th>
+                                <td>{{ event.category }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Status</th>
+                                <td>
+                                    <span class="badge" style="background: {% if event.status == 'Upcoming' %}#F9B233{% elseif event.status == 'Ongoing' %}#20c997{% elseif event.status == 'Completed' %}#6c757d{% else %}#dc3545{% endif %}; color: {% if event.status == 'Upcoming' %}#1A3D7C{% else %}white{% endif %}; font-weight: 600; padding: 8px 12px; border-radius: 20px;">
+                                        {{ event.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Organizer</th>
+                                <td>
+                                    {% if event.organizer %}
+                                        <a href="{{ path('app_organizer_show', {'id': event.organizer.id}) }}" 
+                                           style="color: #1A3D7C; text-decoration: none; font-weight: 600;">
+                                            <i class="fas fa-user me-1"></i>{{ event.organizer.orgName }}
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">No organizer assigned</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Tickets</th>
+                                <td>
+                                    <span class="badge" style="background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%); color: white; padding: 6px 12px; border-radius: 20px; font-weight: 600;">
+                                        {{ event.tickets|length }} ticket(s)
+                                    </span>
+                                    {% if event.tickets|length > 0 %}
+                                        <small class="text-muted ms-2">(View details below)</small>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Date Created</th>
+                                <td>{{ event.dateCreated|date('M d, Y h:i A') }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="mb-3" style="color: #1A3D7C; font-weight: 600;">Description</h5>
+                        <p class="mb-0">{{ event.description }}</p>
+                    </div>
+                </div>
+
+                <!-- Tickets Section -->
+                {% if event.tickets|length > 0 %}
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h5 style="color: #1A3D7C; font-weight: 600; border-bottom: 2px solid #F9B233; padding-bottom: 8px;">
+                            <i class="fas fa-ticket-alt me-2" style="color: #F9B233;"></i>Available Tickets
+                        </h5>
+                        <div class="row">
+                            {% for ticket in event.tickets %}
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100" style="border: 2px solid #e9ecef; border-radius: 12px;">
+                                    <div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 10px 10px 0 0;">
+                                        <h6 class="mb-0" style="font-weight: 600;">
+                                            <i class="fas fa-star me-2" style="color: #F9B233;"></i>{{ ticket.ticketType }}
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center mb-3">
+                                            <span class="badge" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; font-size: 1.2em; padding: 12px 20px; border-radius: 25px; font-weight: 600;">
+                                                ₱{{ ticket.price|number_format(2, '.', ',') }}
+                                            </span>
+                                        </div>
+                                        <div class="text-center">
+                                            <span class="badge" style="background: {% if ticket.status == 'Upcoming' %}#F9B233{% else %}#6c757d{% endif %}; color: {% if ticket.status == 'Upcoming' %}#1A3D7C{% else %}white{% endif %}; font-size: 0.9em; padding: 8px 16px; border-radius: 20px; font-weight: 600;">
+                                                {{ ticket.status }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="{{ path('app_event_index') }}" class="btn btn-secondary" style="border-radius: 8px;">
+                        <i class="fas fa-arrow-left me-2"></i>Back to list
+                    </a>    
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

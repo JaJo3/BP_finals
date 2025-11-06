@@ -1,0 +1,64 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'enctype': 'multipart/form-data'}}) }}
+    <div class="card-body p-4">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    {{ form_label(form.eventName, 'Event Name', { 'label_attr': {'class': 'form-label fw-semibold', 'style': 'color: #1A3D7C;'} }) }}
+                    {{ form_widget(form.eventName, { 'attr': { 'class': 'form-control', 'placeholder': 'Enter event name', 'style': 'border-radius: 8px; border: 2px solid #e9ecef;' } }) }}
+                    {{ form_errors(form.eventName) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.venue, 'Venue', { 'label_attr': {'class': 'form-label fw-semibold', 'style': 'color: #1A3D7C;'} }) }}
+                    {{ form_widget(form.venue, { 'attr': { 'class': 'form-control', 'placeholder': 'Enter venue location', 'style': 'border-radius: 8px; border: 2px solid #e9ecef;' } }) }}
+                    {{ form_errors(form.venue) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.description, 'Description', { 'label_attr': {'class': 'form-label fw-semibold', 'style': 'color: #1A3D7C;'} }) }}
+                    {{ form_widget(form.description, { 'attr': { 'class': 'form-control', 'rows': '4', 'placeholder': 'Describe your event', 'style': 'border-radius: 8px; border: 2px solid #e9ecef; resize: vertical;' } }) }}
+                    {{ form_errors(form.description) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.poster, 'Event Poster', { 'label_attr': {'class': 'form-label fw-semibold', 'style': 'color: #1A3D7C;'} }) }}
+                    {{ form_widget(form.poster, { 'attr': { 'class': 'form-control', 'style': 'border-radius: 8px; border: 2px solid #e9ecef;' } }) }}
+                    {{ form_errors(form.poster) }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    {{ form_label(form.date, 'Event Date & Time', { 'label_attr': {'class': 'form-label fw-semibold', 'style': 'color: #1A3D7C;'} }) }}
+                    {{ form_widget(form.date, { 'attr': { 'class': 'form-control', 'style': 'border-radius: 8px; border: 2px solid #e9ecef;' } }) }}
+                    {{ form_errors(form.date) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.category, 'Category', { 'label_attr': {'class': 'form-label fw-semibold', 'style': 'color: #1A3D7C;'} }) }}
+                    {{ form_widget(form.category, { 'attr': { 'class': 'form-control', 'style': 'border-radius: 8px; border: 2px solid #e9ecef;' } }) }}
+                    {{ form_errors(form.category) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.status, 'Status', { 'label_attr': {'class': 'form-label fw-semibold', 'style': 'color: #1A3D7C;'} }) }}
+                    {{ form_widget(form.status, { 'attr': { 'class': 'form-control', 'style': 'border-radius: 8px; border: 2px solid #e9ecef;' } }) }}
+                    {{ form_errors(form.status) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.organizer, 'Organizer', { 'label_attr': {'class': 'form-label fw-semibold', 'style': 'color: #1A3D7C;'} }) }}
+                    {{ form_widget(form.organizer, { 'attr': { 'class': 'form-control', 'style': 'border-radius: 8px; border: 2px solid #e9ecef;' } }) }}
+                    {{ form_errors(form.organizer) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer bg-light" style="border-top: 1px solid #e9ecef; border-radius: 0 0 12px 12px;">
+        <div class="d-flex justify-content-end gap-3">
+            <a href="{{ path('app_event_index') }}" class="btn btn-outline-secondary" style="border-radius: 8px; padding: 10px 20px; font-weight: 500;">
+                <i class="fas fa-times me-2"></i>Cancel
+            </a>
+            <button type="submit" class="btn" style="background-color: #1A3D7C; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600;">
+                <i class="fas fa-save me-2"></i>{{ button_label|default('Save Event') }}
+            </button>
+        </div>
+    </div>
+{{ form_end(form) }}
+
+<style>
+.form-control:focus { border-color: #1A3D7C !important; box-shadow: 0 0 0 0.2rem rgba(26,61,124,.25) !important; }
+</style>

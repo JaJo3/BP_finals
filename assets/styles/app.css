@@ -1,3 +1,783 @@
-body {
+/* BeatPass Custom Theme Colors */
+:root {
+    --beatpass-blue: #1A3D7C;
+    --beatpass-yellow: #F9B233;
+    --beatpass-red: #dc3545;
+    --beatpass-gray: #f8f9fa;
+}
+
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Admin Styles */
+body.admin {
+    background-color: var(--beatpass-gray);
+    min-height: 100vh;
+}
+
+body.admin .layout-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Admin Sidebar */
+body.admin .sidebar {
+    width: 280px;
+    background-color: var(--beatpass-blue);
+    padding: 0;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+}
+/* subtle separator between sidebar and main content */
+body.admin .sidebar {
+    border-right: 1px solid rgba(255,255,255,0.06);
+}
+
+body.admin .sidebar .brand {
+    color: #ffffff;
+    font-size: 1.75rem;
+    font-weight: bold;
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    letter-spacing: 1px;
+    background: linear-gradient(45deg, var(--beatpass-blue), #2a4d8c);
+}
+
+body.admin .sidebar .nav-link {
+    color: #ffffff !important;
+    text-decoration: none;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+body.admin .sidebar .nav-link:hover {
+    background-color: var(--beatpass-yellow);
+    border-left: 4px solid var(--beatpass-yellow);
+    color: var(--beatpass-blue) !important;
+}
+
+body.admin .sidebar .nav-link.active {
+    background: linear-gradient(90deg, var(--beatpass-yellow), #fac265);
+    color: var(--beatpass-blue) !important;
+    font-weight: 600;
+    border-left: 4px solid #fff;
+}
+
+body.admin .sidebar .nav-link i {
+    width: 20px;
+    text-align: center;
+}
+
+body.admin .main-content {
+    flex: 1;
+    padding: 2rem;
+    margin-left: 280px;
+    min-height: 100vh;
+    background-color: var(--beatpass-gray);
+}
+
+/* Page content wrapper used by templates (keeps content inside main area and away from sidebar) */
+.content-wrapper {
+    box-sizing: border-box;
+    margin-left: 0; /* main-content already offsets from the sidebar */
+    padding: 2rem 2rem 3rem 2rem;
+    max-width: 100%;
+}
+
+@media (max-width: 992px) {
+    .content-wrapper {
+        padding: 1rem;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .content-wrapper {
+        padding: 0.75rem;
+    }
+}
+
+/* Ensure cards inside the content wrapper are full-width and separated from sidebar visually */
+.content-wrapper .card {
+    width: 100%;
+    margin: 0 auto 1.5rem auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+/* Make DataTables controls sit inside the content area (no overlap) */
+.content-wrapper .dataTables_wrapper { padding: 0 1rem; box-sizing: border-box; }
+.content-wrapper .table-responsive { padding: 0 1rem 1rem 1rem; box-sizing: border-box; }
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    body.admin .sidebar {
+        width: 60px;
+    }
+
+    body.admin .sidebar .brand {
+        font-size: 1.2rem;
+        padding: 1rem 0.5rem;
+    }
+
+    body.admin .sidebar .nav-link span {
+        display: none;
+    }
+
+    body.admin .main-content {
+        margin-left: 60px;
+    }
+}
+
+/* Admin Layout Styles */
+body.admin {
+    min-height: 100vh;
+    background-color: var(--beatpass-gray);
+}
+
+.layout-container {
+    display: flex;
+    min-height: 100vh;
+}
+.modal-backdrop.show {
+  background-color: rgba(0, 0, 0, 0.15) !important; 
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); 
+}
+
+.form-control:focus {
+  border-color: #1A3D7C !important; 
+  box-shadow: 0 0 0 0.2rem rgba(26,61,124,.25) !important
+}
+/* Consolidated admin selectors use the body.admin prefix (defined earlier) */
+
+
+
+/* Card Styles */
+.card {
+    border: none;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    border-radius: 0.5rem;
+}
+
+.card-header {
+    background: linear-gradient(45deg, var(--beatpass-blue), #2a4d8c);
+    color: white;
+    border-bottom: none;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* Table Styles */
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background-color: #f8f9fc;
+    border-bottom: 2px solid #e3e6f0;
+    color: var(--beatpass-blue);
+}
+
+.beatpass-table {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.beatpass-table thead th {
+    background-color: var(--beatpass-blue) !important;
+    color: white;
+    border: none;
+    padding: 1rem;
+}
+
+.beatpass-table tbody tr:nth-child(even) {
+    background-color: var(--beatpass-gray);
+}
+
+.btn-group .btn {
+    margin: 0 0.1rem;
+}
+
+.btn {
+    transition: all 0.3s ease !important;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn-beatpass-primary {
+    background-color: var(--beatpass-blue);
+    color: white;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border: none;
+}
+
+.btn-beatpass-primary:hover {
+    background-color: #234b94;
+    color: white;
+    box-shadow: 0 4px 8px rgba(26,61,124,0.2);
+}
+
+.btn-beatpass-edit {
+    background-color: var(--beatpass-yellow);
+    color: var(--beatpass-blue);
+    border: none;
+}
+
+.btn-beatpass-edit:hover {
+    background-color: #fac265;
+    color: var(--beatpass-blue);
+    box-shadow: 0 4px 8px rgba(249,178,51,0.3);
+}
+
+.btn-beatpass-delete {
+    background-color: var(--beatpass-red);
+    color: white;
+    border: none;
+}
+
+.btn-beatpass-delete:hover {
+    background-color: #ff6b6b ;
+    box-shadow: 0 4px 8px rgba(220,53,69,0.3);
+}
+
+.form-control:focus, 
+.form-select:focus {
+    border-color: var(--beatpass-blue);
+    box-shadow: 0 0 0 0.2rem rgba(26, 61, 124, 0.25);
+}
+
+.badge {
+    padding: 0.5em 0.8em;
+    border-radius: 0.25rem;
+}
+
+body.admin .nav-link {
+    color: #ffffff !important;
+    text-decoration: none;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+body.admin .nav-link:hover {
+    background-color: var(--beatpass-yellow);
+    border-left: 4px solid var(--beatpass-yellow);
+    color: var(--beatpass-blue) !important;
+}
+
+body.admin .nav-link.active {
+    background: linear-gradient(90deg, var(--beatpass-yellow), #fac265);
+    color: var(--beatpass-blue) !important;
+    font-weight: 600;
+    border-left: 4px solid #fff;
+}
+
+body.admin .nav-link i {
+    width: 20px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .admin .sidebar {
+        width: 60px;
+        overflow: hidden;
+    }
+
+    .admin .sidebar .brand {
+        font-size: 1.2rem;
+        padding: 1rem 0.5rem;
+    }
+
+    .admin .nav-link span {
+        display: none;
+    }
+
+    .admin .main-content {
+        margin-left: 60px;
+    }
+}
+
+/* End of app styles */
+
+/* DataTables Search Box */
+/* ===== BeatPass DataTables - consolidated and themed ===== */
+
+/* Wrapper alignment: keep length and filter aligned horizontally */
+.dataTables_wrapper {
+    width: 100%;
+    padding: 0.5rem 1rem 1rem 1rem;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.5rem 0;
+}
+
+/* Ensure the length and filter appear on the same row on wide screens */
+@media (min-width: 768px) {
+    .dataTables_wrapper .dataTables_length { order: 1; }
+    .dataTables_wrapper .dataTables_filter { order: 2; margin-left: auto; }
+}
+
+/* Table base */
+table.beatpass-table {
+    width: 100% !important;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #ffffff;
+    /* use auto layout so headers size with content — avoids mismatch when actions/poster columns have fixed widths */
+    table-layout: auto !important;
+}
+
+/* Header bar (uses deep blue and subtle gradient) */
+table.beatpass-table thead th {
+    background: linear-gradient(90deg, var(--beatpass-blue) 0%, #16325a 100%);
+    color: #ffffff !important;
+    font-weight: 700;
+    padding: 12px 16px !important;
+    border: none;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.6px;
+}
+
+/* Body cells: consistent padding and subtle top border for separation */
+table.beatpass-table tbody td {
+    padding: 12px 16px !important;
+    vertical-align: middle;
+    border-top: 1px solid #eef3f8;
+    color: #243b57;
+    font-size: 0.96rem;
+}
+
+/* Alternating row backgrounds */
+table.beatpass-table tbody tr:nth-child(even) td {
+    background: #fbfcfe;
+}
+
+/* Hover row */
+table.beatpass-table tbody tr:hover td {
+    background: rgba(26,61,124,0.04);
+}
+.table-responsive { overflow-x: auto; }
+/* Use flexible layout so table can shrink; truncate long text to avoid forcing overflow */
+table.beatpass-table { table-layout: auto; width: 100% !important; }
+table.beatpass-table th,
+table.beatpass-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Actions column: compact but flexible */
+table.beatpass-table th.actions,
+table.beatpass-table td.actions {
+    min-width: 96px;
+    max-width: 140px;
+    text-align: center;
+}
+
+/* Sensible min/max widths to keep table inside main area; values are relative so table can shrink */
+.col-poster { width: 64px; min-width: 56px; max-width: 80px; }
+.col-name { min-width: 140px; max-width: 36%; }
+.col-organizer { min-width: 110px; max-width: 18%; }
+.col-date { min-width: 110px; max-width: 18%; }
+.col-venue { min-width: 120px; max-width: 22%; }
+.col-status { min-width: 90px; max-width: 12%; }
+.col-price { width: auto; }
+.col-quantity { width: auto; }
+.btn-action-group {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+}
+.btn-action-group .btn { 
+    padding: 6px 10px; 
+    border-radius: 6px; 
+    /* make action buttons uniform in size */
+    min-width: 40px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Status badge styling */
+.beatpass-badge {
+    display: inline-block;
+    font-size: 0.9rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+/* Search/input styling */
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid rgba(26,61,124,0.12);
+    border-radius: 8px;
+    padding: 8px 36px 8px 12px;
+    height: 38px;
+    background: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23343a40' d='M21.53 20.47l-4.82-4.82A7.51 7.51 0 1 0 19 15.01l4.53 4.53a.75.75 0 0 0 1.06-1.06zM5.5 11a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 18px 18px;
+}
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 8px;
+    border: 1px solid rgba(26,61,124,0.12);
+    padding: 6px 10px;
+    height: 38px;
+    background-color: #fff;
+}
+
+/* Pagination styling aligned to theme */
+.dataTables_wrapper .dataTables_paginate { display:flex; gap:8px; justify-content:flex-end; align-items:center; padding-top:0.75rem; }
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin: 0 3px;
+    background: #f5f7fa;
+    color: var(--beatpass-blue) !important;
+    font-weight:600;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover { background: #e9f0fb; color: var(--beatpass-blue) !important; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(26,61,124,0.06); }
+.dataTables_wrapper .dataTables_paginate .paginate_button.current { background: var(--beatpass-blue) !important; color: #fff !important; box-shadow: 0 8px 22px rgba(26,61,124,0.15); }
+
+/* Compact info text */
+.dataTables_info { color:#6c757d; font-size:0.9rem; padding-top:6px; }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter { width:100%; justify-content:space-between; }
+    .dataTables_wrapper .dataTables_filter { margin-top:0.5rem; }
+    table.beatpass-table thead th { padding:10px 12px; font-size:0.82rem; }
+    table.beatpass-table tbody td { padding:10px 12px; }
+    .dataTables_wrapper .dataTables_paginate { justify-content:flex-start; }
+}
+
+/* Events-specific compact table overrides: make events table fit the main content without horizontal scroll
+   These rules are intentionally scoped to #eventsTable so other tables (like Tickets) keep their sizing. */
+#eventsTable.beatpass-table th,
+#eventsTable.beatpass-table td {
+    padding: 8px 10px !important;
+    font-size: 0.95rem;
+}
+
+#eventsTable.beatpass-table th.col-poster,
+#eventsTable.beatpass-table td.col-poster {
+    width: 48px;
+    min-width: 48px;
+    max-width: 64px;
+}
+
+#eventsTable.beatpass-table th.actions,
+#eventsTable.beatpass-table td.actions {
+    min-width: 80px;
+    max-width: 200px;
+    text-align: center;
+}
+
+/* Allow name and venue to wrap (so long text doesn't force the whole table wider) */
+#eventsTable.beatpass-table td.col-name,
+#eventsTable.beatpass-table th.col-name,
+#eventsTable.beatpass-table td.col-venue,
+#eventsTable.beatpass-table th.col-venue {
+    white-space: normal;
+    word-break: break-word;
+    max-width: 28ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Slightly reduce the filter width for events table */
+#eventsTable_wrapper .dataTables_filter input { min-width: 160px; }
+
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: #0d6efd !important;
+    color: white !important;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.current) {
+    background: #e9ecef !important;
+    color: #1A3D7C !important;
+    border: none;
+    border-radius: 4px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin: 0 2px;
+    color: #1A3D7C !important;
+    transition: all 0.3s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.next,
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 6px 12px;
+    color: #1A3D7C !important;
+    transition: all 0.3s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.next:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover {
+    background: #e9ecef;
+    border-color: #ced4da;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dataTables_info {
+    color: #6c757d !important;
+    padding-top: 8px;
+}
+
+.dataTables_filter {
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dataTables_filter label {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.dataTables_length {
+    color: #344767 !important;
+    font-size: 0.875rem;
+    padding-left: 0;
+}
+
+.dataTables_length select {
+    font-weight: normal;
+    font-size: 0.875rem;
+}
+
+.dataTables_wrapper {
+    padding: 0;
+}
+
+.dataTables_wrapper .row:first-child {
+    margin-bottom: 1rem;
+}
+
+.dataTables_length label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dataTables_length .form-select {
+    background-image: url("data:image/svg+xml, %3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 16px 12px;
+}
+
+.dataTables_filter input:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,0.25);
+    outline: 0;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin: 0 2px;
+    color: var(--beatpass-blue) !important;
+    transition: all 0.3s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #e9ecef !important;
+    color: var(--beatpass-blue) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: var(--beatpass-blue) !important;
+    color: white !important;
+    border: none;
+    box-shadow: 0 2px 4px rgba(26,61,124,0.2);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.next,
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 6px 12px;
+    color: var(--beatpass-blue) !important;
+    transition: all 0.3s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.next:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover {
+    background: #e9ecef !important;
+    border-color: #ced4da;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* DataTables Info Text */
+.dataTables_info {
+    color: #6c757d !important;
+    padding-top: 8px;
+    font-size: 0.875rem;
+}
+
+/* DataTables Responsive Design */
+@media (max-width: 768px) {
+    .dataTables_filter input {
+        width: 180px;
+    }
+    
+    .dataTables_length select {
+        min-width: 60px;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 4px 8px;
+    }
+}
+
+/* ===== Moved from templates/home/index.html.twig (public site styles) ===== */
+body.home-page {
+    margin: 0;
+    font-family: 'Montserrat Bold', 'Roboto', sans-serif;
     background-color: #F4F4F6;
+    color: #1A3D7C;
+}
+
+.public-navbar {
+    background-color: #1A3D7C;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.public-navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #F9B233;
+    text-decoration: none;
+}
+.public-navbar ul { list-style: none; display: flex; gap: 1.5rem; margin: 0; padding: 0; }
+.public-navbar ul li a { color: white; text-decoration: none; font-weight: 500; }
+.btn-tickets { background-color: #F9B233; color: #1A3D7C; padding: 0.5rem 1rem; border-radius: 6px; font-weight: bold; }
+
+.hero { 
+    background: #2c3e50;
+}
+.hero::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26,61,124,0.7); }
+.hero-content { position: relative; z-index: 1; }
+.hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+.hero p { font-size: 1.25rem; margin-bottom: 2rem; }
+.search-bar { display: inline-flex; background: white; border-radius: 50px; padding: 0.5rem 1rem; align-items: center; max-width: 500px; margin: 0 auto; }
+.search-bar input { border: none; outline: none; padding: 0.5rem; flex: 1; font-size: 1rem; }
+.search-bar button { 
+    background: #F9B233; 
+    border: none; 
+    padding: 0.5rem 1rem; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    color: #1A3D7C;
+    transition: all 0.3s ease;
+}
+
+.search-bar button:hover {
+    background: #fac265;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(249,178,51,0.2);
+}
+
+.public-events { max-width: 1200px; margin: 3rem auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; padding: 0 1rem; }
+.public-card { background: white; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); overflow: hidden; text-align: center; }
+.public-card img { width: 100%; height: 180px; object-fit: cover; }
+.public-card h3 { margin: 1rem 0 0.5rem; color: #1A3D7C; }
+.public-card p { padding: 0 1rem; font-size: 0.95rem; margin-bottom: 1rem; }
+.public-card a { display: inline-block; background: #F9B233; color: #1A3D7C; padding: 0.5rem 1rem; border-radius: 8px; margin-bottom: 1rem; text-decoration: none; font-weight: bold; }
+
+footer.public-footer { background: #1A3D7C; color: white; padding: 1.5rem; text-align: center; margin-top: 3rem; }
+
+/* ===== Moved from templates/dashboard/index.html.twig ===== */
+.example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+.example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    body.admin .sidebar {
+        width: 60px;
+        overflow: hidden;
+    }
+
+    body.admin .sidebar .brand {
+        font-size: 1.2rem;
+        padding: 1rem 0.5rem;
+    }
+
+    body.admin .nav-link span {
+        display: none;
+    }
+
+    body.admin .main-content {
+        margin-left: 60px;
+    }
 }

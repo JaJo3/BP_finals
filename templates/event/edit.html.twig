@@ -1,0 +1,14 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edit Event{% endblock %}
+
+{% block body %}
+
+        <div class="card shadow-sm">
+            <div class="card-header" style="background-color: #1A3D7C; color: white">
+                <h3 class="card-title mb-0">Event Details</h3>
+            </div>
+            {{ include('event/_form.html.twig', {'button_label': 'Update'}) }}
+        </div>
+    </div>
+{% endblock %}

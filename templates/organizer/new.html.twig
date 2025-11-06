@@ -1,0 +1,17 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New Organizer{% endblock %}
+
+{% block body %}
+    <div class="content-wrapper">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0" style="color: #1A3D7C"><i class="fas fa-user-plus me-2" style="color:#F9B233"></i>Create Organizer</h1>
+        </div>
+        <div class="card shadow-sm" style="border-radius: 12px; overflow: hidden;">
+            <div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
+                <h3 class="card-title mb-0"><i class="fas fa-id-card me-2"></i>Organizer Details</h3>
+            </div>
+            {{ include('organizer/_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

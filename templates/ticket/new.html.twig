@@ -1,0 +1,16 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New Ticket{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0" style="color: #1A3D7C">
+            <i class="fas fa-plus-circle me-2"></i>Create New Ticket
+        </h1>
+    </div>
+        {{ include('ticket/_form.html.twig') }}
+    </div>
+</div>
+{% endblock %}
