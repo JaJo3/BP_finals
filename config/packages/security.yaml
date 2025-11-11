@@ -1,20 +1,42 @@
+# security:
+#     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+#     password_hashers:
+#         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+#     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+#     providers:
+#         users_in_memory: { memory: null }
+#     firewalls:
+#         dev:
+#             pattern: ^/(_(profiler|wdt)|css|images|js)/
+#             security: false
+#         main:
+#             lazy: true
+#             provider: users_in_memory
+#             security: true  
+           
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        in_memory:
+            memory:
+                users:
+                    admin:
+                        password: '$2y$13$fxyENsOF0/zpibc0Evxq/e13r.5ffWXYulYeweY6xID6k82IqrLbu'
+                        roles: ['ROLE_ADMIN']
+                    user:
+                        password: '$2y$13$DlaSh1sV5LfxbYoIcNLEyuSAYfHohI50pfeLHqPg08/Fd0N2w0cjG'
+                        roles: ['ROLE_USER']
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
         main:
             lazy: true
-            provider: users_in_memory
-            security: true  
-           
-
+            provider: in_memory
+            http_basic: ~
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -25,7 +47,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/dashboard, roles: ROLE_USER }
+        #  - { path: ^/dashboard, roles: ROLE_USER }
+        #  - { path: ^/dashboard, roles: ROLE_ADMIN }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
        

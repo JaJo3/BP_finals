@@ -10,11 +10,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Ticket
 {
-    // Update status constants to match Event statuses
+    // Status constants (match Event and application usage)
+    public const STATUS_ACTIVE = 'Active';
     public const STATUS_UPCOMING = 'Upcoming';
     public const STATUS_ONGOING = 'Ongoing';
     public const STATUS_COMPLETED = 'Completed';
     public const STATUS_CANCELLED = 'Cancelled';
+    public const STATUS_SOLD_OUT = 'Sold Out';
+    public const STATUS_USED = 'Used';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -155,10 +158,13 @@ class Ticket
     public function setStatus(string $status): self
     {
         if (!in_array($status, [
+            self::STATUS_ACTIVE,
             self::STATUS_UPCOMING,
             self::STATUS_ONGOING,
             self::STATUS_COMPLETED,
-            self::STATUS_CANCELLED
+            self::STATUS_CANCELLED,
+            self::STATUS_SOLD_OUT,
+            self::STATUS_USED
         ])) {
             throw new \InvalidArgumentException('Invalid status');
         }

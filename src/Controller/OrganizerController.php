@@ -16,6 +16,42 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/organizer')]
 final class OrganizerController extends AbstractController
 {
+    #[Route('/bulk-delete', name: 'app_organizer_bulk_delete', methods: ['POST'])]
+    public function bulkDelete(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        if (!$this->isCsrfTokenValid('bulk_delete', $request->request->get('_token'))) {
+            $this->addFlash('error', 'Invalid CSRF token');
+            return $this->redirectToRoute('app_organizer_index');
+        }
+
+        $organizerIds = $request->request->all()['organizers'] ?? [];
+        if (empty($organizerIds)) {
+            $this->addFlash('error', 'No organizers selected');
+            return $this->redirectToRoute('app_organizer_index');
+        }
+
+        try {
+            $organizers = $entityManager->getRepository(Organizer::class)->findBy(['id' => $organizerIds]);
+            foreach ($organizers as $organizer) {
+                // Remove logo file if exists
+                if ($organizer->getLogoFilename()) {
+                    $logoPath = $this->getParameter('kernel.project_dir').'/public/uploads/organizers/'.$organizer->getLogoFilename();
+                    if (is_file($logoPath)) {
+                        @unlink($logoPath);
+                    }
+                }
+                $entityManager->remove($organizer);
+            }
+            $entityManager->flush();
+
+            $this->addFlash('success', count($organizerIds) . ' organizer(s) successfully deleted');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'An error occurred while deleting the organizers');
+        }
+
+        return $this->redirectToRoute('app_organizer_index');
+    }
+
     #[Route(name: 'app_organizer_index', methods: ['GET'])]
     public function index(Request $request, OrganizerRepository $organizerRepository): Response
     {

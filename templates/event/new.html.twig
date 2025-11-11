@@ -4,20 +4,22 @@
 
 {% block body %}
     <div class="content-wrapper">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h3 mb-0" style="color: #1A3D7C; font-weight: 700;">
-                <i class="fas fa-calendar-plus me-2" style="color: #F9B233;"></i>Create New Event
-            </h1>
-        </div>
-
-        {% if preselected_organizer %}
-            <div class="alert alert-info mb-4" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
-                border: none; border-radius: 8px;">
-                <i class="fas fa-info-circle me-2" style="color: #1A3D7C;"></i>
-                Creating event for: <strong style="color: #1A3D7C;">{{ preselected_organizer.orgName }}</strong>
+        <div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
+            <div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+                <h3 class="card-title mb-0" style="font-weight: 600;">
+                    <i class="fas fa-calendar-plus me-2" style="color: #F9B233;"></i>Create New Event
+                </h3>
             </div>
-        {% endif %}
 
-        {{ include('event/_form.html.twig') }}
+            {% if preselected_organizer %}
+                <div class="alert alert-info m-4" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+                    border: none; border-radius: 8px;">
+                    <i class="fas fa-info-circle me-2" style="color: #1A3D7C;"></i>
+                    Creating event for: <strong style="color: #1A3D7C;">{{ preselected_organizer.orgName }}</strong>
+                </div>
+            {% endif %}
+
+            {{ include('event/_form.html.twig') }}
+        </div>
     </div>
 {% endblock %}

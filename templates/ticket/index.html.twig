@@ -7,11 +7,11 @@
 	<div class="content-wrapper">
 
 
-		<div class="d-flex justify-content-between align-items-center mb-4">
+			<div class="d-flex justify-content-between align-items-center mb-4">
 			<h1 class="h3 mb-0" style="color: #1A3D7C; font-weight: 700;">
 				<i class="fas fa-ticket-alt me-2" style="color: #F9B233;"></i>Ticket Management
 			</h1>
-			<a href="{{ path('admin_ticket_new') }}" class="btn btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 12px 24px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(26, 61, 124, 0.2);">
+			<a href="{{ path('admin_ticket_new', event is defined ? {'eventId': event.id} : {}) }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.15s ease;">
 				<i class="fas fa-plus-circle me-2"></i>New Ticket
 			</a>
 		</div>
@@ -26,24 +26,24 @@
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
-					<table id="ticketsTable" class="table table-hover beatpass-table mb-0 display responsive nowrap" style="width:100%">
+					<table id="ticketsTable" class="table table-hover beatpass-table mb-0 display responsive nowrap" style="width:100%; table-layout: fixed;">
 						<thead style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
 							<tr>
-								<th class="col-name" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C;">Event</th>
-								<th class="col-type" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C;">Type</th>
-								<th class="col-price" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C;">Price</th>
-								<th class="col-quantity" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C;">Quantity</th>
-								<th class="col-status" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C;">Status</th>
-								<th class="actions" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; text-align: center;">Actions</th>
+								<th class="col-name" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; width: 25%;">Event</th>
+								<th class="col-type" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; width: 15%;">Type</th>
+								<th class="col-price" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; width: 15%;">Price</th>
+								<th class="col-quantity" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; width: 15%;">Quantity</th>
+								<th class="col-status" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; width: 15%;">Status</th>
+								<th class="actions" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; text-align: center; width: 15%;">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for ticket in tickets %}
 								<tr>
-									<td class="col-name" style="border: none; padding: 20px 15px; vertical-align: middle;">
+									<td class="col-name" style="border: none; padding: 20px 15px; vertical-align: middle; width: 25%;">
 										<strong style="color: #1A3D7C;">{{ ticket.event.eventName }}</strong>
 									</td>
-									<td class="col-type" style="border: none; padding: 20px 15px; vertical-align: middle;">
+									<td class="col-type" style="border: none; padding: 20px 15px; vertical-align: middle; width: 15%;">
 									<span class="beatpass-badge" style="background: linear-gradient(135deg,
 									{% if ticket.ticketType == 'VVIP' %}
 										#9C27B0 0%, #673AB7 100%
@@ -55,16 +55,16 @@
 										{{ ticket.ticketType }}
 										</span>
 									</td>
-									<td class="col-price" style="border: none; padding: 20px 15px; vertical-align: middle;">
+									<td class="col-price" style="border: none; padding: 20px 15px; vertical-align: middle; width: 15%;">
 										₱{{ ticket.price|number_format(2, '.', ',') }}
 									</td>
-									<td class="col-quantity" style="border: none; padding: 20px 15px; vertical-align: middle;">
+									<td class="col-quantity" style="border: none; padding: 20px 15px; vertical-align: middle; width: 15%;">
 										{{ ticket.quantity }}
 									</td>
-									<td class="col-status" style="border: none; padding: 20px 15px; vertical-align: middle;">
+									<td class="col-status" style="border: none; padding: 20px 15px; vertical-align: middle; width: 15%;">
 										<span class="beatpass-badge" style="background: linear-gradient(135deg, {{ ticket.quantity > 0 ? '#28a745 0%, #20c997 100%' : '#dc3545 0%, #c82333 100%' }}); color: white;">{{ ticket.quantity > 0 ? 'Available' : 'Sold Out' }}</span>
 									</td>
-									<td class="actions" style="border: none; padding: 20px 15px; vertical-align: middle; text-align: center;">
+									<td class="actions" style="border: none; padding: 20px 15px; vertical-align: middle; text-align: center; width: 15%;">
 										<div class="btn-action-group">
 											<a href="{{ path('admin_ticket_show', {'id': ticket.id}) }}" class="btn btn-sm btn-beatpass-primary" title="View">
 												<i class="fas fa-eye"></i>
@@ -85,7 +85,7 @@
 											</div>
 											<h5 style="color: #1A3D7C; font-weight: 600; margin-bottom: 12px;">No tickets found</h5>
 											<p style="color: #6c757d; font-size: 1.05em; margin-bottom: 24px;">Try adjusting your filters or create a new ticket.</p>
-											<a href="{{ path('admin_ticket_new') }}" class="btn" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 600;">
+											<a href="{{ path('admin_ticket_new', event is defined ? {'eventId': event.id} : {}) }}" class="btn btn-sm" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
 												<i class="fas fa-plus me-2"></i>Create First Ticket
 											</a>
 										</div>
@@ -105,22 +105,28 @@
 		<script>
 			(function($){
 				$(document).ready(function(){
-					$('#ticketsTable').DataTable({
-						responsive: true,
-						dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-							 "<'row'<'col-sm-12'tr>>" +
-							 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-						pageLength: 10,
-						lengthMenu: [[10, 25, 50, -1],[10, 25, 50, 'All']],
-						language: {
-							search: '',
-							searchPlaceholder: 'Search tickets...'
-						},
-						columnDefs: [
-							{ orderable: false, targets: -1 },
-							{ searchable: false, targets: -1 }
-						]
-					});
+					// Only initialize DataTable if there are actual data rows (not empty state)
+					var tableBody = $('#ticketsTable tbody');
+					var hasDataRows = tableBody.find('tr').length > 0 && !tableBody.find('tr').first().find('td').attr('colspan');
+					
+					if (hasDataRows) {
+						$('#ticketsTable').DataTable({
+							responsive: true,
+							dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+								 "<'row'<'col-sm-12'tr>>" +
+								 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+							pageLength: 10,
+							lengthMenu: [[10, 25, 50, -1],[10, 25, 50, 'All']],
+							language: {
+								search: '',
+								searchPlaceholder: 'Search tickets...'
+							},
+							columnDefs: [
+								{ orderable: false, targets: -1 },
+								{ searchable: false, targets: -1 }
+							]
+						});
+					}
 				});
 			})(jQuery);
 		</script>

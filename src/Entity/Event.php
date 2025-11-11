@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;  
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -35,6 +36,11 @@ class Event
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotNull(message: 'Event date is required.')]
+    #[Assert\GreaterThan(
+        value: 'now',
+        message: 'Event date must be in the future. You cannot create events with past dates.'
+    )]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(length: 255)]
@@ -68,12 +74,24 @@ class Event
     public function setCreatedAtValue(): void
     {
         $this->date_created = new \DateTimeImmutable();
+        $this->updateStatusBasedOnDate();
     }
 
     #[ORM\PreUpdate]
     public function storePreviousStatus(): void
     {
         $this->previousStatus = $this->status;
+        $this->updateStatusBasedOnDate();
+    }
+
+    /**
+     * Auto-update status to COMPLETED if event date has passed
+     */
+    private function updateStatusBasedOnDate(): void
+    {
+        if ($this->date && $this->date < new \DateTime('now')) {
+            $this->status = self::STATUS_COMPLETED;
+        }
     }
 
     #[ORM\PostUpdate]
@@ -143,7 +161,7 @@ class Event
     public function setDate(\DateTime $date): static
     {
         $this->date = $date;
-
+        $this->updateStatusBasedOnDate();
         return $this;
     }
 
@@ -172,7 +190,23 @@ class Event
 
     public function getStatus(): ?string
     {
+        // Auto-update status to COMPLETED if event date has passed
+        if ($this->date && $this->date < new \DateTime('now') && $this->status !== self::STATUS_COMPLETED) {
+            $this->status = self::STATUS_COMPLETED;
+            // Mark all tickets as unavailable when event completes
+            $this->updateTicketsToUnavailable();
+        }
         return $this->status;
+    }
+
+    /**
+     * Mark all tickets as unavailable (USED status)
+     */
+    private function updateTicketsToUnavailable(): void
+    {
+        foreach ($this->getTickets() as $ticket) {
+            $ticket->setStatus(Ticket::STATUS_USED);
+        }
     }
 
     public function setStatus(string $status): static
@@ -191,6 +225,12 @@ class Event
         }
 
         $this->status = $status;
+        
+        // If status is set to COMPLETED, mark all tickets as unavailable
+        if ($status === self::STATUS_COMPLETED) {
+            $this->updateTicketsToUnavailable();
+        }
+        
         return $this;
     }
 

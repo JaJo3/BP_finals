@@ -25,7 +25,7 @@ class OrganizerRepository extends ServiceEntityRepository
         int $limit = 10
     ): array {
         $qb = $this->createQueryBuilder('o')
-            ->orderBy('o.id', 'DESC');
+            ->orderBy('o.id', 'ASC');
 
         if ($query) {
             $qb->andWhere('o.org_name LIKE :q OR o.email LIKE :q OR o.contact LIKE :q')

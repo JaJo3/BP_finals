@@ -28,9 +28,20 @@ class TicketController extends AbstractController
     }
 
     #[Route('/tickets/new', name: 'admin_ticket_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, EventRepository $eventRepository): Response
     {
         $ticket = new Ticket();
+
+        // If an eventId is provided in the query string, pre-select that event on the ticket form
+        $event = null;
+        $eventId = $request->query->get('eventId');
+        if ($eventId) {
+            $event = $eventRepository->find((int) $eventId);
+            if ($event) {
+                $ticket->setEvent($event);
+            }
+        }
+
         $form = $this->createForm(TicketType::class, $ticket);
         $form->handleRequest($request);
 
@@ -43,7 +54,8 @@ class TicketController extends AbstractController
 
         return $this->render('ticket/new.html.twig', [
             'ticket' => $ticket,
-            'form' => $form,
+            'form' => $form->createView(),
+            'preselected_event' => $event,
         ]);
     }
 
