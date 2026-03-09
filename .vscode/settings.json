@@ -1,0 +1,7 @@
+{
+    "explorer.openEditors.visible": 0,
+    "explorer.autoReveal": true,
+    "files.autoSave": "afterDelay",
+    "editor.formatOnSave": true,
+    "terminal.integrated.defaultProfile.windows": "PowerShell"
+}

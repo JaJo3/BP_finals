@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;  
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -58,6 +59,10 @@ class Event
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Organizer $organizer = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $createdBy = null;
 
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: Ticket::class, cascade: ['persist', 'remove'])]
     private Collection $tickets;
@@ -261,6 +266,17 @@ class Event
     public function getPoster(): ?string
     {
         return $this->poster;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $user): static
+    {
+        $this->createdBy = $user;
+        return $this;
     }
 
     public function setPoster(?string $poster): static

@@ -124,24 +124,28 @@
                                     <!-- Action Buttons -->
                                     <div class="d-flex justify-content-center gap-2 pb-3">
                                         <a href="{{ path('app_organizer_show', {'id': organizer.id}) }}"
-                                           class="btn btn-sm organizer-action-btn"
-                                           style="background-color: white; color: #1A3D7C; border: 1px solid #1A3D7C;"
+                                           class="btn btn-sm d-flex align-items-center justify-content-center"
+                                           style="width: 36px; height: 36px; padding: 0; background-color: #1A3D7C; color: white; border: none;"
                                            aria-label="View organizer">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ path('app_organizer_edit', {'id': organizer.id}) }}"
-                                           class="btn btn-sm organizer-action-btn"
-                                           style="background-color: #1A3D7C; color: white; border: none;"
-                                           aria-label="Edit organizer">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
+                                        {% if isAdmin or (currentUserId and organizer.createdBy and organizer.createdBy.id == currentUserId) %}
+                                            <a href="{{ path('app_organizer_edit', {'id': organizer.id}) }}"
+                                               class="btn btn-sm btn-primary d-flex align-items-center justify-content-center"
+                                               style="width: 36px; height: 36px; padding: 0; background-color: #1A3D7C; border-color: #1A3D7C;"
+                                               aria-label="Edit organizer">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        {% endif %}
                                         <a href="{{ path('app_event_by_organizer', {'organizerId': organizer.id}) }}"
-                                           class="btn btn-sm organizer-action-btn"
-                                           style="background-color: #F9B233; color: #1A3D7C; border: none;"
+                                           class="btn btn-sm d-flex align-items-center justify-content-center"
+                                           style="width: 36px; height: 36px; padding: 0; background-color: #F9B233; color: #1A3D7C; border: none;"
                                            aria-label="Organizer events">
                                             <i class="fas fa-calendar-alt"></i>
                                         </a>
-                                        {% include 'organizer/_delete_form.html.twig' with {'organizer': organizer} %}
+                                        {% if isAdmin or (currentUserId and organizer.createdBy and organizer.createdBy.id == currentUserId) %}
+                                            {% include 'organizer/_delete_form.html.twig' with {'organizer': organizer} %}
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

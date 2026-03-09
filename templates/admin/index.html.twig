@@ -1,9 +1,1278 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}BEATPASS Admin Dashboard{% endblock %}
+{% block title %}BEATPASS Admin Dashboard
+{% endblock %}
 
 {% block body %}
-    <div class="top-bar">
-        <h1 class="page-title">BEATPASS Admin Dashboard</h1>
-    </div>
-{% endblock %}
+	<style>
+		/* Dashboard-specific CSS (color vars removed to use global theme from app.css) */
+
+		.metric-card {
+			border-radius: 12px;
+			padding: 14px;
+			color: #fff;
+			box-shadow: 0 6px 18px rgba(21, 48, 90, 0.06);
+			position: relative;
+			overflow: hidden;
+			transition: transform 220ms ease, box-shadow 220ms ease;
+		}
+		.metric-card:hover {
+			transform: translateY(-6px);
+			box-shadow: 0 18px 40px rgba(21, 48, 90, 0.18);
+		}
+
+		/* small decorative logo on metric cards (top-right) */
+		.metric-card::after {
+			content: '';
+			position: absolute;
+			right: 14px;
+			top: 14px;
+			width: 42px;
+			height: 42px;
+			border-radius: 10px;
+			background-image: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+			box-shadow: inset 0 -6px 18px rgba(0, 0, 0, 0.06);
+			opacity: 0.95;
+			display: block;
+			z-index: 1;
+			backdrop-filter: blur(2px);
+		}
+
+		/* colorful gradients (use main brand vars) */
+		.metric-pink {
+			background: linear-gradient(135deg, rgba(232,62,140,0.95), rgba(249,178,51,0.85));
+		}
+		.metric-orange {
+			background: linear-gradient(135deg, rgba(253,126,20,0.95), rgba(249,178,51,0.88));
+		}
+		.metric-purple {
+			background: linear-gradient(135deg, #6f42c1, rgba(111,66,193,0.85));
+		}
+		.metric-teal {
+			background: linear-gradient(135deg, #20C997, rgba(32,201,151,0.85));
+		}
+
+		.metric-body {
+			display: flex;
+			gap: 12px;
+			align-items: center;
+		}
+		.metric-number {
+			font-size: 1.25rem;
+			font-weight: 700;
+			color: #fff;
+		}
+		.metric-label {
+			font-size: 0.85rem;
+			color: rgba(255, 255, 255, 0.9);
+		}
+
+		.hero-card {
+			border-radius: 12px;
+			box-shadow: 0 10px 30px rgba(21, 48, 90, 0.06);
+		}
+		.hero-yellow {
+			background: linear-gradient(180deg, rgba(249,178,51,0.08), rgba(249,178,51,0.02));
+		}
+
+		.card-blue {
+			background: linear-gradient(180deg, rgba(21,48,90,0.05), rgba(21,48,90,0.02));
+			border-radius: 10px;
+		}
+
+		.sales-card-dark {
+			background: linear-gradient(180deg, rgba(21,48,90,0.06), rgba(21,48,90,0.02));
+			border-radius: 10px;
+		}
+
+		.revenue-title {
+			color: #ffffff;
+			font-weight: 700;
+		}
+		.revenue-number {
+			font-size: 1.5rem;
+			font-weight: 800;
+			color: #ffffff;
+			margin-top: 8px;
+		}
+
+		.list-group-item {
+			background: transparent;
+			border: none;
+			padding: 12px 0;
+		}
+		.amount-badge {
+			color: var(--beatpass-blue);
+			font-weight: 700;
+		}
+		.qty-pill {
+			font-size: 12px;
+			color: var(--muted);
+		}
+
+		.badge.bg-light.text-dark {
+			background: #fff !important;
+			color: var(--beatpass-blue) !important;
+			border-radius: 6px;
+			padding: 6px 10px;
+			font-weight: 700;
+		}
+		.avatar.bg-secondary {
+			background: linear-gradient(90deg,var(--beatpass-blue), var(--beatpass-yellow));
+		}
+
+		.chart-area {
+			height: 320px;
+		}
+		.chart-area canvas {
+			width: 100% !important;
+			height: 100% !important;
+			display: block;
+		}
+
+		/* align right column cards and ensure they fit without big gaps */
+		.col-lg-4 .card {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+		.col-lg-4 .card .chart-area {
+			height: 200px;
+		}
+		.chart-card {
+			min-height: 360px;
+		}
+		@media(max-width: 991px) {
+			/* collapse behavior for tablets */
+			.col-lg-4 .card {
+				margin-bottom: 12px;
+			}
+			.chart-card {
+				min-height: 300px;
+			}
+		}
+
+		/* optional cards (can be hidden via the Extras toggle) */
+		.optional-card {
+			transition: opacity 200ms ease, transform 220ms ease;
+		}
+		.optional-card.hidden {
+			opacity: 0;
+			transform: translateY(8px);
+			height: 0;
+			overflow: hidden;
+			pointer-events: none;
+			display: none;
+		}
+
+		/* small responsive tweaks */
+		@media(max-width: 768px) {
+			.metric-number {
+				font-size: 1rem;
+			}
+		}
+
+	</style>
+
+	<div class="container-fluid">
+		<div class="row mb-3">
+			<div class="col-12">
+				<div class="d-flex align-items-center justify-content-between admin-topbar">
+					<div class="dashboard-header">
+						<div class="title">BEATPASS Admin Dashboard</div>
+						<div class="subtitle">Overview of sales, tickets and recent activity</div>
+					</div>
+					<div>
+						<a href="{{ path('app_dashboard') }}" class="btn btn-sm btn-beatpass-primary">Refresh</a>
+						<button id="toggleExtras" class="btn btn-sm btn-outline-light ms-2">Extras</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# Top row: 4 metric cards (aligned to live data) #}
+		<div class="row g-3 mb-4 top-metrics-row">
+			<div class="col-6 col-md-3">
+				<div class="metric-card metric-pink h-100">
+					<div class="metric-body">
+						<div class="metric-left position-relative d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
+							<i class="fas fa-users" style="font-size: 1.3rem; color: #fff;"></i>
+						</div>
+						<div class="metric-right">
+							<div class="metric-number">{{ data.stats.totalUsers|default(0)|number_format(0, '.', ',') }}</div>
+							<div class="metric-label">Total Users</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-6 col-md-3">
+				<div class="metric-card metric-orange h-100">
+					<div class="metric-body">
+						<div class="metric-left position-relative d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
+							<i class="fas fa-user-tie" style="font-size: 1.3rem; color: #fff;"></i>
+						</div>
+						<div class="metric-right">
+							<div class="metric-number">{{ data.stats.totalStaff|default(0)|number_format(0, '.', ',') }}</div>
+							<div class="metric-label">Total Staff</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-6 col-md-3">
+				<div class="metric-card metric-purple h-100">
+					<div class="metric-body">
+						<div class="metric-left d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
+							<i class="fas fa-database" style="font-size: 1.3rem; color: #fff;"></i>
+						</div>
+						<div class="metric-right">
+							<div class="metric-number">{{ data.stats.totalRecords|default(0)|number_format(0, '.', ',') }}</div>
+							<div class="metric-label">Total Records</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-6 col-md-3">
+				<div class="metric-card metric-teal h-100">
+					<div class="metric-body">
+						<div class="metric-left d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
+							<i class="fas fa-receipt" style="font-size: 1.3rem; color: #fff;"></i>
+						</div>
+						<div class="metric-right">
+							<div class="metric-number">{{ data.stats.totalTransactions|default(0)|number_format(0, '.', ',') }}</div>
+							<div class="metric-label">Transactions</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		{# small ticket/metrics cards removed from here and will be placed in the right column of the main charts row to avoid large empty gaps #}
+
+		{# Main content: 4-column grid layout #}
+		<div
+			class="row g-3 mb-4">
+			{# Sales Revenue - spans 2 columns #}
+			<div class="col-lg-6">
+				<div class="card p-4 admin-dashboard-card h-100">
+					<div class="d-flex justify-content-between align-items-center mb-2">
+						<div>
+							<div style="color: #15305A; font-weight: 700;">Sales Revenue</div>
+							<div id="sales-filter-summary" class="sales-filter-summary">All events · This year</div>
+						</div>
+						<div class="d-flex align-items-center gap-2">
+							<select id="sales-event-filter" class="form-select form-select-sm sales-filter-select event-select">
+								<option value="all">All events</option>
+								<option value="top-5">Top 5 events</option>
+								<option value="vip-only">VIP tickets only</option>
+							</select>
+							<select id="sales-year-filter" class="form-select form-select-sm sales-filter-select year-select">
+								<option value="2026">2026</option>
+								<option value="2025">2025</option>
+								<option value="2024">2024</option>
+							</select>
+						</div>
+					</div>
+					<div class="d-flex flex-wrap align-items-center gap-2 mb-3 sales-filter-toolbar">
+						<div class="d-flex gap-2">
+							<button class="revenue-tab active" data-revenue-range="monthly">Monthly</button>
+							<button class="revenue-tab" data-revenue-range="weekly">Weekly</button>
+							<button class="revenue-tab" data-revenue-range="daily">Daily</button>
+						</div>
+						<div class="ms-auto d-flex align-items-center gap-1">
+							<input type="date" id="sales-date-from" class="form-control form-control-sm sales-filter-date">
+							<span class="sales-filter-date-label">to</span>
+							<input type="date" id="sales-date-to" class="form-control form-control-sm sales-filter-date">
+						</div>
+					</div>
+					<div class="revenue-number revenue-number-main" id="revenue-number" data-dash-key="revenueYear">$535,623</div>
+					<div class="chart-area admin-dashboard-chart">
+						<canvas id="salesChartCanvas"></canvas>
+					</div>
+				</div>
+			</div>
+
+			{# Ticket Distribution - spans 1 column #}
+			<div class="col-lg-3">
+				<div class="card p-4 admin-dashboard-card h-100">
+					<div style="color: #15305A; font-weight: 700; margin-bottom: 16px; font-size: 0.95rem;">Ticket Distribution</div>
+					<div class="chart-area admin-dashboard-chart">
+						<canvas id="pieChart"></canvas>
+					</div>
+				</div>
+			</div>
+
+			{# Quick Stats Column - spans 1 column #}
+			<div class="col-lg-3 d-flex flex-column" style="gap: 12px;">
+				{# This Week Stats #}
+				<div class="card p-3 quick-card-week flex-shrink-0">
+					<div class="quick-card-title">This Week</div>
+					<div class="d-flex align-items-baseline justify-content-between">
+						<div class="quick-card-value" style="color: #20C997;">45k pcs</div>
+						<div class="d-flex align-items-center gap-1" style="font-size: 0.8rem; color:#20C997;">
+							<i class="fas fa-arrow-up"></i>
+							<span>+14%</span>
+						</div>
+					</div>
+					<div class="quick-card-caption">Tickets sold vs last week</div>
+				</div>
+
+				{# Increase Stats #}
+				<div class="card p-3 quick-card-conversion flex-shrink-0">
+					<div class="quick-card-title">Conversion</div>
+					<div class="d-flex align-items-baseline justify-content-between">
+						<div class="quick-card-value" style="color: #F9B233;">+25%</div>
+						<div class="d-flex align-items-center gap-1" style="font-size: 0.8rem; color:#20C997;">
+							<i class="fas fa-arrow-up"></i>
+							<span>+3.2 pts</span>
+						</div>
+					</div>
+					<div class="quick-card-caption">Checkout conversion vs last week</div>
+				</div>
+
+				{# Best Selling Stats #}
+				<div class="card p-3 quick-card-best-selling flex-grow-1">
+					<div style="color: #15305A; font-weight: 700; margin-bottom: 12px; font-size: 0.85rem;">Best Selling</div>
+					<div class="chart-area admin-dashboard-chart-sm">
+						<canvas id="bestSellingChart"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+
+			{# Second Row: Best Selling performance #}
+			<div class="row g-3 mb-4">
+			{# Best Selling Performance - spans full width on large screens #}
+			<div class="col-12">
+				<div class="card p-4 best-selling-wrapper">
+					<div class="d-flex justify-content-between align-items-center mb-3">
+						<div>
+							<div style="color: #15305A; font-weight: 700; font-size: 0.95rem;">Best Selling</div>
+							<div class="best-selling-subtitle">Top events & ticket types by sales and revenue</div>
+						</div>
+						<div class="btn-group btn-group-sm" role="group" aria-label="Best selling date range">
+							<button type="button" class="btn btn-outline-secondary active" data-best-range="today">Today</button>
+							<button type="button" class="btn btn-outline-secondary" data-best-range="week">Weekly</button>
+							<button type="button" class="btn btn-outline-secondary" data-best-range="month">Monthly</button>
+						</div>
+					</div>
+
+					<div class="row g-3">
+						<div class="col-12 col-xl-7">
+							<div class="table-responsive best-selling-table-wrapper">
+								<table class="table table-sm beatpass-table mb-3">
+									<thead>
+										<tr>
+											<th scope="col">Event</th>
+											<th scope="col" class="text-end">Tickets Sold</th>
+											<th scope="col" class="text-end">Revenue</th>
+											<th scope="col" class="text-center">% Change</th>
+										</tr>
+									</thead>
+									<tbody id="best-events-today">
+										<tr>
+											<td>Summer Beats Festival</td>
+											<td class="text-end fw-semibold">1,240</td>
+											<td class="text-end fw-semibold">$62,000</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>18%
+											</td>
+										</tr>
+										<tr>
+											<td>Neon Night Live</td>
+											<td class="text-end fw-semibold">980</td>
+											<td class="text-end fw-semibold">$41,500</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>9%
+											</td>
+										</tr>
+										<tr>
+											<td>Indie Waves Session</td>
+											<td class="text-end fw-semibold">730</td>
+											<td class="text-end fw-semibold">$27,900</td>
+											<td class="text-center text-warning fw-semibold">
+												<i class="fas fa-minus me-1"></i>0%
+											</td>
+										</tr>
+										<tr>
+											<td>City Skyline Party</td>
+											<td class="text-end fw-semibold">640</td>
+											<td class="text-end fw-semibold">$24,300</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>4%
+											</td>
+										</tr>
+										<tr>
+											<td>Acoustic Afterhours</td>
+											<td class="text-end fw-semibold">420</td>
+											<td class="text-end fw-semibold">$12,600</td>
+											<td class="text-center text-danger fw-semibold">
+												<i class="fas fa-arrow-down me-1"></i>3%
+											</td>
+										</tr>
+									</tbody>
+									<tbody id="best-events-week" class="d-none">
+										<tr>
+											<td>Summer Beats Festival</td>
+											<td class="text-end fw-semibold">6,820</td>
+											<td class="text-end fw-semibold">$318,400</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>24%
+											</td>
+										</tr>
+										<tr>
+											<td>Neon Night Live</td>
+											<td class="text-end fw-semibold">5,430</td>
+											<td class="text-end fw-semibold">$229,100</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>12%
+											</td>
+										</tr>
+										<tr>
+											<td>Indie Waves Session</td>
+											<td class="text-end fw-semibold">4,210</td>
+											<td class="text-end fw-semibold">$168,400</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>7%
+											</td>
+										</tr>
+										<tr>
+											<td>City Skyline Party</td>
+											<td class="text-end fw-semibold">3,980</td>
+											<td class="text-end fw-semibold">$152,600</td>
+											<td class="text-center text-warning fw-semibold">
+												<i class="fas fa-minus me-1"></i>0%
+											</td>
+										</tr>
+										<tr>
+											<td>Acoustic Afterhours</td>
+											<td class="text-end fw-semibold">2,870</td>
+											<td class="text-end fw-semibold">$86,100</td>
+											<td class="text-center text-danger fw-semibold">
+												<i class="fas fa-arrow-down me-1"></i>5%
+											</td>
+										</tr>
+									</tbody>
+									<tbody id="best-events-month" class="d-none">
+										<tr>
+											<td>Summer Beats Festival</td>
+											<td class="text-end fw-semibold">22,430</td>
+											<td class="text-end fw-semibold">$1,046,100</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>31%
+											</td>
+										</tr>
+										<tr>
+											<td>Neon Night Live</td>
+											<td class="text-end fw-semibold">18,960</td>
+											<td class="text-end fw-semibold">$798,200</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>18%
+											</td>
+										</tr>
+										<tr>
+											<td>Indie Waves Session</td>
+											<td class="text-end fw-semibold">16,210</td>
+											<td class="text-end fw-semibold">$648,400</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>11%
+											</td>
+										</tr>
+										<tr>
+											<td>City Skyline Party</td>
+											<td class="text-end fw-semibold">13,450</td>
+											<td class="text-end fw-semibold">$515,300</td>
+											<td class="text-center text-warning fw-semibold">
+												<i class="fas fa-minus me-1"></i>0%
+											</td>
+										</tr>
+										<tr>
+											<td>Acoustic Afterhours</td>
+											<td class="text-end fw-semibold">8,970</td>
+											<td class="text-end fw-semibold">$269,100</td>
+											<td class="text-center text-danger fw-semibold">
+												<i class="fas fa-arrow-down me-1"></i>6%
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="col-12 col-xl-5">
+							<div class="table-responsive" style="max-height: 380px; overflow-y: auto;">
+								<table class="table table-sm mb-0">
+									<thead>
+										<tr>
+											<th scope="col">Ticket Type</th>
+											<th scope="col" class="text-end">Sold</th>
+											<th scope="col" class="text-end">Revenue</th>
+											<th scope="col" class="text-center">% Change</th>
+										</tr>
+									</thead>
+									<tbody id="best-tickets-today">
+										<tr>
+											<td>VIP</td>
+											<td class="text-end fw-semibold">520</td>
+											<td class="text-end fw-semibold">$39,000</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>22%
+											</td>
+										</tr>
+										<tr>
+											<td>General Admission</td>
+											<td class="text-end fw-semibold">1,480</td>
+											<td class="text-end fw-semibold">$37,000</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>8%
+											</td>
+										</tr>
+										<tr>
+											<td>Balcony</td>
+											<td class="text-end fw-semibold">310</td>
+											<td class="text-end fw-semibold">$9,300</td>
+											<td class="text-center text-warning fw-semibold">
+												<i class="fas fa-minus me-1"></i>0%
+											</td>
+										</tr>
+									</tbody>
+									<tbody id="best-tickets-week" class="d-none">
+										<tr>
+											<td>VIP</td>
+											<td class="text-end fw-semibold">2,940</td>
+											<td class="text-end fw-semibold">$221,000</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>27%
+											</td>
+										</tr>
+										<tr>
+											<td>General Admission</td>
+											<td class="text-end fw-semibold">8,360</td>
+											<td class="text-end fw-semibold">$209,000</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>13%
+											</td>
+										</tr>
+										<tr>
+											<td>Balcony</td>
+											<td class="text-end fw-semibold">1,920</td>
+											<td class="text-end fw-semibold">$57,600</td>
+											<td class="text-center text-warning fw-semibold">
+												<i class="fas fa-minus me-1"></i>0%
+											</td>
+										</tr>
+									</tbody>
+									<tbody id="best-tickets-month" class="d-none">
+										<tr>
+											<td>VIP</td>
+											<td class="text-end fw-semibold">9,820</td>
+											<td class="text-end fw-semibold">$735,000</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>33%
+											</td>
+										</tr>
+										<tr>
+											<td>General Admission</td>
+											<td class="text-end fw-semibold">28,430</td>
+											<td class="text-end fw-semibold">$711,000</td>
+											<td class="text-center text-success fw-semibold">
+												<i class="fas fa-arrow-up me-1"></i>17%
+											</td>
+										</tr>
+										<tr>
+											<td>Balcony</td>
+											<td class="text-end fw-semibold">6,730</td>
+											<td class="text-end fw-semibold">$201,900</td>
+											<td class="text-center text-danger fw-semibold">
+												<i class="fas fa-arrow-down me-1"></i>4%
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+		<script>
+			(function () { // Sales area chart with filters and comparison line
+const canvas = document.getElementById('salesChartCanvas');
+if (canvas) {
+const ctx = canvas.getContext('2d');
+const summaryEl = document.getElementById('sales-filter-summary');
+const eventFilterEl = document.getElementById('sales-event-filter');
+const yearFilterEl = document.getElementById('sales-year-filter');
+const dateFromEl = document.getElementById('sales-date-from');
+const dateToEl = document.getElementById('sales-date-to');
+
+// Golden gradient fill under the line
+const gradient = ctx.createLinearGradient(0, 0, 0, 340);
+gradient.addColorStop(0, 'rgba(249,178,51,0.28)');
+gradient.addColorStop(0.5, 'rgba(249,178,51,0.10)');
+gradient.addColorStop(1, 'rgba(249,178,51,0.00)');
+
+const lineColor = getComputedStyle(document.documentElement).getPropertyValue('--beatpass-yellow').trim() || '#F9B233';
+const labelGray = 'rgba(255,255,255,0.65)';
+
+const labels = [
+'Jan',
+'Feb',
+'Mar',
+'Apr',
+'May',
+'Jun',
+'Jul',
+'Aug',
+'Sep',
+'Oct',
+'Nov',
+'Dec'
+];
+const currentYearValues = [
+200000,
+320000,
+280000,
+420000,
+480000,
+560000,
+640000,
+720000,
+520000,
+850000,
+920000,
+760000
+];
+const lastYearValues = [
+180000,
+290000,
+260000,
+390000,
+450000,
+510000,
+600000,
+670000,
+500000,
+790000,
+840000,
+700000
+];
+
+// Glow plugin (subtle) preserved
+const glowPlugin = {
+id: 'glowLinePlugin',
+beforeDatasetDraw(chart, args, options) {
+const {ctx} = chart;
+ctx.save();
+ctx.shadowColor = 'rgba(249,178,51,0.85)';
+ctx.shadowBlur = options.blur || 14;
+},
+afterDatasetDraw(chart, args, options) {
+chart.ctx.restore();
+}
+};
+
+// Indicator plugin: highlight October point and label
+const indicatorPlugin = {
+id: 'indicatorPlugin',
+afterDraw(chart) {
+const {ctx, scales} = chart;
+const xScale = scales.x;
+const yScale = scales.y;
+if (! xScale || ! yScale) 
+return;
+
+
+const targetIndex = 9; // October
+const x = xScale.getPixelForValue(labels[targetIndex]);
+const y = yScale.getPixelForValue(currentYearValues[targetIndex]);
+ctx.save();
+// faint vertical marker for October
+ctx.beginPath();
+ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+ctx.lineWidth = 1;
+ctx.moveTo(x, yScale.top);
+ctx.lineTo(x, yScale.bottom);
+ctx.stroke();
+// outer white dot and inner gold dot
+ctx.fillStyle = '#ffffff';
+ctx.beginPath();
+ctx.arc(x, y, 5, 0, Math.PI * 2);
+ctx.fill();
+ctx.fillStyle = lineColor;
+ctx.beginPath();
+ctx.arc(x, y, 3, 0, Math.PI * 2);
+ctx.fill();
+// draw the month label more prominently at the bottom
+ctx.fillStyle = '#ffffff';
+ctx.font = '600 12px sans-serif';
+ctx.textAlign = 'center';
+const labelY = chart.height - 8;
+ctx.fillText(labels[targetIndex], x, labelY);
+ctx.restore();
+}
+};
+
+// Hover plugin: vertical line on hover and circular indicator
+const hoverLinePlugin = {
+id: 'hoverLine',
+afterDraw(chart) {
+const active = chart.tooltip && chart.tooltip.getActiveElements && chart.tooltip.getActiveElements();
+if (! active || ! active.length) 
+return;
+
+
+const {ctx, scales} = chart;
+const xScale = scales.x;
+const yScale = scales.y;
+const {datasetIndex, index} = active[0];
+const meta = chart.getDatasetMeta(datasetIndex);
+const el = meta.data[index];
+if (! el) 
+return;
+
+
+const x = el.x;
+const y = el.y;
+ctx.save();
+// vertical line
+ctx.beginPath();
+ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+ctx.lineWidth = 1;
+ctx.moveTo(x, yScale.top);
+ctx.lineTo(x, yScale.bottom);
+ctx.stroke();
+// outer white circle
+ctx.fillStyle = '#ffffff';
+ctx.beginPath();
+ctx.arc(x, y, 6, 0, Math.PI * 2);
+ctx.fill();
+// inner gold circle
+ctx.fillStyle = lineColor;
+ctx.beginPath();
+ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+ctx.fill();
+ctx.restore();
+}
+};
+
+const data = {
+labels: labels,
+datasets: [
+{
+label: 'This year',
+data: currentYearValues,
+borderColor: lineColor,
+backgroundColor: gradient,
+tension: 0.45,
+fill: true,
+pointRadius: 0,
+pointHoverRadius: 6,
+pointHoverBackgroundColor: '#ffffff',
+borderWidth: 3
+},
+{
+label: 'Last year',
+data: lastYearValues,
+borderColor: 'rgba(21,48,90,0.45)',
+backgroundColor: 'transparent',
+borderDash: [6, 4],
+tension: 0.35,
+fill: false,
+pointRadius: 0,
+pointHoverRadius: 5,
+pointHoverBackgroundColor: '#ffffff',
+borderWidth: 2
+}
+]
+};
+
+const salesChart = new Chart(ctx, {
+type: 'line',
+data: data,
+plugins: [
+glowPlugin, indicatorPlugin, hoverLinePlugin
+],
+options: {
+plugins: {
+legend: {
+ display: true,
+ position: 'bottom',
+ labels: {
+  usePointStyle: true,
+  padding: 16,
+  color: labelGray
+ }
+},
+glowLinePlugin: {
+blur: 16
+},
+tooltip: {
+enabled: true,
+intersect: false,
+callbacks: {
+ label: function (ctx) {
+const v = ctx.parsed && ctx.parsed.y ? ctx.parsed.y : ctx.raw;
+const datasetLabel = ctx.dataset && ctx.dataset.label ? ctx.dataset.label + ': ' : '';
+return datasetLabel + '$' + Number(v).toLocaleString();
+},
+ title: function (items) {
+if (!items || !items.length) return '';
+const item = items[0];
+return labels[item.dataIndex] + ' · Revenue';
+}
+}
+}
+},
+scales: {
+y: {
+min: 200000,
+max: 1000000,
+grid: {
+color: 'rgba(255,255,255,0.06)',
+drawBorder: false,
+drawOnChartArea: true
+},
+ticks: {
+color: labelGray,
+callback: function (val) {
+return(val / 1000) + 'k';
+},
+stepSize: 200000
+}
+},
+x: {
+grid: {
+display: false
+},
+ticks: {
+color: labelGray
+}
+}
+},
+interaction: {
+mode: 'nearest',
+intersect: false
+},
+maintainAspectRatio: false,
+responsive: true,
+elements: {
+line: {
+borderJoinStyle: 'round'
+},
+point: {
+hoverRadius: 6
+}
+},
+animation: {
+duration: 900,
+easing: 'cubicBezierEaseInOut'
+}
+}
+});
+// expose chart globally for realtime updates
+try {
+window.salesChart = salesChart;
+} catch (e) { /* ignore if window not available */
+}
+
+// simple summary updater for UI (no backend binding yet)
+function updateSummary() {
+if (!summaryEl) return;
+const eventLabel = eventFilterEl && eventFilterEl.options[eventFilterEl.selectedIndex] ? eventFilterEl.options[eventFilterEl.selectedIndex].text : 'All events';
+const yearLabel = yearFilterEl && yearFilterEl.value ? yearFilterEl.value : 'This year';
+let rangeLabel = 'This year';
+if (dateFromEl && dateToEl && dateFromEl.value && dateToEl.value) {
+rangeLabel = dateFromEl.value + ' to ' + dateToEl.value;
+}
+summaryEl.textContent = eventLabel + ' · ' + rangeLabel;
+}
+
+[eventFilterEl, yearFilterEl, dateFromEl, dateToEl].forEach(function (el) {
+if (!el) return;
+el.addEventListener('change', updateSummary);
+});
+updateSummary();
+}
+
+// Pie chart
+const pie = document.getElementById('pieChart');
+if (pie) {
+const ctx = pie.getContext('2d');
+new Chart(ctx, {
+type: 'doughnut',
+data: {
+labels: [
+'VIP', 'GA', 'Balcony'
+],
+datasets: [
+{
+data: [
+55, 30, 15
+],
+backgroundColor: ['#15305A', '#F9B233', '#e9ecef']
+}
+]
+},
+options: {
+maintainAspectRatio: false,
+plugins: {
+legend: {
+position: 'bottom',
+labels: {
+color: '#15305A',
+font: {
+weight: '600'
+},
+padding: 16
+}
+}
+}
+}
+});
+}
+
+// Best selling horizontal bar
+const best = document.getElementById('bestSellingChart');
+if (best) {
+const ctx = best.getContext('2d');
+new Chart(ctx, {
+type: 'bar',
+data: {
+labels: [
+'Event A', 'Event B', 'Event C', 'Event D'
+],
+datasets: [
+{
+data: [
+120, 90, 75, 60
+],
+backgroundColor: '#15305A',
+borderRadius: 8,
+borderSkipped: false
+}
+]
+},
+options: {
+indexAxis: 'y',
+plugins: {
+legend: {
+display: false
+}
+},
+scales: {
+x: {
+ticks: {
+color: '#15305A',
+font: {
+weight: '600'
+}
+},
+grid: {
+color: 'rgba(21,48,90,0.1)'
+}
+},
+y: {
+ticks: {
+color: '#15305A',
+font: {
+weight: '600'
+}
+},
+grid: {
+display: false
+}
+}
+},
+maintainAspectRatio: false
+}
+});
+}
+
+// Initialize circular progress rings (SVG)
+try {
+console.log('Initializing progress rings');
+document.querySelectorAll('.progress-circle').forEach(function (el) {
+try {
+const value = parseFloat(el.getAttribute('data-value')) || 0;
+const ring = el.querySelector('.ring');
+const radius = parseFloat(ring.getAttribute('r')) || 30;
+const circumference = 2 * Math.PI * radius;
+ring.style.strokeDasharray = circumference;
+const offset = circumference * (1 - Math.min(100, Math.max(0, value)) / 100);
+ring.style.strokeDashoffset = offset;
+// set inner number color for contrast on light background
+const inner = el.querySelector('.progress-inner');
+if (inner) {
+inner.style.color = '#243b57';
+inner.style.fontSize = '0.95rem';
+}
+} catch (e) {
+console.error('progress ring error', e);
+}
+});
+} catch (err) {
+console.error('progress rings init failed', err);
+}
+
+// Mini line chart (purple)
+try {
+const miniLine = document.getElementById('miniLineChart');
+if (miniLine) {
+if (! miniLine.height) 
+miniLine.height = 48;
+
+
+const ctx = miniLine.getContext('2d');
+new Chart(ctx, {
+type: 'line',
+data: {
+labels: [
+'', ''
+],
+datasets: [
+{
+data: [
+10,
+15,
+12,
+20,
+22,
+25
+],
+borderColor: '#9C27B0',
+backgroundColor: 'rgba(156,39,176,0.08)',
+fill: true,
+tension: 0.4,
+pointRadius: 0
+}
+]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: {
+legend: {
+display: false
+}
+},
+scales: {
+x: {
+display: false
+},
+y: {
+display: false
+}
+}
+}
+});
+}
+} catch (err) {
+console.error('mini line chart error', err);
+}
+
+// Mini area chart (teal)
+try {
+const miniArea = document.getElementById('miniAreaChart');
+if (miniArea) {
+if (! miniArea.height) 
+miniArea.height = 48;
+
+
+const ctxA = miniArea.getContext('2d');
+new Chart(ctxA, {
+type: 'line',
+data: {
+labels: [
+'', ''
+],
+datasets: [
+{
+data: [
+5,
+8,
+6,
+10,
+12,
+9
+],
+borderColor: '#00BCD4',
+backgroundColor: 'rgba(0,188,212,0.12)',
+fill: true,
+tension: 0.4,
+pointRadius: 0
+}
+]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: {
+legend: {
+display: false
+}
+},
+scales: {
+x: {
+display: false
+},
+y: {
+display: false
+}
+}
+}
+});
+}
+} catch (err) {
+console.error('mini area chart error', err);
+}
+})();
+
+// Realtime updater and Extras toggle
+(function () {
+const API_ENDPOINT = '/api/admin/dashboard';
+
+function applyRealtimeData(data) {
+try {
+if (! data) 
+return;
+
+
+// update simple keyed values
+document.querySelectorAll('[data-dash-key]').forEach(function (el) {
+const key = el.getAttribute('data-dash-key');
+if (! key) 
+return;
+
+
+// look under data.totals first
+if (data.totals && data.totals[key] !== undefined) {
+const v = data.totals[key];
+if (typeof v === 'number') {
+el.textContent = '$' + Number(v).toLocaleString();
+} else {
+el.textContent = String(v);
+}
+}
+});
+
+// update sales chart if provided
+if (window.salesChart && data.sales) {
+const labels = data.sales.labels || window.salesChart.data.labels;
+const values = data.sales.values || window.salesChart.data.datasets[0].data;
+window.salesChart.data.labels = labels;
+window.salesChart.data.datasets[0].data = values;
+window.salesChart.update();
+}
+} catch (e) {
+console.error('applyRealtimeData error', e);
+}
+}
+
+async function fetchDashboardRealtime() {
+try {
+const res = await fetch(API_ENDPOINT, {cache: 'no-store'});
+if (! res.ok) 
+throw new Error('bad status');
+
+
+const json = await res.json();
+applyRealtimeData(json);
+} catch (err) {
+// fail silently; the page keeps working with static values
+// console.debug('realtime fetch failed', err);
+}
+}
+
+// start polling every 10s
+fetchDashboardRealtime();
+setInterval(fetchDashboardRealtime, 10000);
+
+// extras toggle (hide/show optional cards)
+const toggle = document.getElementById('toggleExtras');
+const optionalCards = document.querySelectorAll('.optional-card');
+function setExtrasVisible(visible) {
+optionalCards.forEach(function (el) {
+if (visible) {
+el.classList.remove('hidden');
+} else {
+el.classList.add('hidden');
+}
+});
+try {
+localStorage.setItem('dashboard.showExtras', visible ? '1' : '0');
+} catch (e) {}
+if (toggle) 
+toggle.textContent = visible ? 'Extras' : 'Extras';
+
+
+}
+
+// initialize from localStorage (default: visible)
+try {
+const stored = localStorage.getItem('dashboard.showExtras');
+const visible = (stored === null) ? true : (stored === '1');
+setExtrasVisible(visible);
+} catch (e) {
+setExtrasVisible(true);
+}
+
+if (toggle) {
+toggle.addEventListener('click', function () {
+try {
+const curr = localStorage.getItem('dashboard.showExtras');
+const visible = !(curr === null ? true : (curr === '1'));
+setExtrasVisible(visible);
+} catch (e) {
+setExtrasVisible(false);
+}
+});
+}
+})();
+// Best Selling range toggle (Today / Weekly / Monthly)
+(function () {
+	const rangeButtons = document.querySelectorAll('[data-best-range]');
+	if (!rangeButtons.length) {
+		return;
+	}
+
+	function setRange(range) {
+		rangeButtons.forEach(function (btn) {
+			if (btn.getAttribute('data-best-range') === range) {
+				btn.classList.add('active');
+			} else {
+				btn.classList.remove('active');
+			}
+		});
+
+		['today', 'week', 'month'].forEach(function (key) {
+			const show = key === range;
+			const eventsBody = document.getElementById('best-events-' + key);
+			const ticketsBody = document.getElementById('best-tickets-' + key);
+			[eventsBody, ticketsBody].forEach(function (tbody) {
+				if (!tbody) return;
+				if (show) {
+					tbody.classList.remove('d-none');
+				} else {
+					tbody.classList.add('d-none');
+				}
+			});
+		});
+	}
+
+	rangeButtons.forEach(function (btn) {
+		btn.addEventListener('click', function () {
+			const range = btn.getAttribute('data-best-range') || 'today';
+			setRange(range);
+		});
+	});
+
+	// default
+	setRange('today');
+})();
+		</script>
+	{% endblock %}

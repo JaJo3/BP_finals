@@ -1,0 +1,95 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Activity Log Details{% endblock %}
+
+{% block body %}
+    <div class="content-wrapper">
+        <div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
+            <div class="card-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+                <div class="d-flex align-items-center">
+                    <div class="me-3 d-flex align-items-center justify-content-center bg-white bg-opacity-10 rounded-circle" style="width:48px; height:48px;">
+                        <i class="fas fa-clipboard-list" style="font-size: 1.4rem; color: #F9B233;"></i>
+                    </div>
+                    <div>
+                        <h1 class="h3 mb-1" style="font-weight: 700;">Activity Log Details</h1>
+                        <p class="mb-0" style="color: rgba(255,255,255,0.85);">Review who did what and when</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6 class="text-muted">User</h6>
+                        <div class="fw-semibold">{{ log.user.username }}</div>
+                        {% if log.user.email %}
+                            <div class="small text-muted">{{ log.user.email }}</div>
+                        {% endif %}
+
+                        <hr>
+
+                        <h6 class="text-muted">Entity Type</h6>
+                        <div class="mb-3">
+                            {% if log.entityType %}
+                                <span class="badge" style="background-color:#6c757d;color:white;">{{ log.entityType }}</span>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </div>
+
+                        <h6 class="text-muted">Entity ID</h6>
+                        <div>{{ log.entityId ?: '—' }}</div>
+                    </div>
+
+                    <div class="col-md-4 text-center">
+                        <h6 class="text-muted">Action</h6>
+                        <div class="mb-3">
+                            <span class="beatpass-badge" style="background: linear-gradient(135deg, #0dcaf0 0%, #31d2f2 100%); color: #0b2e4d;">{{ log.action }}</span>
+                        </div>
+
+                        <h6 class="text-muted">Timestamp</h6>
+                        <div>{{ log.createdAt|date('M d, Y h:i:s A') }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h6 class="text-muted">IP Address</h6>
+                        <div>{{ log.ipAddress ?: '—' }}</div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="mb-3"><i class="fas fa-database me-2" style="color:#F9B233"></i>Affected Data</h5>
+                        <div class="bg-light p-3 rounded" style="border-left: 4px solid #1A3D7C;">
+                            {% if affectedData is iterable %}
+                                <pre class="mb-0">{{ affectedData|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+                            {% elseif affectedData is not null %}
+                                <pre class="mb-0">{{ affectedData }}</pre>
+                            {% else %}
+                                <div class="text-muted">No data</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h5 class="mb-3"><i class="fas fa-exchange-alt me-2" style="color:#F9B233"></i>Changes Made</h5>
+                        <div class="bg-light p-3 rounded" style="border-left: 4px solid #F9B233;">
+                            {% if changes is iterable %}
+                                <pre class="mb-0">{{ changes|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+                            {% elseif changes is not null %}
+                                <pre class="mb-0">{{ changes }}</pre>
+                            {% else %}
+                                <div class="text-muted">No changes recorded</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

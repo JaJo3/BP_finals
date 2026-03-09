@@ -4,6 +4,11 @@
     --beatpass-yellow: #F9B233;
     --beatpass-red: #dc3545;
     --beatpass-gray: #f8f9fa;
+
+    /* Bootstrap theme overrides */
+    --bs-primary: var(--beatpass-blue);
+    --bs-link-color: var(--beatpass-blue);
+    --bs-link-hover-color: #143063;
 }
 
 /* General Styles */
@@ -37,15 +42,16 @@ body.admin .sidebar {
     width: 280px;
     background-color: var(--beatpass-blue);
     padding: 0;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     position: fixed;
     height: 100vh;
     overflow-y: auto;
     z-index: 1000;
 }
+
 /* subtle separator between sidebar and main content */
 body.admin .sidebar {
-    border-right: 1px solid rgba(255,255,255,0.06);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 body.admin .sidebar .brand {
@@ -54,38 +60,20 @@ body.admin .sidebar .brand {
     font-weight: bold;
     padding: 1.5rem;
     text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     letter-spacing: 1px;
     background: linear-gradient(45deg, var(--beatpass-blue), #2a4d8c);
-}
-
-body.admin .sidebar .nav-link {
-    color: #ffffff !important;
-    text-decoration: none;
-    padding: 1rem 1.5rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    transition: all 0.3s ease;
-    border-left: 4px solid transparent;
+    justify-content: center;
+    gap: 0.75rem;
 }
 
-body.admin .sidebar .nav-link:hover {
-    background-color: var(--beatpass-yellow);
-    border-left: 4px solid var(--beatpass-yellow);
-    color: var(--beatpass-blue) !important;
-}
-
-body.admin .sidebar .nav-link.active {
-    background: linear-gradient(90deg, var(--beatpass-yellow), #fac265);
-    color: var(--beatpass-blue) !important;
-    font-weight: 600;
-    border-left: 4px solid #fff;
-}
-
-body.admin .sidebar .nav-link i {
-    width: 20px;
-    text-align: center;
+body.admin .sidebar .brand .logo-img {
+    max-width: 80%;
+    height: 48px;
+    object-fit: contain;
 }
 
 body.admin .main-content {
@@ -99,7 +87,8 @@ body.admin .main-content {
 /* Page content wrapper used by templates (keeps content inside main area and away from sidebar) */
 .content-wrapper {
     box-sizing: border-box;
-    margin-left: 0; /* main-content already offsets from the sidebar */
+    margin-left: 0;
+    /* main-content already offsets from the sidebar */
     padding: 2rem 2rem 3rem 2rem;
     max-width: 100%;
 }
@@ -121,12 +110,19 @@ body.admin .main-content {
 .content-wrapper .card {
     width: 100%;
     margin: 0 auto 1.5rem auto;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 /* Make DataTables controls sit inside the content area (no overlap) */
-.content-wrapper .dataTables_wrapper { padding: 0 1rem; box-sizing: border-box; }
-.content-wrapper .table-responsive { padding: 0 1rem 1rem 1rem; box-sizing: border-box; }
+.content-wrapper .dataTables_wrapper {
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+.content-wrapper .table-responsive {
+    padding: 0 1rem 1rem 1rem;
+    box-sizing: border-box;
+}
 
 /* Mobile Styles */
 @media (max-width: 768px) {
@@ -158,16 +154,18 @@ body.admin {
     display: flex;
     min-height: 100vh;
 }
+
 .modal-backdrop.show {
-  background-color: rgba(0, 0, 0, 0.15) !important; 
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px); 
+    background-color: rgba(0, 0, 0, 0.15) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .form-control:focus {
-  border-color: #1A3D7C !important; 
-  box-shadow: 0 0 0 0.2rem rgba(26,61,124,.25) !important
+    border-color: #1A3D7C !important;
+    box-shadow: 0 0 0 0.2rem rgba(26, 61, 124, .25) !important
 }
+
 /* Consolidated admin selectors use the body.admin prefix (defined earlier) */
 
 
@@ -199,7 +197,7 @@ body.admin {
 }
 
 .beatpass-table {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .beatpass-table thead th {
@@ -223,7 +221,23 @@ body.admin {
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Brand-colored primary button */
+.btn-primary {
+    background-color: var(--beatpass-blue);
+    border-color: var(--beatpass-blue);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #143063;
+    border-color: #143063;
+}
+
+.btn-primary:focus-visible {
+    box-shadow: 0 0 0 0.2rem rgba(249, 178, 51, 0.45);
 }
 
 .btn-beatpass-primary {
@@ -237,7 +251,7 @@ body.admin {
 .btn-beatpass-primary:hover {
     background-color: #234b94;
     color: white;
-    box-shadow: 0 4px 8px rgba(26,61,124,0.2);
+    box-shadow: 0 4px 8px rgba(26, 61, 124, 0.2);
 }
 
 .btn-beatpass-edit {
@@ -249,7 +263,7 @@ body.admin {
 .btn-beatpass-edit:hover {
     background-color: #fac265;
     color: var(--beatpass-blue);
-    box-shadow: 0 4px 8px rgba(249,178,51,0.3);
+    box-shadow: 0 4px 8px rgba(249, 178, 51, 0.3);
 }
 
 .btn-beatpass-delete {
@@ -259,11 +273,11 @@ body.admin {
 }
 
 .btn-beatpass-delete:hover {
-    background-color: #ff6b6b ;
-    box-shadow: 0 4px 8px rgba(220,53,69,0.3);
+    background-color: #ff6b6b;
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
 }
 
-.form-control:focus, 
+.form-control:focus,
 .form-select:focus {
     border-color: var(--beatpass-blue);
     box-shadow: 0 0 0 0.2rem rgba(26, 61, 124, 0.25);
@@ -344,8 +358,14 @@ body.admin .nav-link i {
 
 /* Ensure the length and filter appear on the same row on wide screens */
 @media (min-width: 768px) {
-    .dataTables_wrapper .dataTables_length { order: 1; }
-    .dataTables_wrapper .dataTables_filter { order: 2; margin-left: auto; }
+    .dataTables_wrapper .dataTables_length {
+        order: 1;
+    }
+
+    .dataTables_wrapper .dataTables_filter {
+        order: 2;
+        margin-left: auto;
+    }
 }
 
 /* Table base */
@@ -386,51 +406,10 @@ table.beatpass-table tbody tr:nth-child(even) td {
 
 /* Hover row */
 table.beatpass-table tbody tr:hover td {
-    background: rgba(26,61,124,0.04);
-}
-.table-responsive { overflow-x: auto; }
-/* Use flexible layout so table can shrink; truncate long text to avoid forcing overflow */
-table.beatpass-table { table-layout: auto; width: 100% !important; }
-table.beatpass-table th,
-table.beatpass-table td {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    background: rgba(26, 61, 124, 0.04);
 }
 
-/* Actions column: compact but flexible */
-table.beatpass-table th.actions,
-table.beatpass-table td.actions {
-    min-width: 96px;
-    max-width: 140px;
-    text-align: center;
-}
-
-/* Sensible min/max widths to keep table inside main area; values are relative so table can shrink */
-.col-poster { width: 64px; min-width: 56px; max-width: 80px; }
-.col-name { min-width: 140px; max-width: 36%; }
-.col-organizer { min-width: 110px; max-width: 18%; }
-.col-date { min-width: 110px; max-width: 18%; }
-.col-venue { min-width: 120px; max-width: 22%; }
-.col-status { min-width: 90px; max-width: 12%; }
-.col-price { width: auto; }
-.col-quantity { width: auto; }
-.btn-action-group {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.45rem;
-}
-.btn-action-group .btn { 
-    padding: 6px 10px; 
-    border-radius: 6px; 
-    /* make action buttons uniform in size */
-    min-width: 40px;
-    height: 34px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
+/* Compact variant removed — using Bootstrap utilities for compact tables in templates */
 
 /* Status badge styling */
 .beatpass-badge {
@@ -443,7 +422,7 @@ table.beatpass-table td.actions {
 
 /* Search/input styling */
 .dataTables_wrapper .dataTables_filter input {
-    border: 1px solid rgba(26,61,124,0.12);
+    border: 1px solid rgba(26, 61, 124, 0.12);
     border-radius: 8px;
     padding: 8px 36px 8px 12px;
     height: 38px;
@@ -453,16 +432,24 @@ table.beatpass-table td.actions {
     background-position: right 10px center;
     background-size: 18px 18px;
 }
+
 .dataTables_wrapper .dataTables_length select {
     border-radius: 8px;
-    border: 1px solid rgba(26,61,124,0.12);
+    border: 1px solid rgba(26, 61, 124, 0.12);
     padding: 6px 10px;
     height: 38px;
     background-color: #fff;
 }
 
 /* Pagination styling aligned to theme */
-.dataTables_wrapper .dataTables_paginate { display:flex; gap:8px; justify-content:flex-end; align-items:center; padding-top:0.75rem; }
+.dataTables_wrapper .dataTables_paginate {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 0.75rem;
+}
+
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     border: none;
     border-radius: 8px;
@@ -470,22 +457,54 @@ table.beatpass-table td.actions {
     margin: 0 3px;
     background: #f5f7fa;
     color: var(--beatpass-blue) !important;
-    font-weight:600;
+    font-weight: 600;
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover { background: #e9f0fb; color: var(--beatpass-blue) !important; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(26,61,124,0.06); }
-.dataTables_wrapper .dataTables_paginate .paginate_button.current { background: var(--beatpass-blue) !important; color: #fff !important; box-shadow: 0 8px 22px rgba(26,61,124,0.15); }
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #e9f0fb;
+    color: var(--beatpass-blue) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(26, 61, 124, 0.06);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--beatpass-blue) !important;
+    color: #fff !important;
+    box-shadow: 0 8px 22px rgba(26, 61, 124, 0.15);
+}
 
 /* Compact info text */
-.dataTables_info { color:#6c757d; font-size:0.9rem; padding-top:6px; }
+.dataTables_info {
+    color: #6c757d;
+    font-size: 0.9rem;
+    padding-top: 6px;
+}
 
 /* Responsive tweaks */
 @media (max-width: 768px) {
+
     .dataTables_wrapper .dataTables_length,
-    .dataTables_wrapper .dataTables_filter { width:100%; justify-content:space-between; }
-    .dataTables_wrapper .dataTables_filter { margin-top:0.5rem; }
-    table.beatpass-table thead th { padding:10px 12px; font-size:0.82rem; }
-    table.beatpass-table tbody td { padding:10px 12px; }
-    .dataTables_wrapper .dataTables_paginate { justify-content:flex-start; }
+    .dataTables_wrapper .dataTables_filter {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .dataTables_wrapper .dataTables_filter {
+        margin-top: 0.5rem;
+    }
+
+    table.beatpass-table thead th {
+        padding: 10px 12px;
+        font-size: 0.82rem;
+    }
+
+    table.beatpass-table tbody td {
+        padding: 10px 12px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        justify-content: flex-start;
+    }
 }
 
 /* Events-specific compact table overrides: make events table fit the main content without horizontal scroll
@@ -523,7 +542,9 @@ table.beatpass-table td.actions {
 }
 
 /* Slightly reduce the filter width for events table */
-#eventsTable_wrapper .dataTables_filter input { min-width: 160px; }
+#eventsTable_wrapper .dataTables_filter input {
+    min-width: 160px;
+}
 
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
@@ -553,7 +574,7 @@ table.beatpass-table td.actions {
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.next,
@@ -570,7 +591,7 @@ table.beatpass-table td.actions {
     background: #e9ecef;
     border-color: #ced4da;
     transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .dataTables_info {
@@ -625,7 +646,7 @@ table.beatpass-table td.actions {
 
 .dataTables_filter input:focus {
     border-color: #86b7fe;
-    box-shadow: 0 0 0 0.25rem rgba(13,110,253,0.25);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
     outline: 0;
 }
 
@@ -642,7 +663,7 @@ table.beatpass-table td.actions {
     background: #e9ecef !important;
     color: var(--beatpass-blue) !important;
     transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
@@ -650,7 +671,7 @@ table.beatpass-table td.actions {
     background: var(--beatpass-blue) !important;
     color: white !important;
     border: none;
-    box-shadow: 0 2px 4px rgba(26,61,124,0.2);
+    box-shadow: 0 2px 4px rgba(26, 61, 124, 0.2);
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.next,
@@ -667,7 +688,7 @@ table.beatpass-table td.actions {
     background: #e9ecef !important;
     border-color: #ced4da;
     transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
@@ -687,11 +708,11 @@ table.beatpass-table td.actions {
     .dataTables_filter input {
         width: 180px;
     }
-    
+
     .dataTables_length select {
         min-width: 60px;
     }
-    
+
     .dataTables_wrapper .dataTables_paginate .paginate_button {
         padding: 4px 8px;
     }
@@ -712,32 +733,90 @@ body.home-page {
     justify-content: space-between;
     align-items: center;
 }
+
 .public-navbar .logo {
     font-size: 1.5rem;
     font-weight: bold;
     color: #F9B233;
     text-decoration: none;
 }
-.public-navbar ul { list-style: none; display: flex; gap: 1.5rem; margin: 0; padding: 0; }
-.public-navbar ul li a { color: white; text-decoration: none; font-weight: 500; }
-.btn-tickets { background-color: #F9B233; color: #1A3D7C; padding: 0.5rem 1rem; border-radius: 6px; font-weight: bold; }
 
-.hero { 
+.public-navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.public-navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.btn-tickets {
+    background-color: #F9B233;
+    color: #1A3D7C;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.hero {
     background: #2c3e50;
 }
-.hero::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26,61,124,0.7); }
-.hero-content { position: relative; z-index: 1; }
-.hero h1 { font-size: 3rem; margin-bottom: 1rem; }
-.hero p { font-size: 1.25rem; margin-bottom: 2rem; }
-.search-bar { display: inline-flex; background: white; border-radius: 50px; padding: 0.5rem 1rem; align-items: center; max-width: 500px; margin: 0 auto; }
-.search-bar input { border: none; outline: none; padding: 0.5rem; flex: 1; font-size: 1rem; }
-.search-bar button { 
-    background: #F9B233; 
-    border: none; 
-    padding: 0.5rem 1rem; 
-    border-radius: 20px; 
-    cursor: pointer; 
-    font-weight: bold; 
+
+.hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(26, 61, 124, 0.7);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.search-bar {
+    display: inline-flex;
+    background: white;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+    flex: 1;
+    font-size: 1rem;
+}
+
+.search-bar button {
+    background: #F9B233;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
     color: #1A3D7C;
     transition: all 0.3s ease;
 }
@@ -745,21 +824,124 @@ body.home-page {
 .search-bar button:hover {
     background: #fac265;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(249,178,51,0.2);
+    box-shadow: 0 4px 8px rgba(249, 178, 51, 0.2);
 }
 
-.public-events { max-width: 1200px; margin: 3rem auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; padding: 0 1rem; }
-.public-card { background: white; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); overflow: hidden; text-align: center; }
-.public-card img { width: 100%; height: 180px; object-fit: cover; }
-.public-card h3 { margin: 1rem 0 0.5rem; color: #1A3D7C; }
-.public-card p { padding: 0 1rem; font-size: 0.95rem; margin-bottom: 1rem; }
-.public-card a { display: inline-block; background: #F9B233; color: #1A3D7C; padding: 0.5rem 1rem; border-radius: 8px; margin-bottom: 1rem; text-decoration: none; font-weight: bold; }
+.public-events {
+    max-width: 1200px;
+    margin: 3rem auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0 1rem;
+}
 
-footer.public-footer { background: #1A3D7C; color: white; padding: 1.5rem; text-align: center; margin-top: 3rem; }
+.public-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+}
+
+.public-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.public-card h3 {
+    margin: 1rem 0 0.5rem;
+    color: #1A3D7C;
+}
+
+.public-card p {
+    padding: 0 1rem;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.public-card a {
+    display: inline-block;
+    background: #F9B233;
+    color: #1A3D7C;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer.public-footer {
+    background: #1A3D7C;
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    margin-top: 3rem;
+}
+
+/* ===== Public auth (login/register) minimalist layout ===== */
+.auth-wrapper {
+    min-height: 100vh;
+    background-color: #E6F1FB;
+    display: flex;
+    padding: 2rem 1rem;
+}
+
+.auth-card {
+    max-width: 420px;
+    width: 100%;
+    border-radius: 14px;
+    margin: 0 auto;
+    box-shadow: 0 18px 40px rgba(15, 35, 68, 0.12);
+}
+
+.auth-logo {
+    height: 40px;
+    width: auto;
+}
+
+.text-beatpass-blue {
+    color: var(--beatpass-blue);
+}
+
+.btn-beatpass-primary-auth {
+    background-color: var(--beatpass-blue);
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 0.6rem 1.2rem;
+    border: none;
+}
+
+.btn-beatpass-primary-auth:hover {
+    background-color: #234b94;
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(26, 61, 124, 0.28);
+}
+
+.auth-link-small {
+    font-size: 0.8rem;
+    color: var(--beatpass-blue);
+    text-decoration: none;
+}
+
+.auth-link-small:hover {
+    text-decoration: underline;
+}
 
 /* ===== Moved from templates/dashboard/index.html.twig ===== */
-.example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-.example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+.example-wrapper {
+    margin: 1em auto;
+    max-width: 800px;
+    width: 95%;
+    font: 18px/1.5 sans-serif;
+}
+
+.example-wrapper code {
+    background: #F5F5F5;
+    padding: 2px 6px;
+}
 
 /* Mobile Styles */
 @media (max-width: 768px) {
@@ -780,4 +962,906 @@ footer.public-footer { background: #1A3D7C; color: white; padding: 1.5rem; text-
     body.admin .main-content {
         margin-left: 60px;
     }
+}
+
+/* ===== Minimal Dashboard helpers (Bootstrap + brand) ===== */
+:root {
+    --beatpass-blue: #1A3D7C;
+    --beatpass-yellow: #F9B233;
+}
+
+.admin-topbar {
+    padding: 0.5rem;
+}
+
+.admin-topbar .title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--beatpass-blue);
+}
+
+.admin-topbar .subtitle {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Header (admin) - topbar style matching provided design */
+.admin-topbar {
+    background: #ffffff;
+    border-bottom: 1px solid rgba(16, 36, 63, 0.04);
+    box-shadow: 0 4px 14px rgba(16, 36, 63, 0.04);
+    align-items: center;
+}
+
+.admin-search {
+    border-radius: 28px;
+    background: #f6f7f9;
+    border: none;
+    padding-left: 1rem;
+    height: 36px;
+}
+
+.admin-search:focus {
+    box-shadow: 0 0 0 0.15rem rgba(26, 61, 124, 0.06);
+}
+
+.header-icon {
+    width: 40px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.header-icon .fa-bell,
+.header-icon .fa-envelope {
+    color: #6c757d;
+}
+
+.notif-dot {
+    position: absolute;
+    right: 8px;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    background: #f03e3e;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #fff;
+}
+
+.header-avatar {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+}
+
+.header-username {
+    font-weight: 600;
+    color: #233248;
+}
+
+/* On small screens hide username to match compact header */
+@media (max-width: 576px) {
+    .header-username {
+        display: none !important;
+    }
+}
+
+.stat-card {
+    border-radius: 0.65rem;
+}
+
+.stat-value {
+    color: var(--beatpass-blue);
+}
+
+.stat-visual {
+    width: 72px;
+    height: 48px;
+}
+
+.chart-container {
+    min-height: 240px;
+}
+
+.recent-list .list-group-item {
+    border: none;
+}
+
+.btn-beatpass-primary {
+    background: var(--beatpass-blue);
+    color: #fff;
+    border: none;
+}
+
+.btn-beatpass-primary:hover {
+    background: #16325a;
+}
+
+/* scrollable dropdowns (small helper) */
+.dropdown-menu {
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+/* ensure cards don't overflow */
+.stat-card,
+.chart-card,
+.recent-list {
+    overflow: hidden;
+}
+
+/* Responsive tweaks */
+@media (max-width: 992px) {
+    .chart-container {
+        min-height: 200px;
+    }
+}
+
+/* End helpers */
+
+/* ===== Light (white) Dashboard Theme using BeatPass colors ===== */
+body.admin .main-content {
+    background: #ffffff;
+    /* white admin background */
+    color: #243b57;
+    /* primary text color */
+}
+
+/* Card light styling */
+.hero-card,
+.small-widget,
+.mini-graph-card,
+.best-selling-card,
+.latest-sales-card,
+.chart-card,
+.recent-list {
+    background: #ffffff;
+    border: 1px solid rgba(33, 37, 41, 0.06);
+    color: #243b57;
+    box-shadow: 0 6px 18px rgba(58, 59, 69, 0.06);
+}
+
+.hero-card .h2 {
+    color: var(--beatpass-blue);
+}
+
+.hero-card p {
+    color: rgba(36, 59, 87, 0.7);
+}
+
+.small-widget {
+    border-radius: 8px;
+}
+
+.small-widget-body .fw-bold {
+    color: var(--beatpass-blue);
+}
+
+.mini-graph-card,
+.best-selling-card {
+    border-radius: 8px;
+}
+
+.recent-list .list-group-item {
+    background: transparent;
+    border-bottom: 1px solid rgba(33, 37, 41, 0.03);
+}
+
+/* Accent gradients for visuals (use brand colors) */
+.bar-visual {
+    box-shadow: inset 0 -8px 20px rgba(26, 61, 124, 0.06);
+}
+
+/* Chart card background slightly different for subtle contrast */
+.chart-card {
+    background: linear-gradient(180deg, #ffffff, #fafbfd);
+}
+
+/* Sales Revenue dark card (BeatPass design) */
+.sales-card-dark {
+    background: linear-gradient(180deg, #2c3440 0%, #1A3D7C 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 10px 30px rgba(16, 36, 63, 0.22);
+}
+
+.sales-card-dark .revenue-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sales-card-dark .revenue-title {
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+.sales-card-dark .revenue-controls {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.sales-card-dark .revenue-controls .form-select {
+    background: transparent;
+    color: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    min-width: 90px;
+}
+
+.revenue-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+    align-items: center;
+}
+
+.revenue-tab {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.78);
+    background: transparent;
+    border: none;
+    position: relative;
+    cursor: pointer;
+}
+
+.revenue-tab::after {
+    content: '';
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    bottom: -8px;
+    background: transparent;
+    border-radius: 3px;
+    transition: background 220ms ease;
+}
+
+.revenue-tab.active {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.revenue-tab.active::after {
+    background: var(--beatpass-yellow);
+}
+
+.revenue-number {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--beatpass-yellow);
+    margin-top: 0.6rem;
+}
+
+.sales-card-dark .chart-area {
+    height: 340px;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 0.6rem;
+}
+
+.sales-card-dark canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+.sales-card-dark .chart-legend {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.9rem;
+}
+
+/* subtle axis label color for dark chart */
+.chart-axis-label {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+/* vertical indicator styling (drawn on canvas) - DOM fallback */
+.sales-card-dark .indicator-line {
+    display: none;
+}
+
+
+/* Adjust text colors */
+.stat-label,
+.small,
+.text-muted {
+    color: rgba(36, 59, 87, 0.55) !important;
+}
+
+.stat-value,
+.fw-bold {
+    color: #10243f !important;
+}
+
+/* Progress bar: use gradient of brand colors */
+.progress {
+    background: rgba(16, 36, 63, 0.03);
+}
+
+.progress-bar {
+    box-shadow: none;
+}
+
+/* ensure responsiveness: stack hero right widgets on small screens */
+@media (max-width: 992px) {
+    .hero-card .d-flex.flex-column.flex-lg-row {
+        flex-direction: column !important;
+    }
+
+    .col-lg-8,
+    .col-lg-4 {
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
+}
+
+/* dropdown menu color (light) */
+.dropdown-menu {
+    background: #fff;
+    color: #243b57;
+}
+
+/* End light dashboard theme */
+
+/* ===== Dark mode overrides for admin ===== */
+body.admin.dark-mode {
+    background-color: #0b1220;
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .main-content {
+    background: radial-gradient(circle at top, #111827 0%, #020617 55%, #000 100%);
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .sidebar {
+    background: linear-gradient(180deg, #020617 0%, #020617 40%, #111827 100%);
+    border-right-color: rgba(148, 163, 184, 0.25);
+}
+
+body.admin.dark-mode .sidebar .brand {
+    background: linear-gradient(135deg, #1d283a, #020617);
+    border-bottom-color: rgba(148, 163, 184, 0.3);
+}
+
+body.admin.dark-mode .sidebar .nav-link {
+    color: #e5e7eb !important;
+}
+
+body.admin.dark-mode .sidebar .nav-link:hover {
+    background-color: rgba(148, 163, 184, 0.1);
+}
+
+body.admin.dark-mode .sidebar .nav-link.active {
+    background: linear-gradient(90deg, var(--beatpass-yellow), #facc6b);
+    color: #111827 !important;
+}
+
+body.admin.dark-mode .admin-topbar {
+    background: rgba(15, 23, 42, 0.96);
+    border-bottom-color: rgba(30, 64, 175, 0.5);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.65);
+}
+
+body.admin.dark-mode .header-icon {
+    background-color: rgba(15, 23, 42, 0.9) !important;
+    color: #e5e7eb !important;
+}
+
+body.admin.dark-mode .header-username {
+    color: #e5e7eb !important;
+}
+
+body.admin.dark-mode .card,
+body.admin.dark-mode .hero-card,
+body.admin.dark-mode .chart-card,
+body.admin.dark-mode .small-widget,
+body.admin.dark-mode .mini-graph-card,
+body.admin.dark-mode .best-selling-card,
+body.admin.dark-mode .latest-sales-card {
+    background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.45), rgba(15, 23, 42, 1));
+    border-color: rgba(15, 23, 42, 0.8);
+    color: #e5e7eb;
+    box-shadow: 0 18px 55px rgba(15, 23, 42, 0.9);
+}
+
+body.admin.dark-mode .table {
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .table thead th {
+    background-color: #020617 !important;
+    border-bottom-color: rgba(55, 65, 81, 0.9);
+}
+
+body.admin.dark-mode table.beatpass-table tbody tr:nth-child(even) td {
+    background: rgba(15, 23, 42, 0.9);
+}
+
+body.admin.dark-mode table.beatpass-table tbody tr:hover td {
+    background: rgba(30, 64, 175, 0.45);
+}
+
+body.admin.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
+    background: rgba(15, 23, 42, 0.9);
+    color: #e5e7eb !important;
+}
+
+body.admin.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--beatpass-yellow) !important;
+    color: #111827 !important;
+}
+
+body.admin.dark-mode .dropdown-menu {
+    background: #020617;
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .dropdown-item {
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .dropdown-item:hover {
+    background: rgba(37, 99, 235, 0.45);
+}
+
+body.admin.dark-mode .btn-beatpass-primary {
+    background-color: var(--beatpass-yellow);
+    color: #111827;
+}
+
+body.admin.dark-mode .metric-card {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(15, 23, 42, 0.95));
+    border-color: rgba(15, 23, 42, 0.9);
+}
+
+body.admin.dark-mode .metric-number {
+    color: #f9fafb;
+}
+
+body.admin.dark-mode .metric-label {
+    color: rgba(209, 213, 219, 0.85);
+}
+
+body.admin.dark-mode .revenue-number {
+    color: var(--beatpass-yellow);
+}
+
+body.admin.dark-mode .list-group-item {
+    background-color: transparent;
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .alert {
+    background-color: rgba(15, 23, 42, 0.95);
+    color: #e5e7eb;
+}
+
+/* ===== Card accent colors and icon styles ===== */
+.card-accent-blue {
+    border-left: 6px solid var(--beatpass-blue);
+}
+
+.card-accent-yellow {
+    border-left: 6px solid var(--beatpass-yellow);
+}
+
+.card-accent-red {
+    border-left: 6px solid var(--beatpass-red);
+}
+
+.stat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+}
+
+.stat-icon svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+.stat-visual {
+    width: 72px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-visual .stat-icon {
+    width: 56px;
+    height: 40px;
+    border-radius: 6px;
+}
+
+/* example colored icon backgrounds using gradients */
+.bg-accent-blue {
+    background: linear-gradient(135deg, rgba(26, 61, 124, 0.12), rgba(26, 61, 124, 0.04));
+}
+
+.bg-accent-yellow {
+    background: linear-gradient(135deg, rgba(249, 178, 51, 0.12), rgba(249, 178, 51, 0.04));
+}
+
+.bg-accent-red {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.12), rgba(220, 53, 69, 0.04));
+}
+
+/* small widget icon */
+.widget-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.widget-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* make sure icon contrast is good on light background */
+.stat-icon .fill-primary {
+    fill: var(--beatpass-blue);
+}
+
+.stat-icon .fill-yellow {
+    fill: var(--beatpass-yellow);
+}
+
+.stat-icon .fill-red {
+    fill: var(--beatpass-red);
+}
+
+/* End card accent/Icon styles */
+
+/* ===== Visual polish: richer colors, subtle gradients, spacing, badges ===== */
+.hero-card {
+    padding: 1.25rem;
+    border-radius: 12px;
+}
+
+.hero-card .h2 {
+    font-size: 2.25rem;
+}
+
+.hero-card p {
+    margin-bottom: .75rem;
+}
+
+/* make small widgets slightly elevated and lighter */
+.small-widget,
+.mini-graph-card,
+.best-selling-card,
+.latest-sales-card {
+    border-radius: 10px;
+    padding: .6rem;
+}
+
+/* soft card background to separate from page white */
+.card {
+    background: #ffffff;
+}
+
+/* Add a subtle header stripe for hero card using gradient */
+.hero-card {
+    position: relative;
+    overflow: visible;
+}
+
+.hero-card:before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 16px;
+    right: 16px;
+    height: 6px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--beatpass-blue), var(--beatpass-yellow));
+    opacity: .95;
+}
+
+/* Amount badge on recent list */
+.amount-badge {
+    background: linear-gradient(90deg, var(--beatpass-blue), rgba(26, 61, 124, 0.85));
+    color: #fff;
+    padding: .35rem .6rem;
+    border-radius: 999px;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(26, 61, 124, 0.06);
+}
+
+/* Qty pill */
+.qty-pill {
+    background: rgba(16, 36, 63, 0.06);
+    color: var(--beatpass-blue);
+    padding: .25rem .45rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: .8rem;
+}
+
+/* Hover reveal & interactive feel */
+.list-group-item:hover {
+    background: rgba(16, 36, 63, 0.02);
+}
+
+/* Improve chart fill: gentle yellow tint under blue line */
+.chart-gradient-stop-top {
+    stop-color: var(--beatpass-blue);
+    stop-opacity: 0.9;
+}
+
+.chart-gradient-stop-bottom {
+    stop-color: var(--beatpass-yellow);
+    stop-opacity: 0.12;
+}
+
+/* Slightly stronger shadows */
+.card {
+    box-shadow: 0 8px 28px rgba(16, 36, 63, 0.04);
+}
+
+/* Tighter spacing for dashboard */
+.admin-topbar {
+    padding: .5rem 0;
+}
+
+.dashboard-header .title {
+    font-size: 1.125rem;
+}
+
+@media (max-width: 768px) {
+    .hero-card .h2 {
+        font-size: 1.6rem;
+    }
+}
+
+/* End visual polish */
+
+/* ===== Top Metrics Cards ===== */
+.top-metrics-row {
+    margin-bottom: 1rem;
+}
+
+.metric-card {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid rgba(33, 37, 41, 0.04);
+    box-shadow: 0 6px 18px rgba(16, 36, 63, 0.04);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+}
+
+.metric-body {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+}
+
+.metric-left {
+    width: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.metric-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.metric-label {
+    font-size: 0.85rem;
+    color: rgba(108, 117, 125, 0.85);
+}
+
+.metric-number {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #243b57;
+}
+
+/* Circular progress (SVG based) */
+.progress-circle {
+    width: 72px;
+    height: 72px;
+    display: block;
+}
+
+.progress-circle svg {
+    width: 72px;
+    height: 72px;
+    transform: rotate(-90deg);
+}
+
+.progress-circle .ring-bg {
+    stroke: #eef4f6;
+    stroke-width: 8;
+    fill: none;
+}
+
+.progress-circle .ring {
+    stroke-width: 8;
+    stroke-linecap: round;
+    fill: none;
+    transition: stroke-dashoffset 0.8s ease;
+}
+
+.progress-inner {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    font-weight: 700;
+    color: #243b57;
+}
+
+/* Color modifiers */
+.metric-pink .progress-circle .ring {
+    stroke: #E91E63;
+}
+
+.metric-orange .progress-circle .ring {
+    stroke: #FF9800;
+}
+
+.metric-purple .progress-circle .ring {
+    stroke: #9C27B0;
+}
+
+.metric-teal .progress-circle .ring {
+    stroke: #00BCD4;
+}
+
+/* Small chart placeholders */
+.mini-chart {
+    width: 100%;
+    height: 48px;
+}
+
+@media (max-width: 768px) {
+    .metric-card {
+        height: 110px;
+    }
+
+    .metric-left {
+        width: 72px;
+    }
+}
+
+/* End Top Metrics Cards */
+
+/* Dark dashboard theme removed: using the Light theme above by default. */
+
+/* ===== Admin dashboard layout helpers (used by admin/index.html.twig) ===== */
+.admin-dashboard-card {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+}
+
+.admin-dashboard-chart {
+    height: 240px;
+}
+
+.admin-dashboard-chart-sm {
+    height: 180px;
+}
+
+.sales-filter-summary {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+.sales-filter-select {
+    background: #f8f9fa;
+    color: #15305A;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.sales-filter-select.event-select {
+    width: 140px;
+}
+
+.sales-filter-select.year-select {
+    width: 90px;
+}
+
+.sales-filter-toolbar {
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+.sales-filter-date {
+    font-size: 0.8rem;
+    max-width: 140px;
+}
+
+.sales-filter-date-label {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.revenue-number-main {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #15305A;
+    margin-bottom: 16px;
+}
+
+.metric-kpi-sub {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.quick-card-week {
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(32, 201, 151, 0.14), rgba(21, 48, 90, 0.05));
+}
+
+.quick-card-conversion {
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(249, 178, 51, 0.16), rgba(248, 249, 250, 0.9));
+}
+
+.quick-card-best-selling {
+    border-radius: 14px;
+    background: radial-gradient(circle at top left, rgba(26, 61, 124, 0.22), rgba(246, 249, 252, 0.96));
+}
+
+.quick-card-title {
+    color: #15305A;
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+}
+
+.quick-card-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.quick-card-caption {
+    color: #6c757d;
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+.best-selling-wrapper {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+}
+
+.best-selling-subtitle {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+.best-selling-table-wrapper {
+    max-height: 380px;
+    overflow-y: auto;
 }

@@ -1,0 +1,336 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Transactions Management
+{% endblock %}
+
+{% block body %}
+	<div class="content-wrapper">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1 class="h3 mb-0 d-flex align-items-center" style="color: #1A3D7C; font-weight: 700; gap: 12px;">
+				<i class="fas fa-exchange-alt me-2;" style="color: #F9B233;"></i>
+				<span>Transactions</span>
+			</h1>
+
+			<div class="d-flex gap-2">
+				<a href="{{ path('transaction_new') }}" class="btn btn-sm" style="background-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
+					<i class="fas fa-plus-circle me-2"></i>Create
+				</a>
+			</div>
+		</div>
+
+
+		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
+			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+				<h3 class="card-title mb-0" style="font-weight: 600;">
+					<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Transactions
+					<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ transactions|default([])|length }}</span>
+				</h3>
+			</div>
+			<div class="card-body p-0">
+				<div class="table-responsive">
+					<table id="transactionTable" class="table table-sm small table-hover beatpass-table mb-0 display responsive nowrap" style="width:100%; table-layout: fixed;">
+						<thead style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+							<tr>
+								<th class="col-id text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:8%">ID</th>
+								<th class="col-buyer text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:18%">Buyer</th>
+								<th class="col-event text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:20%">Event</th>
+								<th class="col-amount text-end text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:10%">Amount</th>
+								<th class="col-status text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:10%">Status</th>
+								<th class="col-method text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:10%">Method</th>
+								<th class="col-created text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:14%">Created</th>
+								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center" style="width:10%">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for tx in transactions|default([]) %}
+								<tr data-id="{{ tx.id }}" data-token="{{ csrf_token('transaction_action_' ~ tx.id) }}">
+									<td class="col-id align-middle py-1 px-2" style="width:8%">{{ tx.id }}</td>
+									<td class="col-buyer align-middle text-truncate py-1 px-2" style="max-width:22ch">{{ tx.user ? (tx.user.getFullName() ?? tx.user.email) : '—' }}<br><small class="text-muted">{{ tx.user ? tx.user.email : '' }}</small>
+									</td>
+									<td class="col-event align-middle text-truncate py-1 px-2" style="max-width:30ch">
+										<strong class="text-nowrap" style="color:#1A3D7C;">{{ tx.event ? tx.event.eventName : '—' }}</strong>
+									</td>
+									<td class="col-amount text-end align-middle text-truncate py-1 px-2" data-order="{{ tx.totalAmount }}" style="text-align: right; width:10%">₱{{ tx.totalAmount|number_format(2, '.', ',') }}</td>
+									<td class="col-status align-middle text-center py-1 px-2">
+										{% set status = tx.paymentStatus %}
+										<span class="small fw-semibold
+											{% if status == 'paid' %} text-success
+											{% elseif status == 'pending' %} text-warning
+											{% elseif status == 'refunded' %} text-secondary
+											{% else %} text-danger
+											{% endif %}">
+											{{ status|upper }}
+										</span>
+									</td>
+									<td class="col-method align-middle text-truncate py-1 px-2">{{ tx.paymentMethod ?? '—' }}</td>
+									<td class="col-created text-end align-middle text-truncate py-1 px-2" data-order="{{ tx.createdAt ? tx.createdAt.format('Y-m-d H:i') : '' }}" style="text-align: right">{{ tx.createdAt ? tx.createdAt.format('Y-m-d H:i') : '—' }}</td>
+									<td class="actions text-center align-middle">
+										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
+											<button class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded view-transaction-btn" data-id="{{ tx.id }}" data-csrf="{{ csrf_token('transaction_action_' ~ tx.id) }}" title="View details" style="width:32px;height:32px;font-size:12px;">
+												<i class="fas fa-eye"></i>
+											</button>
+											{% if isAdmin or (currentUserId and tx.createdBy and tx.createdBy.id == currentUserId) %}
+												<button class="btn btn-sm btn-beatpass-delete p-1 d-inline-flex align-items-center justify-content-center rounded delete-transaction-btn" data-id="{{ tx.id }}" data-token="{{ csrf_token('transaction_delete_' ~ tx.id) }}" data-url="{{ path('admin_transaction_delete', {'id': tx.id}) }}" title="Delete" style="width:32px;height:32px;font-size:12px;">
+													<i class="fas fa-trash"></i>
+												</button>
+											{% endif %}
+										</div>
+									</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="8" class="text-center py-5" style="background-color: #ffffff;">
+										<div class="text-muted py-5">
+											<div style="width: 120px; height: 120px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+												<i class="fas fa-exchange-alt fa-3x" style="color: #1A3D7C; opacity: 0.6;"></i>
+											</div>
+											<h5 style="color: #1A3D7C; font-weight: 600; margin-bottom: 12px;">No transactions yet</h5>
+											<p style="color: #6c757d; font-size: 1.05em; margin-bottom: 24px;">There are no transactions to display. Use the create button to add one, or check filters.</p>
+											<a href="{{ path('transaction_new') }}" class="btn btn-sm" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
+												<i class="fas fa-plus me-2"></i>Create First Transaction
+											</a>
+										</div>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<!-- Details Modal -->
+		<div class="modal fade" id="transactionDetailsModal" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-xl modal-dialog-centered">
+				<div class="modal-content border-0 shadow-lg">
+					<div class="modal-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white;">
+						<h5 class="modal-title">Transaction details</h5>
+						<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-4" id="transactionDetailsBody">
+						<div class="text-center py-5">
+							<div class="spinner-border text-secondary" role="status">
+								<span class="visually-hidden">Loading...</span>
+							</div>
+							<p class="mt-2 text-muted">Loading details…</p>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<div id="transactionActionsArea"></div>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# Include delete modal partial #}
+		{{ include('transaction/_delete_modal.html.twig') }}
+
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		(function () { // init DataTable
+$(document).ready(function () { // Only initialize DataTable when there are real data rows (not the empty colspan fallback row)
+var tableBody = $('#transactionTable tbody');
+var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
+
+if (hasDataRows) {
+$('#transactionTable').DataTable({
+responsive: true,
+dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+pageLength: 10,
+lengthMenu: [
+[
+10, 25, 50, -1
+],
+[
+10, 25, 50, 'All'
+]
+],
+language: {
+search: '',
+searchPlaceholder: 'Search transactions...'
+},
+columnDefs: [
+{
+orderable: false,
+targets: -1
+}, {
+searchable: false,
+targets: -1
+}, {
+type: 'num',
+targets: 3
+}, {
+type: 'date',
+targets: 6
+}
+],
+order: [
+[6, 'desc']
+]
+});
+}
+
+// click handler for details (delegated on document to survive DataTables DOM changes)
+$(document).on('click', '.view-transaction-btn', function (e) {
+var id = $(this).data('id');
+var csrf = $(this).data('csrf');
+var modal = $('#transactionDetailsModal');
+$('#transactionDetailsBody').html('<div class="text-center py-5"><div class="spinner-border text-secondary" role="status"></div><p class="mt-2 text-muted">Loading details…</p></div>');
+modal.modal('show');
+
+$.ajax({
+url: '/admin/transaction/' + id + '/details',
+method: 'GET',
+dataType: 'json'
+}).done(function (resp) { // build markup
+var html = '';
+html += '<div class="row">';
+html += '<div class="col-md-6">';
+html += '<h5>Buyer</h5>';
+html += '<p>' + (
+resp.user.name || resp.user.email
+) + '<br><small>' + resp.user.email + '</small></p>';
+html += '<h5>Event</h5>';
+html += '<p>' + (
+resp.event.name || '—'
+) + '<br><small>' + (
+resp.event.date || ''
+) + '</small></p>';
+html += '</div>';
+
+html += '<div class="col-md-6">';
+html += '<h5>Payment</h5>';
+html += '<p><strong>Amount:</strong> ₱' + resp.payment.amount + '</p>';
+html += '<p><strong>Status:</strong> ' + resp.payment.status + '</p>';
+html += '<p><strong>Method:</strong> ' + (
+resp.payment.method || '—'
+) + '</p>';
+html += '<p><strong>Reference:</strong> ' + (
+resp.payment.reference || '—'
+) + '</p>';
+html += '</div>';
+
+html += '<div class="col-12 mt-3">';
+html += '<h5>Tickets</h5>';
+html += '<div class="table-responsive"><table class="table table-sm"><thead><tr><th>Type</th><th>Qty</th><th>Price</th><th>Code</th></tr></thead><tbody>';
+resp.tickets.forEach(function (t) {
+html += '<tr><td>' + t.ticketType + '</td><td>' + t.quantity + '</td><td>₱' + t.price + '</td><td>' + (
+t.code || ''
+) + '</td></tr>';
+});
+html += '</tbody></table></div>';
+html += '</div>';
+
+// QR Codes section
+if (resp.ticketPurchases && resp.ticketPurchases.length > 0) {
+html += '<div class="col-12 mt-3">';
+html += '<h5><i class="fas fa-qrcode me-2"></i>E-Tickets & QR Codes</h5>';
+html += '<div class="row g-3">';
+resp.ticketPurchases.forEach(function (purchase) {
+html += '<div class="col-md-4 col-lg-3">';
+html += '<div class="p-3 border rounded" style="background:#f8f9fa; height: 100%;">';
+html += '<div class="mb-2 fw-semibold" style="color:#1A3D7C;">' + (
+purchase.ticketType || 'Ticket'
+) + '</div>';
+html += '<div class="mb-2 small text-muted">Code: ' + (
+purchase.uniqueCode || ''
+) + '</div>';
+if (purchase.qrCode) {
+var qrSrc = purchase.qrCode.startsWith('data:') ? purchase.qrCode : 'data:image/png;base64,' + purchase.qrCode;
+html += '<div class="text-center"><img src="' + qrSrc + '" alt="QR Code" style="width: 150px;"></div>';
+} else {
+html += '<div class="text-muted small">QR not available</div>';
+} html += '</div>';
+html += '</div>';
+});
+html += '</div>';
+html += '</div>';
+}
+html += '</div>';
+
+$('#transactionDetailsBody').html(html);
+
+// actions (add data attributes so delegated handlers can pick them up)
+var actions = '';
+if (resp.payment.status !== 'paid') {
+actions += '<button id="btnMarkPaid" class="btn btn-success me-2" data-id="' + id + '" data-csrf="' + csrf + '">Mark as Paid</button>';
+}
+if (resp.payment.status !== 'refunded') {
+actions += '<button id="btnRefund" class="btn btn-warning text-dark" data-id="' + id + '" data-csrf="' + csrf + '">Mark Refunded</button>';
+}
+
+$('#transactionActionsArea').html(actions);
+
+}).fail(function (jqXHR, textStatus, errorThrown) {
+console.log('AJAX Error:', jqXHR.status, textStatus, errorThrown);
+if (jqXHR.status === 401 || jqXHR.status === 403) {
+$('#transactionDetailsBody').html('<div class="text-center py-5 text-danger">Access denied. Please ensure you are logged in as an admin.</div>');
+} else {
+$('#transactionDetailsBody').html('<div class="text-center py-5 text-danger">Failed to load details (Error: ' + jqXHR.status + ')</div>');
+}
+$('#transactionActionsArea').html('');
+});
+});
+
+// click handler for delete - open modal and set form action/token
+$(document).on('click', '.delete-transaction-btn', function (e) {
+e.preventDefault();
+var btn = $(this);
+var url = btn.data('url');
+var token = btn.data('token');
+// set form action and token
+$('#transactionDeleteForm').attr('action', url);
+$('#transactionDeleteToken').val(token);
+// show modal
+var modal = $('#transactionDeleteModal');
+if (modal.length) {
+modal.modal('show');
+}
+});
+});
+// delegated handlers for modal action buttons so they work even when modal content is re-rendered
+$(document).on('click', '#btnMarkPaid', function () {
+var btn = $(this);
+var id = btn.data('id');
+var csrf = btn.data('csrf');
+$.post('/admin/transaction/' + id + '/mark-paid', {
+_token: csrf
+}, function (data) {
+if (data.ok) {
+window.location.reload();
+} else {
+alert(data.message || 'Error');
+}
+}, 'json').fail(function () {
+alert('Request failed');
+});
+});
+
+$(document).on('click', '#btnRefund', function () {
+var btn = $(this);
+var id = btn.data('id');
+var csrf = btn.data('csrf');
+var reason = prompt('Refund reason (optional)');
+$.post('/admin/transaction/' + id + '/refund', {
+_token: csrf,
+reason: reason
+}, function (data) {
+if (data.ok) {
+window.location.reload();
+} else {
+alert(data.message || 'Error');
+}
+}, 'json').fail(function () {
+alert('Request failed');
+});
+});
+
+})();
+	</script>
+{% endblock %}

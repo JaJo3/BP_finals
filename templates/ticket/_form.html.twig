@@ -1,5 +1,12 @@
 {{ form_start(form, {'attr': {'class': 'p-4'}}) }}
 
+{# Render global form errors so Turbo 422 responses show validation messages #}
+{% if form.vars.errors|length > 0 %}
+    <div class="alert alert-danger">
+        {{ form_errors(form) }}
+    </div>
+{% endif %}
+
 <!-- Combined Ticket Card: Reference + Details -->
 <div class="card shadow-sm mb-4 border-0">
     <div class="card-header text-white d-flex align-items-center" style="background-color: #1A3D7C;">
@@ -90,6 +97,7 @@
                             'style': 'border: 2px solid #e9ecef; border-radius: 8px; padding: 12px;'
                         }
                     }) }}
+                    {{ form_errors(form.event) }}
                 </div>
             </div>
 
@@ -108,6 +116,7 @@
                             'style': 'border: 2px solid #e9ecef; border-radius: 8px; padding: 12px;'
                         }
                     }) }}
+                    {{ form_errors(form.ticketType) }}
                 </div>
             </div>
 
@@ -128,6 +137,7 @@
                                 'style': 'border: 2px solid #e9ecef; border-radius: 8px; padding: 12px;'
                             }
                         }) }}
+                        {{ form_errors(form.price) }}
                     </div>
                 </div>
             </div>
@@ -147,6 +157,7 @@
                             'style': 'border: 2px solid #e9ecef; border-radius: 8px; padding: 12px;'
                         }
                     }) }}
+                    {{ form_errors(form.quantity) }}
                 </div>
             </div>
 
@@ -170,6 +181,7 @@
                             'Cancelled': {'style': 'background-color: #dc3545; color: white; font-weight: 500;'}
                         }
                     }) }}
+                    {{ form_errors(form.status) }}
                 </div>
             </div>
         </div>

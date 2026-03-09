@@ -1,0 +1,22 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Create New User{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                {# Large header like the event create view #}
+                <div class="card mb-4 shadow-sm" style="border-radius:12px; overflow:hidden; border:1px solid #e9ecef;">
+                    <div class="card-header d-flex align-items-center" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; padding: 18px 24px;">
+                        <i class="fas fa-plus-circle fa-2x me-3" style="color:#F9B233"></i>
+                        <h3 class="m-0 fw-bold" style="color:white;">Create New User</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        {{ include('user/_form.html.twig', { title: 'Create New User', submit_label: 'Save User' }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

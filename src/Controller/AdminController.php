@@ -2,99 +2,58 @@
 
 namespace App\Controller;
 
-use App\Entity\Ticket;
-use App\Form\TicketType;
+use App\Repository\ActivityLogRepository;
+use App\Repository\EventRepository;
 use App\Repository\TicketRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin')]
+#[IsGranted('ROLE_ADMIN')]
 final class AdminController extends AbstractController
 {
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly EventRepository $eventRepository,
+        private readonly TicketRepository $ticketRepository,
+        private readonly ActivityLogRepository $activityLogRepository,
+    ) {
+    }
+
     #[Route('/', name: 'app_dashboard', methods: ['GET'])]
     public function index(): Response
     {
+        // Only admins allowed by attribute #[IsGranted('ROLE_ADMIN')]
+
+        $totalUsers = $this->userRepository->count([]);
+        $totalStaff = (int) $this->userRepository->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.roles LIKE :staffRole')
+            ->setParameter('staffRole', '%"ROLE_STAFF"%')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $totalEvents = $this->eventRepository->count([]);
+        $totalTickets = $this->ticketRepository->count([]);
+
+        // Recent activities (limit 10)
+        $recentActivities = $this->activityLogRepository->findBy([], ['createdAt' => 'DESC'], 10);
+
         $dashboardData = [
             'stats' => [
-                'totalEvents' => 3500,
-                'totalTickets' => 1200000,
-                'revenue' => 45000.00,
-                'activeOrganizers' => 250,
-                'totalUsers' => 800000
+                'totalUsers' => $totalUsers,
+                'totalStaff' => $totalStaff,
+                'totalEvents' => $totalEvents,
+                'totalTickets' => $totalTickets,
             ],
-            'chartData' => [
-                'ticketSales' => [
-                    'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                    'data' => [30, 45, 60, 75, 90, 100]
-                ],
-                'popularEvents' => [
-                    'concerts' => 60,
-                    'festivals' => 30,
-                    'other' => 10
-                ]
-            ]
+            'recentActivities' => $recentActivities,
         ];
-        
+
         return $this->render('admin/index.html.twig', [
-            'data' => $dashboardData
+            'data' => $dashboardData,
         ]);
-    }
-
-    #[Route('/tickets', name: 'admin_tickets')]
-    public function tickets(): Response
-    {
-        // Redirect to the ticket controller's index
-        return $this->redirectToRoute('app_ticket_index');
-    }
-
-    #[Route('/tickets/new', name: 'admin_ticket_new')]
-    public function newTicket(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $ticket = new Ticket();
-        $form = $this->createForm(TicketType::class, $ticket);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($ticket);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('admin_tickets');
-        }
-
-        return $this->render('admin/tickets/new.html.twig', [
-            'ticket' => $ticket,
-            'form' => $form
-        ]);
-    }
-
-    #[Route('/tickets/{id}/edit', name: 'admin_ticket_edit')]
-    public function editTicket(Request $request, Ticket $ticket, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(TicketType::class, $ticket);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-            return $this->redirectToRoute('admin_tickets');
-        }
-
-        return $this->render('admin/tickets/edit.html.twig', [
-            'ticket' => $ticket,
-            'form' => $form
-        ]);
-    }
-
-    #[Route('/tickets/{id}/delete', name: 'admin_ticket_delete', methods: ['POST'])]
-    public function deleteTicket(Request $request, Ticket $ticket, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$ticket->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($ticket);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('admin_tickets');
     }
 }

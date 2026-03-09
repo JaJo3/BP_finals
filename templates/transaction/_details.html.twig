@@ -1,0 +1,178 @@
+{# Partial for displaying transaction details in list/modal context #}
+
+<!-- Transaction Info Cards -->
+<div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden;">
+    <div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
+        <h3 class="card-title mb-0">
+            <i class="fas fa-info-circle me-2"></i>Transaction Information
+        </h3>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-borderless mb-0">
+                <tbody>
+                    <tr style="border-bottom: 1px solid #e9ecef;">
+                        <th style="width: 200px; padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Buyer</th>
+                        <td style="padding: 20px;">
+                            <div>
+                                <strong style="color: #1A3D7C; font-size: 1.1em;">{{ transaction.user.getFullName() ?? transaction.user.email }}</strong>
+                                <br><small class="text-muted">
+                                    <i class="fas fa-envelope me-1"></i>{{ transaction.user.email }}
+                                </small>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e9ecef;">
+                        <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Event</th>
+                        <td style="padding: 20px;">
+                            <div>
+                                <strong style="color: #1A3D7C; font-size: 1.1em;">{{ transaction.event.eventName }}</strong>
+                                <br><small class="text-muted">
+                                    <i class="fas fa-calendar-alt me-1"></i>{{ transaction.event.date ? transaction.event.date|date('Y-m-d H:i') : '—' }}
+                                </small>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e9ecef;">
+                        <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Total Amount</th>
+                        <td style="padding: 20px;">
+                            <strong style="color: #F9B233; font-size: 1.3em;">₱{{ transaction.totalAmount|number_format(2, '.', ',') }}</strong>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e9ecef;">
+                        <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Payment Status</th>
+                        <td style="padding: 20px;">
+                            <span class="badge {% if transaction.paymentStatus == 'paid' %}bg-success{% elseif transaction.paymentStatus == 'refunded' %}bg-secondary{% elseif transaction.paymentStatus == 'failed' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+                                {{ transaction.paymentStatus|upper }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e9ecef;">
+                        <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Payment Method</th>
+                        <td style="padding: 20px;">{{ transaction.paymentMethod ?: '—' }}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e9ecef;">
+                        <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Payment Reference</th>
+                        <td style="padding: 20px;">{{ transaction.paymentReference ?: '—' }}</td>
+                    </tr>
+                    <tr>
+                        <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Created</th>
+                        <td style="padding: 20px;">
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>{{ transaction.createdAt|date('Y-m-d H:i:s') }}
+                            </small>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Tickets Section -->
+<div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden;">
+    <div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
+        <h3 class="card-title mb-0">
+            <i class="fas fa-ticket-alt me-2"></i>Tickets Purchased
+        </h3>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-borderless mb-0">
+                <thead style="background-color: #f8f9fa;">
+                    <tr>
+                        <th style="padding: 15px; color: #1A3D7C; font-weight: 600;">Type</th>
+                        <th style="padding: 15px; color: #1A3D7C; font-weight: 600; text-align: right;">Quantity</th>
+                        <th style="padding: 15px; color: #1A3D7C; font-weight: 600; text-align: right;">Price</th>
+                        <th style="padding: 15px; color: #1A3D7C; font-weight: 600; text-align: right;">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in transaction.tickets %}
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px;">
+                                <span class="badge" style="background-color: #6c757d;">{{ t.ticketType }}</span>
+                            </td>
+                            <td style="padding: 15px; text-align: right;" class="text-muted">{{ t.quantity }}</td>
+                            <td style="padding: 15px; text-align: right;" class="text-muted">₱{{ t.price|number_format(2, '.', ',') }}</td>
+                            <td style="padding: 15px; text-align: right;">
+                                <strong style="color: #1A3D7C;">₱{{ (t.price * t.quantity)|number_format(2, '.', ',') }}</strong>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer bg-light" style="border-top: 1px solid #e9ecef;">
+        <div class="d-flex justify-content-end align-items-center gap-2">
+            <strong style="color: #1A3D7C; font-size: 1.1em;">Total:</strong>
+            <span style="color: #F9B233; font-size: 1.3em; font-weight: 700;">₱{{ transaction.totalAmount|number_format(2, '.', ',') }}</span>
+        </div>
+    </div>
+</div>
+
+{% if transaction.adminNotes %}
+<!-- Admin Notes Section -->
+<div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden;">
+    <div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
+        <h3 class="card-title mb-0">
+            <i class="fas fa-sticky-note me-2"></i>Admin Notes
+        </h3>
+    </div>
+    <div class="card-body" style="background-color: #f8f9fa;">
+        <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word; color: #495057;">{{ transaction.adminNotes }}</pre>
+    </div>
+</div>
+{% endif %}
+
+{% if transaction.ticketPurchases is defined and transaction.ticketPurchases|length > 0 %}
+<div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden;">
+    <div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
+        <h3 class="card-title mb-0">
+            <i class="fas fa-qrcode me-2"></i>E-Tickets & QR Codes
+        </h3>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            {% for purchase in transaction.ticketPurchases %}
+                <div class="col-md-4 col-lg-3">
+                    <div class="p-3 border rounded" style="background:#f8f9fa; height: 100%;">
+                        <div class="mb-2 fw-semibold" style="color:#1A3D7C;">
+                            {{ purchase.ticket.ticketType ?? 'Ticket' }}
+                        </div>
+                        <div class="mb-2 small text-muted">
+                            Code: {{ purchase.uniqueTicketCode }}
+                        </div>
+                        {% if purchase.qrCode %}
+                            <div class="text-center">
+                                {% if purchase.qrCode|slice(0,5) == 'data:' %}
+                                    <img src="{{ purchase.qrCode }}" alt="QR Code" style="width: 150px;">
+                                {% else %}
+                                    <img src="data:image/png;base64,{{ purchase.qrCode }}" alt="QR Code" style="width: 150px;">
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="text-muted small">QR not available</div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Footer Card -->
+<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden;">
+    <div class="card-footer bg-light" style="border-top: 1px solid #e9ecef;">
+        <div class="d-flex align-items-center gap-3">
+            <div class="text-muted small">
+                <i class="fas fa-key me-1"></i>Transaction ID: #{{ transaction.id }}
+            </div>
+            <div class="text-muted small">
+                <i class="fas fa-check-circle me-1"></i>{% if transaction.paidAt %}Paid {{ transaction.paidAt|date('Y-m-d H:i:s') }}{% else %}Not yet paid{% endif %}
+            </div>
+        </div>
+    </div>
+</div>

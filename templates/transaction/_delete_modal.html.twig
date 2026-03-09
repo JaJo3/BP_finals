@@ -1,0 +1,21 @@
+{# Reusable delete confirmation modal for transactions #}
+<div class="modal fade" id="transactionDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Delete Transaction</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Are you sure you want to permanently delete this transaction? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="transactionDeleteForm" method="POST" action="#" style="display:inline">
+                    <input type="hidden" name="_token" id="transactionDeleteToken" value="">
+                    <button type="submit" class="btn btn-sm btn-danger">Yes, delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

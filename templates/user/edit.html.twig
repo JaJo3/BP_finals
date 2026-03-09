@@ -1,0 +1,11 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+    <div class="content-wrapper">
+        {% set title = 'Edit User' %}
+        {% set submit_label = 'Update' %}
+        {{ include('user/_form.html.twig', { 'form': form, 'title': title, 'submit_label': submit_label }) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}User Management
+{% endblock %}
+
+{% block body %}
+	<div class="content-wrapper">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1 class="h3 mb-0" style="color: #1A3D7C; font-weight: 700;">
+				<i class="fas fa-user me-2" style="color: #F9B233;"></i>
+				User Management
+			</h1>
+			<a href="{{ path('app_user_new') }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
+				<i class="fas fa-plus-circle me-2"></i>New User
+			</a>
+		</div>
+
+		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
+			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+				<h3 class="card-title mb-0 d-flex align-items-center" style="font-weight: 600;">
+					<i class="fas fa-list me-2" style="color: #F9B233;"></i>
+					All Users
+					<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ users|length }}</span>
+				</h3>
+			</div>
+			<div class="card-body p-0">
+				<div class="table-responsive">
+					<table id="usersTable" class="table table-sm small table-hover beatpass-table mb-0 display responsive nowrap" style="width:100%; table-layout: fixed;">
+						<thead style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+							<tr>
+								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2">NAME</th>
+								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2">ROLE</th>
+								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2">EMAIL</th>
+								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2">DATE CREATED</th>
+								<th class="text-center text-nowrap small fw-bold text-uppercase py-1 px-2">ACTIONS</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for user in users %}
+								<tr>
+									<td class="align-middle py-1 px-2 fw-semibold" style="color: #15305A;">
+										{{ user.getFullName ? user.getFullName() : (user.firstName ~ ' ' ~ user.lastName) }}
+									</td>
+									<td class="align-middle py-1 px-2">
+										{% if 'ROLE_ADMIN' in user.roles %}
+											<div class="small text-muted fw-semibold">Admin</div>
+										{% elseif 'ROLE_STAFF' in user.roles %}
+											<div class="small text-muted fw-semibold">Staff</div>
+										{% else %}
+											<div class="small text-muted fw-semibold">User</div>
+										{% endif %}
+									</td>
+									<td class="align-middle py-1 px-2 text-truncate" style="max-width:28ch">{{ user.email|default('—') }}</td>
+									<td class="align-middle py-1 px-2">{{ user.createdAt ? user.createdAt|date('Y-m-d H:i') : '—' }}</td>
+									<td class="text-center align-middle py-1 px-2">
+										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
+											<a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded" title="View" style="width:32px;height:32px;font-size:12px;">
+												<i class="fas fa-eye"></i>
+											</a>
+											<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-beatpass-edit p-1 d-inline-flex align-items-center justify-content-center rounded" title="Edit" style="width:32px;height:32px;font-size:12px;">
+												<i class="fas fa-edit"></i>
+											</a>
+											{% include 'user/_delete_form.html.twig' with {'user': user} %}
+										</div>
+									</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="6" class="text-center py-5" style="background-color: #ffffff;">
+										<div class="text-muted py-5">
+											<h5 style="color: #1A3D7C; font-weight: 600; margin-bottom: 12px;">No users found</h5>
+											<p style="color: #6c757d;">Create a new user to get started.</p>
+											<a href="{{ path('app_user_new') }}" class="btn btn-sm" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
+												<i class="fas fa-plus me-2"></i>Create User
+											</a>
+										</div>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		(function ($) {
+$(document).ready(function () {
+$('#usersTable').DataTable({
+responsive: true,
+dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+pageLength: 10,
+lengthMenu: [
+[
+10, 25, 50, -1
+],
+[
+10, 25, 50, 'All'
+]
+],
+language: {
+search: '',
+searchPlaceholder: 'Search users...'
+},
+columnDefs: [
+{
+orderable: false,
+targets: -1
+}, {
+searchable: false,
+targets: -1
+}
+]
+});
+});
+})(jQuery);
+	</script>
+{% endblock %}

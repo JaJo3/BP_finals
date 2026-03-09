@@ -6,6 +6,7 @@ use App\Repository\OrganizerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: OrganizerRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -36,6 +37,10 @@ class Organizer
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logoFilename = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $createdBy = null;
 
     #[ORM\OneToMany(mappedBy: 'organizer', targetEntity: Event::class, cascade: ['persist', 'remove'])]
     private Collection $events;
@@ -132,6 +137,17 @@ class Organizer
     public function getLogoFilename(): ?string
     {
         return $this->logoFilename;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $user): self
+    {
+        $this->createdBy = $user;
+        return $this;
     }
 
     public function setLogoFilename(?string $logoFilename): self

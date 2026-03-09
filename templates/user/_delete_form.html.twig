@@ -1,0 +1,38 @@
+<div class="action-button" style="display: inline-block; margin: 0;">
+    <button type="button" class="btn btn-sm btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal{{ user.id }}" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; border: none; border-radius: 6px; padding: 6px 10px;">
+        <i class="fas fa-trash"></i>
+    </button>
+
+    <div class="modal fade" id="deleteModal{{ user.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ user.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #1A3D7C; color: white">
+                    <h5 class="modal-title" id="deleteModalLabel{{ user.id }}">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-trash-alt fa-3x text-danger mb-3"></i>
+                        <h5>Delete User</h5>
+                        <p class="text-muted">Are you sure you want to delete this user? This action cannot be undone.</p>
+                    </div>
+                    <div class="ticket-info p-3 bg-light rounded">
+                        <p class="mb-1"><strong>Username:</strong> {{ user.username }}</p>
+                        <p class="mb-0"><strong>Name:</strong> {{ user.firstName }} {{ user.lastName }}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-2"></i>Cancel</button>
+                    <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" style="display: inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                        <button type="submit" class="btn btn-sm btn-danger" style="border-radius:6px;"><i class="fas fa-trash"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    

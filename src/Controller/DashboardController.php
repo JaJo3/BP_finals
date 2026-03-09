@@ -20,11 +20,18 @@ final class DashboardController extends AbstractController
         $roles = $user->getRoles();
 
         if (in_array('ROLE_ADMIN', $roles)) {
-            $message = "You are logged in as Admin. You have full access.";
-        } elseif (in_array('ROLE_USER', $roles)) {
+            // Admins see the admin dashboard (includes realtime widgets)
+            return $this->render('admin/index.html.twig');
+        }
+
+        if (in_array('ROLE_USER', $roles)) {
             $message = "You are logged in as Regular User. Limited access granted.";
-        } else {
-            $message = "You are authenticated. ";
+        } 
+        if (in_array('ROLE_STAFF', $roles)) {
+            $message = "You are logged in as Staff. You have elevated privileges.";
+        }
+        else {
+            $message = "You are authenticated.";
         }
 
         return $this->render('dashboard/index.html.twig', [

@@ -7,7 +7,7 @@
 	<div class="content-wrapper">
 
 
-			<div class="d-flex justify-content-between align-items-center mb-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
 			<h1 class="h3 mb-0" style="color: #1A3D7C; font-weight: 700;">
 				<i class="fas fa-ticket-alt me-2" style="color: #F9B233;"></i>Ticket Management
 			</h1>
@@ -26,53 +26,50 @@
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
-					<table id="ticketsTable" class="table table-hover beatpass-table mb-0 display responsive nowrap" style="width:100%; table-layout: fixed;">
+					<table id="ticketsTable" class="table table-sm small table-hover beatpass-table mb-0 display responsive nowrap" style="width:100%; table-layout: fixed;">
 						<thead style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
 							<tr>
-								<th class="col-name" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; width: 25%;">Event</th>
-								<th class="col-type" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; width: 15%;">Type</th>
-								<th class="col-price" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; width: 15%;">Price</th>
-								<th class="col-quantity" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; width: 15%;">Quantity</th>
-								<th class="col-status" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; width: 15%;">Status</th>
-								<th class="actions" style="border: none; padding: 20px 15px; font-weight: 700; color: #1A3D7C; text-align: center; width: 15%;">Actions</th>
+								<th class="col-name text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:25%">Event</th>
+								<th class="col-type text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:15%">Type</th>
+								<th class="col-price text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:15%">Price</th>
+								<th class="col-quantity text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:15%">Quantity</th>
+								<th class="col-status text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:15%">Status</th>
+								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center" style="width:15%">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for ticket in tickets %}
 								<tr>
-									<td class="col-name" style="border: none; padding: 20px 15px; vertical-align: middle; width: 25%;">
-										<strong style="color: #1A3D7C;">{{ ticket.event.eventName }}</strong>
+									<td class="col-name align-middle text-truncate py-1 px-2" style="max-width: 28ch;">
+										<strong class="text-nowrap" style="color: #1A3D7C;">{{ ticket.event.eventName }}</strong>
 									</td>
-									<td class="col-type" style="border: none; padding: 20px 15px; vertical-align: middle; width: 15%;">
-									<span class="beatpass-badge" style="background: linear-gradient(135deg,
-									{% if ticket.ticketType == 'VVIP' %}
-										#9C27B0 0%, #673AB7 100%
-									{% elseif ticket.ticketType == 'VIP' %}
-										#F9B233 0%, #E6A02A 100%
-									{% else %}
-										#6c757d 0%, #495057 100%
-									{% endif%}); color: white;">
-										{{ ticket.ticketType }}
-										</span>
+									<td class="col-type align-middle py-1 px-2">
+										<span style="color: #15305A; font-weight: 700;">{{ ticket.ticketType }}</span>
 									</td>
-									<td class="col-price" style="border: none; padding: 20px 15px; vertical-align: middle; width: 15%;">
+									<td class="col-price align-middle text-truncate py-1 px-2">
 										₱{{ ticket.price|number_format(2, '.', ',') }}
 									</td>
-									<td class="col-quantity" style="border: none; padding: 20px 15px; vertical-align: middle; width: 15%;">
+									<td class="col-quantity align-middle text-truncate py-1 px-2">
 										{{ ticket.quantity }}
 									</td>
-									<td class="col-status" style="border: none; padding: 20px 15px; vertical-align: middle; width: 15%;">
-										<span class="beatpass-badge" style="background: linear-gradient(135deg, {{ ticket.quantity > 0 ? '#28a745 0%, #20c997 100%' : '#dc3545 0%, #c82333 100%' }}); color: white;">{{ ticket.quantity > 0 ? 'Available' : 'Sold Out' }}</span>
+									<td class="col-status align-middle text-center py-1 px-2">
+										<span class="small fw-semibold {% if ticket.quantity > 0 %}text-success{% else %}text-danger{% endif %}">
+											{{ ticket.quantity > 0 ? 'Available' : 'Sold Out' }}
+										</span>
 									</td>
-									<td class="actions" style="border: none; padding: 20px 15px; vertical-align: middle; text-align: center; width: 15%;">
-										<div class="btn-action-group">
-											<a href="{{ path('admin_ticket_show', {'id': ticket.id}) }}" class="btn btn-sm btn-beatpass-primary" title="View">
+									<td class="actions text-center align-middle">
+										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
+											<a href="{{ path('admin_ticket_show', {'id': ticket.id}) }}" class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded" style="width:32px;height:32px;font-size:12px;" title="View">
 												<i class="fas fa-eye"></i>
 											</a>
-											<a href="{{ path('admin_ticket_edit', {'id': ticket.id}) }}" class="btn btn-sm btn-beatpass-edit" title="Edit">
-												<i class="fas fa-edit"></i>
-											</a>
-											{% include 'ticket/_delete_form.html.twig' with {'ticket': ticket} %}
+											{% if isAdmin or (currentUserId and ticket.createdBy and ticket.createdBy.id == currentUserId) %}
+												<a href="{{ path('admin_ticket_edit', {'id': ticket.id}) }}" class="btn btn-sm btn-beatpass-edit p-1 d-inline-flex align-items-center justify-content-center rounded" style="width:32px;height:32px;font-size:12px;" title="Edit">
+													<i class="fas fa-edit"></i>
+												</a>
+											{% endif %}
+											{% if isAdmin or (currentUserId and ticket.createdBy and ticket.createdBy.id == currentUserId) %}
+												{% include 'ticket/_delete_form.html.twig' with {'ticket': ticket} %}
+											{% endif %}
 										</div>
 									</td>
 								</tr>
@@ -100,34 +97,74 @@
 	</div>
 {% endblock %}
 
-	{% block javascripts %}
-		{{ parent() }}
-		<script>
-			(function($){
-				$(document).ready(function(){
-					// Only initialize DataTable if there are actual data rows (not empty state)
-					var tableBody = $('#ticketsTable tbody');
-					var hasDataRows = tableBody.find('tr').length > 0 && !tableBody.find('tr').first().find('td').attr('colspan');
-					
-					if (hasDataRows) {
-						$('#ticketsTable').DataTable({
-							responsive: true,
-							dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-								 "<'row'<'col-sm-12'tr>>" +
-								 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-							pageLength: 10,
-							lengthMenu: [[10, 25, 50, -1],[10, 25, 50, 'All']],
-							language: {
-								search: '',
-								searchPlaceholder: 'Search tickets...'
-							},
-							columnDefs: [
-								{ orderable: false, targets: -1 },
-								{ searchable: false, targets: -1 }
-							]
-						});
-					}
-				});
-			})(jQuery);
-		</script>
-	{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		(function ($) {
+function initTicketsTable() { // Only initialize DataTable if there are actual data rows (not empty state)
+var tableBody = $('#ticketsTable tbody');
+var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
+
+if (hasDataRows) { // Prevent double-init by checking if DataTable already exists
+if (! $.fn.DataTable.isDataTable('#ticketsTable')) {
+$('#ticketsTable').DataTable({
+responsive: true,
+dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+pageLength: 10,
+lengthMenu: [
+[
+10, 25, 50, -1
+],
+[
+10, 25, 50, 'All'
+]
+],
+language: {
+search: '',
+searchPlaceholder: 'Search tickets...'
+},
+columnDefs: [
+{
+orderable: false,
+targets: -1
+}, {
+searchable: false,
+targets: -1
+}
+]
+});
+}
+}
+}
+
+// Initialize on initial load
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', function () {
+if (window.jQuery) 
+initTicketsTable();
+
+
+});
+} else {
+if (window.jQuery) 
+initTicketsTable();
+
+
+}
+
+// Re-initialize after Turbo navigation or frame loads
+document.addEventListener('turbo:load', function (e) {
+if (window.jQuery) 
+initTicketsTable();
+
+
+});
+document.addEventListener('turbo:frame-load', function (e) {
+if (window.jQuery) 
+initTicketsTable();
+
+
+});
+})(jQuery);
+	</script>
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TicketRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -44,6 +45,10 @@ class Ticket
     #[ORM\JoinColumn(nullable: false)]
     private ?Event $event = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $createdBy = null;
+
     #[ORM\Column(length: 20)]
     private ?string $status = self::STATUS_UPCOMING;
 
@@ -64,19 +69,6 @@ class Ticket
             && $this->event 
             && $this->event->getStatus() !== Event::STATUS_CANCELLED
             && $this->event->getStatus() !== Event::STATUS_COMPLETED;
-    }
-
-    /**
-     * Update status based on event status
-     */
-    #[ORM\PreUpdate]
-    #[ORM\PrePersist]
-    public function updateStatus(): void
-    {
-        if ($this->event) {
-            // Always sync ticket status with event status
-            $this->status = $this->event->getStatus();
-        }
     }
 
     public function getId(): ?int
@@ -103,10 +95,6 @@ class Ticket
     public function setEvent(?Event $event): static
     {
         $this->event = $event;
-        // Update status when event is set or changed
-        if ($event) {
-            $this->updateStatus();
-        }
         return $this;
     }
 
@@ -153,6 +141,17 @@ class Ticket
     public function getStatus(): ?string
     {
         return $this->status;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $user): self
+    {
+        $this->createdBy = $user;
+        return $this;
     }
 
     public function setStatus(string $status): self

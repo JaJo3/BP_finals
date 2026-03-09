@@ -1,0 +1,82 @@
+{# Reusable user form styled like staff edit view #}
+<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
+    <div class="card-body">
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    {{ form_label(form.username) }}
+                    {{ form_widget(form.username, {'attr': {'class':'form-control'}}) }}
+                    {{ form_errors(form.username) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.email) }}
+                    {{ form_widget(form.email, {'attr': {'class':'form-control'}}) }}
+                    {{ form_errors(form.email) }}
+                </div>
+
+                <div class="mb-3">
+                    {# Support both AdminUserType (plainPassword) and UserType (password) #}
+                    {% if form.plainPassword is defined %}
+                        {{ form_label(form.plainPassword) }}
+                        {{ form_widget(form.plainPassword, {'attr': {'class':'form-control'}}) }}
+                        {{ form_errors(form.plainPassword) }}
+                    {% elseif form.password is defined %}
+                        {{ form_label(form.password) }}
+                        {{ form_widget(form.password, {'attr': {'class':'form-control'}}) }}
+                        {{ form_errors(form.password) }}
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.roles) }}
+                    {{ form_widget(form.roles, {'attr': {'class':'form-select'}}) }}
+                    {{ form_errors(form.roles) }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="mb-3">
+                    {{ form_label(form.firstName) }}
+                    {{ form_widget(form.firstName, {'attr': {'class':'form-control'}}) }}
+                    {{ form_errors(form.firstName) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.lastName) }}
+                    {{ form_widget(form.lastName, {'attr': {'class':'form-control'}}) }}
+                    {{ form_errors(form.lastName) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.phone) }}
+                    {{ form_widget(form.phone, {'attr': {'class':'form-control'}}) }}
+                    {{ form_errors(form.phone) }}
+                </div>
+
+                <div class="mb-3">
+                    {# isActive exists only on AdminUserType; guard it so UserType works too #}
+                    {% if form.isActive is defined %}
+                        {{ form_label(form.isActive) }}
+                        {{ form_widget(form.isActive, {'attr': {'class':'form-select'}}) }}
+                        {{ form_errors(form.isActive) }}
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.profileImage) }}
+                    {{ form_widget(form.profileImage, {'attr': {'class':'form-control'}}) }}
+                    {{ form_errors(form.profileImage) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-3">
+            <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary me-2"><i class="fas fa-times me-2"></i>Cancel</a>
+            <button type="submit" class="btn" style="background: linear-gradient(135deg, #F9B233 0%, #e6a02a 100%); color: #1A3D7C; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600;"><i class="fas fa-save me-2"></i>{{ submit_label|default('Save') }}</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>

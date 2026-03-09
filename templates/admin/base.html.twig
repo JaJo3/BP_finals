@@ -12,52 +12,273 @@
             <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
+        {% block javascripts_head %}
+            {# Place the main application bundle in the <head> so Turbo is loaded once per page (prevents Turbo body-script warnings). #}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
     </head>
     <body class="admin">
         <div class="layout-container">
             <aside class="sidebar">
-                <div class="brand">
-                    <span>BEATPASS Admin</span>
+                <div class="brand d-flex justify-content-center align-items-center py-4">
+                    <a href="{{ path('app_dashboard') }}" class="d-flex justify-content-center align-items-center text-decoration-none">
+                        <img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass Logo" class="img-fluid logo-img w-500">
+                    </a>
                 </div>
-                <nav>
-                    <a href="{{ path('app_dashboard') }}" 
-                       class="nav-link {% if app.request.get('_route') == 'app_dashboard' %}active{% endif %}">
-                        <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
-                    </a>
-                    
-                    <a href="{{ path('app_event_index') }}" 
-                       class="nav-link {% if app.request.get('_route') starts with 'app_event_' %}active{% endif %}">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Events</span>
-                    </a>
-                    
-                    <a href="{{ path('admin_tickets') }}" 
-                       class="nav-link {% if app.request.get('_route') starts with 'admin_tickets' or app.request.get('_route') starts with 'app_event_tickets_' %}active{% endif %}">
-                        <i class="fas fa-ticket-alt"></i>
-                        <span>Tickets</span>
-                    </a>
-                    
-                    <a href="{{ path('app_organizer_index') }}" 
-                       class="nav-link {% if app.request.get('_route') starts with 'app_organizer_' %}active{% endif %}">
-                        <i class="fas fa-users"></i>
-                        <span>Organizers</span>
-                    </a>
+                <nav class="nav flex-column mt-3">
+                    {# Dashboard link visible only for admins #}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a
+                            href="{{ path('app_dashboard') }}"
+                            class="nav-link d-flex align-items-center gap-2 px-3 py-2 mx-2 my-1 text-white-50 {% if app.request.get('_route') == 'app_dashboard' %}active bg-info text-dark rounded-pill fw-semibold{% else %}rounded-3{% endif %}">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    {% endif %}
+
+                    {# Events and Tickets: available to ADMIN and STAFF #}
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_STAFF') %}
+                        <a
+                            href="{{ path('app_event_index') }}"
+                            class="nav-link d-flex align-items-center gap-2 px-3 py-2 mx-2 my-1 text-white-50 {% if app.request.get('_route') starts with 'app_event_' %}active bg-info text-dark rounded-pill fw-semibold{% else %}rounded-3{% endif %}">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Events</span>
+                        </a>
+
+                        <a
+                            href="{{ path('admin_tickets') }}"
+                            class="nav-link d-flex align-items-center gap-2 px-3 py-2 mx-2 my-1 text-white-50 {% if app.request.get('_route') starts with 'admin_tickets' or app.request.get('_route') starts with 'app_event_tickets_' %}active bg-info text-dark rounded-pill fw-semibold{% else %}rounded-3{% endif %}">
+                            <i class="fas fa-ticket-alt"></i>
+                            <span>Tickets</span>
+                        </a>
+
+                        <a
+                            href="{{ path('app_organizer_index') }}"
+                            class="nav-link d-flex align-items-center gap-2 px-3 py-2 mx-2 my-1 text-white-50 {% if app.request.get('_route') starts with 'app_organizer_' %}active bg-info text-dark rounded-pill fw-semibold{% else %}rounded-3{% endif %}">
+                            <i class="fas fa-users"></i>
+                            <span>Organizers</span>
+                        </a>
+
+                        <a
+                            href="{{ path('app_transaction') }}"
+                            class="nav-link d-flex align-items-center gap-2 px-3 py-2 mx-2 my-1 text-white-50 {% if app.request.get('_route') starts with 'app_transaction_' %}active bg-info text-dark rounded-pill fw-semibold{% else %}rounded-3{% endif %}">
+                            <i class="fas fa-receipt"></i>
+                            <span>Transactions</span>
+                        </a>
+                    {% endif %}
+
+                    {# Management sections: admin-only #}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a
+                            href="{{ path('app_user_index') }}"
+                            class="nav-link d-flex align-items-center gap-2 px-3 py-2 mx-2 my-1 text-white-50 {% if app.request.get('_route') starts with 'app_user_' or app.request.get('_route') == 'app_user_index' %}active bg-info text-dark rounded-pill fw-semibold{% else %}rounded-3{% endif %}">
+                            <i class="fas fa-user"></i>
+                            <span>Users</span>
+                        </a>
+
+                        <a
+                            href="{{ path('app_activity_log_index') }}"
+                            class="nav-link d-flex align-items-center gap-2 px-3 py-2 mx-2 my-1 text-white-50 {% if app.request.get('_route') starts with 'app_activity_log_' %}active bg-info text-dark rounded-pill fw-semibold{% else %}rounded-3{% endif %}">
+                            <i class="fas fa-history"></i>
+                            <span>Activity Logs</span>
+                        </a>
+                    {% endif %}
                 </nav>
             </aside>
 
-            <main class="main-content">
-                {% block body %}{% endblock %}
-            </main>
+            <div class="main-area w-100">
+                <header class="admin-topbar d-flex align-items-center justify-content-between px-3 py-2">
+                    <div class="d-flex align-items-center" style="min-width:220px; max-width:520px;">
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3 ms-auto">
+                        <button class="btn btn-sm btn-light border-0 position-relative header-icon" title="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="notif-dot"></span>
+                        </button>
+
+                        <button class="btn btn-sm btn-light border-0 header-icon" title="Messages">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+
+                        <button id="themeToggle" class="btn btn-sm btn-light border-0 header-icon" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+
+                        <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center text-decoration-none user-link" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                {% if app.user is defined and app.user %}
+                                    {% if app.user.profileImage is not empty %}
+                                        <img src="{{ ('/uploads/profile/' ~ app.user.profileImage)|e }}" class="rounded-circle me-2 header-avatar" alt="{{ app.user.username|e }}">
+                                    {% else %}
+                                        <img src="{{ asset('images/default-avatar.png') }}" class="rounded-circle me-2 header-avatar" alt="{{ app.user.username|e }}">
+                                    {% endif %}
+                                    <span class="d-none d-sm-inline text-dark header-username">{{ (app.user.firstName is defined and app.user.firstName) ? (app.user.firstName ~ ' ' ~ (app.user.lastName|default('')) ) : app.user.username }}</span>
+                                    <i class="fas fa-caret-down ms-2 small text-muted"></i>
+                                {% else %}
+                                    <img src="https://via.placeholder.com/36" class="rounded-circle me-2 header-avatar" alt="user">
+                                    <span class="d-none d-sm-inline text-dark header-username">Guest</span>
+                                    <i class="fas fa-caret-down ms-2 small text-muted"></i>
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                                <li><a class="dropdown-item" href="{{ path('admin_profile') }}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
+                            </ul>
+                        </div>
+
+                        <button class="btn btn-sm btn-light border-0 header-icon d-lg-none" id="sidebarToggle" title="Menu">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                </header>
+
+                <main class="main-content px-4 py-4">
+                    {# Flash messages (site-wide) #}
+                    {% for type, messages in app.flashes %}
+                        {% for msg in messages %}
+                            {% set bsClass = 'info' %}
+                            {% if type == 'success' %}{% set bsClass = 'success' %}{% elseif type == 'danger' or type == 'error' %}{% set bsClass = 'danger' %}{% elseif type == 'warning' %}{% set bsClass = 'warning' %}{% endif %}
+                            <div class="container-fluid mb-3">
+                                <div class="alert alert-{{ bsClass }} alert-dismissible fade show" role="alert">
+                                    {{ msg }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+
+                    {% block body %}{% endblock %}
+                </main>
+            </div>
         </div>
 
         {% block javascripts %}
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-            {# jQuery + DataTables (loaded before app bundle so initialization in templates works) #}
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-            {{ encore_entry_script_tags('app') }}
+            <script>
+                // Admin theme (light / dark) toggle
+                (function () {
+                    const STORAGE_KEY = 'beatpass.admin.theme';
+                    const body = document.body;
+                    function applyTheme(theme) {
+                        if (theme === 'dark') {
+                            body.classList.add('dark-mode');
+                        } else {
+                            body.classList.remove('dark-mode');
+                        }
+                    }
+                    try {
+                        const saved = localStorage.getItem(STORAGE_KEY);
+                        if (saved) {
+                            applyTheme(saved);
+                        }
+                    } catch (e) {}
+
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const toggle = document.getElementById('themeToggle');
+                        if (!toggle) return;
+                        // sync icon with current state
+                        const icon = toggle.querySelector('i');
+                        if (icon && body.classList.contains('dark-mode')) {
+                            icon.className = 'fas fa-sun';
+                        }
+                        toggle.addEventListener('click', function () {
+                            const isDark = body.classList.contains('dark-mode');
+                            const next = isDark ? 'light' : 'dark';
+                            applyTheme(next);
+                            try {
+                                localStorage.setItem(STORAGE_KEY, next);
+                            } catch (e) {}
+                            if (icon) {
+                                icon.className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                            }
+                        });
+                    });
+                })();
+            </script>
+            <script>
+                (function(){
+                    const DEBOUNCE_MS = 700;
+                    function attachPasswordToggles(root){
+                        root = root || document;
+                        const inputs = root.querySelectorAll('input[type="password"]');
+                        inputs.forEach(function(input){
+                            if (input.dataset.pwToggleAttached) return;
+                            input.dataset.pwToggleAttached = '1';
+
+                            // wrapper to allow absolute-positioned icon inside input
+                            const wrapper = document.createElement('div');
+                            wrapper.style.position = 'relative';
+                            input.parentNode.insertBefore(wrapper, input);
+                            wrapper.appendChild(input);
+
+                            // ensure input has space on the right for icon
+                            const computed = window.getComputedStyle(input);
+                            input.style.paddingRight = '40px';
+
+                            // create minimal eye button
+                            const btn = document.createElement('button');
+                            btn.type = 'button';
+                            btn.setAttribute('aria-label', 'Toggle password visibility');
+                            btn.style.position = 'absolute';
+                            btn.style.top = '50%';
+                            btn.style.transform = 'translateY(-50%)';
+                            btn.style.right = '10px';
+                            btn.style.border = 'none';
+                            btn.style.background = 'transparent';
+                            btn.style.padding = '4px';
+                            btn.style.cursor = 'pointer';
+                            btn.style.color = '#6c757d';
+                            btn.style.fontSize = '0.95rem';
+                            btn.innerHTML = '<i class="fas fa-eye"></i>';
+                            btn.style.display = 'none';
+                            wrapper.appendChild(btn);
+
+                            let debounce = null;
+                            function updateVisibility(){
+                                if (input.value && input.value.length > 0) {
+                                    btn.style.display = 'block';
+                                } else {
+                                    btn.style.display = 'none';
+                                    if (input.type !== 'password') {
+                                        input.type = 'password';
+                                        btn.innerHTML = '<i class="fas fa-eye"></i>';
+                                    }
+                                }
+                            }
+
+                            input.addEventListener('input', function(){
+                                if (debounce) clearTimeout(debounce);
+                                debounce = setTimeout(updateVisibility, DEBOUNCE_MS);
+                            });
+
+                            // initial state
+                            updateVisibility();
+
+                            btn.addEventListener('click', function(e){
+                                e.preventDefault();
+                                if (input.type === 'password'){
+                                    input.type = 'text';
+                                    btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                                } else {
+                                    input.type = 'password';
+                                    btn.innerHTML = '<i class="fas fa-eye"></i>';
+                                }
+                            });
+                        });
+                    }
+
+                    document.addEventListener('DOMContentLoaded', function(){
+                        attachPasswordToggles(document);
+                    });
+                    // Re-run on Turbo navigations and frame loads so dynamically replaced content gets toggles attached
+                    document.addEventListener('turbo:load', function(e){ attachPasswordToggles(e.target || document); document.dispatchEvent(new Event('app:load')); });
+                    document.addEventListener('turbo:frame-load', function(e){ attachPasswordToggles(e.target || document); document.dispatchEvent(new Event('app:load')); });
+                })();
+            </script>
         {% endblock %}
     </body>
 </html>

@@ -1,32 +1,14 @@
-# security:
-#     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
-#     password_hashers:
-#         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-#     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
-#     providers:
-#         users_in_memory: { memory: null }
-#     firewalls:
-#         dev:
-#             pattern: ^/(_(profiler|wdt)|css|images|js)/
-#             security: false
-#         main:
-#             lazy: true
-#             provider: users_in_memory
-#             security: true  
-           
 security:
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\User:
+            algorithm: auto
+
     providers:
-        in_memory:
-            memory:
-                users:
-                    admin:
-                        password: '$2y$13$fxyENsOF0/zpibc0Evxq/e13r.5ffWXYulYeweY6xID6k82IqrLbu'
-                        roles: ['ROLE_ADMIN']
-                    user:
-                        password: '$2y$13$DlaSh1sV5LfxbYoIcNLEyuSAYfHohI50pfeLHqPg08/Fd0N2w0cjG'
-                        roles: ['ROLE_USER']
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
 
     firewalls:
         dev:
@@ -35,8 +17,25 @@ security:
 
         main:
             lazy: true
-            provider: in_memory
-            http_basic: ~
+            provider: app_user_provider
+            user_checker: App\Security\UserChecker
+            entry_point: form_login
+            custom_authenticator: App\Security\LoginAuthenticator
+            form_login:
+                login_path: app_login
+                check_path: app_login
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                # by default, the feature is enabled by checking a checkbox in the
+                # login form, uncomment the following line to always enable it.
+                #always_remember_me: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -47,10 +46,38 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        #  - { path: ^/dashboard, roles: ROLE_USER }
-        #  - { path: ^/dashboard, roles: ROLE_ADMIN }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # IMPORTANT: Order matters! Specific rules must come BEFORE the catch-all.
+        # Rules are evaluated top-to-bottom; the first match is used.
+        # This prevents staff from matching the /admin catch-all which would require ROLE_ADMIN.
+        
+        # STAFF-allowed routes (must be BEFORE ^/admin catch-all)
+        - { path: ^/admin/event, roles: [ROLE_ADMIN, ROLE_STAFF] }
+        - { path: ^/admin/ticket, roles: [ROLE_ADMIN, ROLE_STAFF] }
+        - { path: ^/organizer, roles: [ROLE_ADMIN, ROLE_STAFF] }
+        - { path: ^/admin/transaction, roles: [ROLE_ADMIN, ROLE_STAFF] }
+        - { path: ^/admin/transactions, roles: [ROLE_ADMIN, ROLE_STAFF] }
+        
+        # Allow any fully-authenticated user to access their own admin profile page
+        # (placed BEFORE the admin catch-all so staff aren't blocked)
+        - { path: ^/admin/profile, roles: IS_AUTHENTICATED_FULLY }
+        # ADMIN-only routes (no staff allowed)
+        - { path: ^/staff, roles: ROLE_ADMIN }
+        - { path: ^/user, roles: ROLE_ADMIN }
+        - { path: ^/admin/logs, roles: ROLE_ADMIN }
+        - { path: ^/activity, roles: ROLE_ADMIN }
+        
+        # Admin dashboard root - ADMIN only
+        - { path: ^/admin/?$, roles: ROLE_ADMIN }
+        
+        # Catch-all for remaining /admin/* paths - requires ROLE_ADMIN
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        
+        # Dashboard - authenticated users only (role check in controller)
+        - { path: ^/dashboard, roles: IS_AUTHENTICATED }
+        
+        # Public routes - no role required
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/home, roles: PUBLIC_ACCESS }
        
 
 when@test:

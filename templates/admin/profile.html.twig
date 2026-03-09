@@ -1,0 +1,64 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Admin Profile{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card p-4">
+                <h3 class="mb-3" style="color:var(--beatpass-blue)">Admin Profile</h3>
+
+                {{ form_start(profileForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">First name</label>
+                            {{ form_widget(profileForm.firstName, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(profileForm.firstName) }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Last name</label>
+                            {{ form_widget(profileForm.lastName, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(profileForm.lastName) }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone</label>
+                            {{ form_widget(profileForm.phone, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(profileForm.phone) }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Profile image</label>
+                            {{ form_widget(profileForm.profileImage, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(profileForm.profileImage) }}
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        {{ form_widget(profileForm.save) }}
+                        <a href="{{ path('admin_change_password') }}" class="btn btn-outline-secondary ms-2">Change password</a>
+                    </div>
+                {{ form_end(profileForm) }}
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card p-4 text-center">
+                <h5 class="mb-3">Profile preview</h5>
+                {% if user.profileImage %}
+                    <img src="/uploads/profile/{{ user.profileImage }}" class="rounded-circle mb-3" style="width:120px;height:120px;object-fit:cover;border:4px solid var(--beatpass-blue);">
+                {% else %}
+                    <div class="rounded-circle mb-3 d-inline-flex align-items-center justify-content-center" style="width:120px;height:120px;background:#f1f3f6;border:4px solid var(--beatpass-blue);">
+                        <i class="fas fa-user" style="font-size:36px;color:var(--beatpass-blue);"></i>
+                    </div>
+                {% endif %}
+
+                <div class="mt-2">
+                    <div><strong style="color:#233248">{{ user.firstName }} {{ user.lastName }}</strong></div>
+                    <div class="text-muted">{{ user.username }}</div>
+                    {% if user.phone %}<div class="mt-2">📞 {{ user.phone }}</div>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
