@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\TicketPurchaseRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: TicketPurchaseRepository::class)]
 #[ORM\Table(name: 'ticket_purchase')]
 class TicketPurchase

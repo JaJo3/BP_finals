@@ -85,41 +85,41 @@
 								{% for log in logs %}
 									<tr>
 										<td class="align-middle py-1 px-2">
-											<div class="fw-semibold small" style="color: #1A3D7C;">{{ log.user.username }}</div>
+											{# <div class="fw-bold small">{{ log.user.username }}</div> #}
 											{% if log.user.email %}
 												<div class="small text-muted">{{ log.user.email }}</div>
 											{% endif %}
 											{# Show role badge for staff/admin actors #}
 											{% set roles = log.user.getRoles() %}
 											{% if 'ROLE_ADMIN' in roles %}
-												<div class="small mt-1 fw-semibold" style="color: #15305A">Admin</div>
+												<div class="small mt-1 fw-semibold text-muted">Admin</div>
 											{% elseif 'ROLE_STAFF' in roles %}
-												<div class="small mt-1 fw-semibold" style="color: #15305A">Staff</div>
+												<div class="small mt-1 fw-semibold text-muted">Staff</div>
 											{% endif %}
 										</td>
 										<td class="align-middle py-1 px-2">
 											{% if log.action == 'Create' %}
-												<div class="small fw-semibold" style="color: #15305A;">
+												<div class="small fw-semibold">
 													<i class="fas fa-plus-circle me-1"></i>Create</div>
 											{% elseif log.action == 'Update' %}
-												<div class="small fw-semibold" style="color: #15305A;">
+												<div class="small fw-semibold">
 													<i class="fas fa-edit me-1"></i>Update</div>
 											{% elseif log.action == 'Delete' %}
-												<div class="small fw-semibold" style="color: #15305A;">
+												<div class="small fw-semibold">
 													<i class="fas fa-trash-alt me-1"></i>Delete</div>
 											{% elseif log.action == 'Login' %}
-												<div class="small fw-semibold" style="color: #15305A;">
+												<div class="small fw-semibold">
 													<i class="fas fa-sign-in-alt me-1"></i>Login</div>
 											{% elseif log.action == 'Logout' %}
-												<div class="small fw-semibold" style="color: #15305A;">
+												<div class="small fw-semibold">
 													<i class="fas fa-sign-out-alt me-1"></i>Logout</div>
 											{% else %}
-												<div class="small fw-semibold" style="color: #15305A;">{{ log.action }}</div>
+												<div class="small fw-semibold">{{ log.action }}</div>
 											{% endif %}
 										</td>
 										<td class="align-middle py-1 px-2">
 											{% if log.entityType %}
-												<span class="badge rounded-pill py-1 px-2 small" color: white;">{{ log.entityType }}</span>
+												<span class="badge bg-secondary rounded-pill py-1 px-2 small">{{ log.entityType }}</span>
 											{% else %}
 												<span class="text-muted">—</span>
 											{% endif %}
@@ -127,7 +127,7 @@
 										<td class="text-nowrap align-middle py-1 px-2">
 											<small class="text-muted">{{ log.createdAt|date('M d, Y h:i A') }}</small>
 										</td>
-										<td class="align-middle py-1 px-2 small fw-semibold" style="color: #15305A">
+										<td class="align-middle py-1 px-2 small fw-semibold">
 											{% if log.action == 'Create' %}Completed
 												{% elseif log.action == 'Update' %}Updated
 												{% elseif log.action == 'Delete' %}Deleted

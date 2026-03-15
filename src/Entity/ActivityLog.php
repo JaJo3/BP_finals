@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\ActivityLogRepository;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: ActivityLogRepository::class)]
 #[ORM\Table(name: 'activity_log')]
 #[ORM\Index(columns: ['user_id', 'action', 'created_at'])]

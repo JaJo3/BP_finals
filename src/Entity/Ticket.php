@@ -6,7 +6,9 @@ use App\Repository\TicketRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\User;
+use ApiPlatform\Metadata\ApiResource;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Ticket
