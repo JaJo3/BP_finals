@@ -53,22 +53,16 @@ body.admin .sidebar .brand {
     color: #ffffff;
     font-size: 1.75rem;
     font-weight: bold;
-    padding: 1.5rem;
-    text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     letter-spacing: 1px;
     background-color: var(--beatpass-blue);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
+    display: block;
 }
 
 body.admin .sidebar .brand .logo-img {
-    max-width: 80%;
-    height: 48px;
-    object-fit: contain;
+    width: 150px;
+    height: auto;
+    max-width: 100%;
 }
 
 body.admin .main-content {
@@ -88,10 +82,47 @@ body.admin .main-content {
     max-width: 100%;
 }
 
+/* Events page: tighten top spacing so "All Events" sits higher */
+.content-wrapper--events {
+    padding-top: 0.50rem;
+}
+
+/* Admin list pages: slightly tighter top padding */
+.content-wrapper--tight {
+    padding-top: 0.50rem;
+}
+
+.beatpass-pillbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.beatpass-pill {
+    border-radius: 999px;
+    padding: 0.35rem 0.6rem;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.2px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    white-space: nowrap;
+}
+
 @media (max-width: 992px) {
     .content-wrapper {
         padding: 1rem;
         max-width: 100%;
+    }
+
+    .content-wrapper--events {
+        padding-top: 0.75rem;
+    }
+
+    .content-wrapper--tight {
+        padding-top: 0.75rem;
     }
 }
 
@@ -127,7 +158,6 @@ body.admin .main-content {
 
     body.admin .sidebar .brand {
         font-size: 1.2rem;
-        padding: 1rem 0.5rem;
     }
 
     body.admin .sidebar .nav-link span {
@@ -320,7 +350,6 @@ body.admin .nav-link i {
 
     .admin .sidebar .brand {
         font-size: 1.2rem;
-        padding: 1rem 0.5rem;
     }
 
     .admin .nav-link span {
@@ -392,6 +421,24 @@ table.beatpass-table tbody td {
     border-top: 1px solid #eef3f8;
     color: var(--bs-body-color);
     font-size: 0.875rem;
+    font-weight: 600;
+    /* similar to Bootstrap fw-semibold */
+}
+
+/* Events table: more compact so it fits in one screen */
+#eventsTable_wrapper.dataTables_wrapper {
+    padding: 0.25rem 0.75rem 0.5rem 0.75rem;
+}
+
+#eventsTable.beatpass-table thead th {
+    padding: 6px 10px !important;
+    font-size: 0.75rem;
+    letter-spacing: 0.4px;
+}
+
+#eventsTable.beatpass-table tbody td {
+    padding: 6px 10px !important;
+    font-size: 0.82rem;
 }
 
 /* Alternating row backgrounds */
@@ -947,7 +994,6 @@ footer.public-footer {
 
     body.admin .sidebar .brand {
         font-size: 1.2rem;
-        padding: 1rem 0.5rem;
     }
 
     body.admin .nav-link span {
@@ -1093,6 +1139,7 @@ footer.public-footer {
         min-height: 200px;
     }
 }
+
 body.admin .main-content {
     background: #ffffff;
     /* white admin background */
@@ -1259,15 +1306,13 @@ body.admin .main-content {
 }
 
 
-/* Adjust text colors */
-.stat-label,
-.small,
-.text-muted {
+/* Light-mode admin text tweaks (avoid overriding Bootstrap utilities in dark mode) */
+body.admin:not(.dark-mode) .stat-label,
+body.admin:not(.dark-mode) .text-muted {
     color: rgba(36, 59, 87, 0.55) !important;
 }
 
-.stat-value,
-.fw-bold {
+body.admin:not(.dark-mode) .stat-value {
     color: #10243f !important;
 }
 
@@ -1779,14 +1824,14 @@ body.admin.dark-mode .alert {
 }
 
 .sales-filter-summary {
-    color: #6c757d;
+    color: var(--bs-secondary-color);
     font-size: 0.8rem;
 }
 
 .sales-filter-select {
-    background: #f8f9fa;
-    color: #15305A;
-    border: 1px solid #e9ecef;
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border: 1px solid var(--bs-border-color);
     border-radius: 6px;
     font-size: 0.85rem;
 }
@@ -1800,7 +1845,7 @@ body.admin.dark-mode .alert {
 }
 
 .sales-filter-toolbar {
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid var(--bs-border-color);
     padding-bottom: 10px;
 }
 
@@ -1811,13 +1856,13 @@ body.admin.dark-mode .alert {
 
 .sales-filter-date-label {
     font-size: 0.8rem;
-    color: #6c757d;
+    color: var(--bs-secondary-color);
 }
 
 .revenue-number-main {
     font-size: 1.25rem;
     font-weight: 800;
-    color: #15305A;
+    color: var(--bs-body-color);
     margin-bottom: 16px;
 }
 
@@ -1842,7 +1887,7 @@ body.admin.dark-mode .alert {
 }
 
 .quick-card-title {
-    color: #15305A;
+    color: var(--bs-body-color);
     font-weight: 700;
     margin-bottom: 4px;
     font-size: 0.85rem;
@@ -1854,7 +1899,7 @@ body.admin.dark-mode .alert {
 }
 
 .quick-card-caption {
-    color: #6c757d;
+    color: var(--bs-secondary-color);
     font-size: 0.8rem;
     margin-top: 2px;
 }
@@ -1865,8 +1910,14 @@ body.admin.dark-mode .alert {
 }
 
 .best-selling-subtitle {
-    color: #6c757d;
+    color: var(--bs-secondary-color);
     font-size: 0.8rem;
+}
+
+/* Utility: consistent metric icon sizing */
+.metric-icon-box {
+    width: 48px;
+    height: 48px;
 }
 
 .best-selling-table-wrapper {
@@ -1884,6 +1935,7 @@ body.admin.dark-mode .alert {
     overflow: hidden;
     transition: transform 220ms ease, box-shadow 220ms ease;
 }
+
 .metric-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 18px 40px rgba(21, 48, 90, 0.18);
@@ -1897,7 +1949,7 @@ body.admin.dark-mode .alert {
     width: 42px;
     height: 42px;
     border-radius: 10px;
-    background-image: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
     box-shadow: inset 0 -6px 18px rgba(0, 0, 0, 0.06);
     opacity: 0.95;
     display: block;
@@ -1907,16 +1959,19 @@ body.admin.dark-mode .alert {
 
 /* colorful gradients (use main brand vars) */
 .metric-pink {
-    background: linear-gradient(135deg, rgba(232,62,140,0.95), rgba(249,178,51,0.85));
+    background: linear-gradient(135deg, rgba(232, 62, 140, 0.95), rgba(249, 178, 51, 0.85));
 }
+
 .metric-orange {
-    background: linear-gradient(135deg, rgba(253,126,20,0.95), rgba(249,178,51,0.88));
+    background: linear-gradient(135deg, rgba(253, 126, 20, 0.95), rgba(249, 178, 51, 0.88));
 }
+
 .metric-purple {
-    background: linear-gradient(135deg, #6f42c1, rgba(111,66,193,0.85));
+    background: linear-gradient(135deg, #6f42c1, rgba(111, 66, 193, 0.85));
 }
+
 .metric-teal {
-    background: linear-gradient(135deg, #20C997, rgba(32,201,151,0.85));
+    background: linear-gradient(135deg, #20C997, rgba(32, 201, 151, 0.85));
 }
 
 .metric-body {
@@ -1924,11 +1979,13 @@ body.admin.dark-mode .alert {
     gap: 12px;
     align-items: center;
 }
+
 .metric-number {
     font-size: 1.25rem;
     font-weight: 700;
     color: #fff;
 }
+
 .metric-label {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.9);
@@ -1938,17 +1995,18 @@ body.admin.dark-mode .alert {
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(21, 48, 90, 0.06);
 }
+
 .hero-yellow {
-    background: linear-gradient(180deg, rgba(249,178,51,0.08), rgba(249,178,51,0.02));
+    background: linear-gradient(180deg, rgba(249, 178, 51, 0.08), rgba(249, 178, 51, 0.02));
 }
 
 .card-blue {
-    background: linear-gradient(180deg, rgba(21,48,90,0.05), rgba(21,48,90,0.02));
+    background: linear-gradient(180deg, rgba(21, 48, 90, 0.05), rgba(21, 48, 90, 0.02));
     border-radius: 10px;
 }
 
 .sales-card-dark {
-    background: linear-gradient(180deg, rgba(21,48,90,0.06), rgba(21,48,90,0.02));
+    background: linear-gradient(180deg, rgba(21, 48, 90, 0.06), rgba(21, 48, 90, 0.02));
     border-radius: 10px;
 }
 
@@ -1956,6 +2014,7 @@ body.admin.dark-mode .alert {
     color: #ffffff;
     font-weight: 700;
 }
+
 .revenue-number {
     font-size: 1.5rem;
     font-weight: 800;
@@ -1973,6 +2032,7 @@ body.admin.dark-mode .alert {
     color: var(--beatpass-blue);
     font-weight: 700;
 }
+
 .qty-pill {
     font-size: 12px;
     color: var(--muted);
@@ -1985,13 +2045,15 @@ body.admin.dark-mode .alert {
     padding: 6px 10px;
     font-weight: 700;
 }
+
 .avatar.bg-secondary {
-    background: linear-gradient(90deg,var(--beatpass-blue), var(--beatpass-yellow));
+    background: linear-gradient(90deg, var(--beatpass-blue), var(--beatpass-yellow));
 }
 
 .chart-area {
     height: 320px;
 }
+
 .chart-area canvas {
     width: 100% !important;
     height: 100% !important;
@@ -2004,17 +2066,22 @@ body.admin.dark-mode .alert {
     flex-direction: column;
     justify-content: space-between;
 }
+
 .col-lg-4 .card .chart-area {
     height: 200px;
 }
+
 .chart-card {
     min-height: 360px;
 }
+
 @media(max-width: 991px) {
+
     /* collapse behavior for tablets */
     .col-lg-4 .card {
         margin-bottom: 12px;
     }
+
     .chart-card {
         min-height: 300px;
     }
@@ -2024,6 +2091,7 @@ body.admin.dark-mode .alert {
 .optional-card {
     transition: opacity 200ms ease, transform 220ms ease;
 }
+
 .optional-card.hidden {
     opacity: 0;
     transform: translateY(8px);

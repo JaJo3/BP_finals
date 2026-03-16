@@ -32,9 +32,9 @@ document.body.classList.add('dark-mode');
 		</script>
 		<div class="layout-container">
 			<aside class="sidebar d-flex flex-column vh-100">
-				<div class="brand text-center pt-0 pb-2">
-					<a href="{{ path('app_dashboard') }}" class="d-block text-decoration-none">
-						<img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass Logo" class="img-fluid w-100 mx-auto d-block">
+				<div class="brand d-flex justify-content-center pt-4 pb-2">
+					<a href="{{ path('app_dashboard') }}" class="d-block text-decoration-none text-start">
+						<img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass Logo" class="logo-img d-block">
 					</a>
 				</div>
 				<nav class="nav flex-column mt-1">
@@ -56,12 +56,12 @@ document.body.classList.add('dark-mode');
 							<span>Tickets</span>
 						</a>
 
-						<a href="{{ path('app_organizer_index') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 mb-2 text-white {% if app.request.get('_route') starts with 'app_organizer_' %}active{% endif %}">
+						<a href="{{ path('app_organizer_index') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 mb-2 text-white {% if app.request.get('_route') == 'app_organizer_index' or app.request.get('_route') == 'app_organizer_new' or app.request.get('_route') == 'app_organizer_show' or app.request.get('_route') == 'app_organizer_edit' or app.request.get('_route') == 'app_organizer_delete' or app.request.get('_route') == 'app_organizer_bulk_delete' %}active{% endif %}">
 							<i class="fas fa-users"></i>
 							<span>Organizers</span>
 						</a>
 
-						<a href="{{ path('app_transaction') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 mb-2 text-white {% if app.request.get('_route') starts with 'app_transaction_' %}active{% endif %}">
+						<a href="{{ path('app_transaction') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 mb-2 text-white {% if app.request.get('_route') == 'app_transaction' or app.request.get('_route') starts with 'app_transaction_' %}active{% endif %}">
 							<i class="fas fa-receipt"></i>
 							<span>Transactions</span>
 						</a>
@@ -106,7 +106,7 @@ document.body.classList.add('dark-mode');
 			</aside>
 
 			<div class="main-area w-100 d-flex flex-column bg-body">
-				<nav id="adminTopNavbar" class="navbar navbar-expand-lg navbar-light bg-light py-2 px-3 rounded-bottom">
+				<nav id="adminTopNavbar" class="navbar navbar-expand-lg bg-body-tertiary py-2 px-3 border-bottom">
 					<div class="container-fluid">
 						<div class="d-flex justify-content-between align-items-center w-100">
 							<div></div>
@@ -118,14 +118,14 @@ document.body.classList.add('dark-mode');
 										{{ "now"|date("g:i A", "Asia/Manila") }}</span>
 								</div>
 								<div class="d-flex align-items-center gap-2 gap-lg-3">
-									<button class="btn btn-sm btn-light border-0 position-relative header-icon" title="Notifications">
+									<button class="btn btn-sm btn-outline-secondary border-0 position-relative header-icon" title="Notifications">
 										<i class="fas fa-bell"></i>
 										<span class="notif-dot"></span>
 									</button>
-									<button class="btn btn-sm btn-light border-0 header-icon d-none d-md-inline-flex" title="Messages">
+									<button class="btn btn-sm btn-outline-secondary border-0 header-icon d-none d-md-inline-flex" title="Messages">
 										<i class="fas fa-envelope"></i>
 									</button>
-									<button id="themeToggle" class="btn btn-sm btn-light border-0 header-icon" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">
+									<button id="themeToggle" class="btn btn-sm btn-outline-secondary border-0 header-icon" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">
 										<i class="fas fa-moon"></i>
 									</button>
 									<div class="dropdown">
@@ -139,7 +139,7 @@ document.body.classList.add('dark-mode');
 												<i class="fas fa-caret-down ms-1 ms-md-2 small text-muted"></i>
 											{% else %}
 												<img src="https://via.placeholder.com/36" class="rounded-circle me-2 header-avatar" alt="user">
-												<span class="d-none d-md-inline text-dark header-username">Guest</span>
+												<span class="d-none d-md-inline text-body header-username">Guest</span>
 												<i class="fas fa-caret-down ms-2 small text-muted"></i>
 											{% endif %}
 										</a>
@@ -152,7 +152,7 @@ document.body.classList.add('dark-mode');
 											</li>
 										</ul>
 									</div>
-									<button class="btn btn-sm btn-light border-0 header-icon d-lg-none" id="sidebarToggle" title="Menu">
+									<button class="btn btn-sm btn-outline-secondary border-0 header-icon d-lg-none" id="sidebarToggle" title="Menu">
 										<i class="fas fa-bars"></i>
 									</button>
 								</div>
@@ -201,19 +201,9 @@ const isDark = theme === 'dark';
 if (isDark) {
 html.setAttribute('data-bs-theme', 'dark');
 body.classList.add('dark-mode');
-var topNav = document.getElementById('adminTopNavbar');
-if (topNav) {
-topNav.classList.remove('navbar-light', 'bg-light');
-topNav.classList.add('navbar-dark', 'bg-dark');
-}
 } else {
 html.removeAttribute('data-bs-theme');
 body.classList.remove('dark-mode');
-var topNav = document.getElementById('adminTopNavbar');
-if (topNav) {
-topNav.classList.remove('navbar-dark', 'bg-dark');
-topNav.classList.add('navbar-light', 'bg-light');
-}
 }
 }
 try {
@@ -343,6 +333,5 @@ document.dispatchEvent(new Event('app:load'));
 })();
 				</script>
 			{% endblock %}
-		</body>
 	</body>
 </html>

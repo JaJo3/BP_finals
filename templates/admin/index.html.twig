@@ -1,31 +1,31 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}BEATPASS Admin Dashboard
+{% block title %}Admin Dashboard
 {% endblock %}
 
 {% block body %}
 
 	<div class="row mb-4">
-			<div class="col-12">
-				<div class="mb-4">
-					<h4 class="text-primary">Welcome,
-						{% if is_granted('ROLE_ADMIN') %}Admin{% elseif is_granted('ROLE_STAFF') %}Staff{% else %}User
-						{% endif %}
-						{{ app.user.firstName|default(app.user.username) }}</h4>
+		<div class="col-12">
+			<div class="mb-4">
+				{% set displayName = app.user.firstName|default(app.user.username) %}
+				{% set roleLabel = is_granted('ROLE_ADMIN') ? 'Admin' : (is_granted('ROLE_STAFF') ? 'Staff' : 'User') %}
+
+				<div class="d-flex flex-column gap-1">
+					<h3 class="mb-0 text-body fw-bold">Welcome back, {{ displayName }}.</h3>
+					<div class="text-body-secondary small">Signed in as {{ roleLabel }} · {{ "now"|date("F j, Y", "Asia/Manila") }}</div>
 				</div>
 			</div>
 		</div>
+	</div>
 
 	<div class="container-fluid text-body">
 		<div class="row mb-3">
 			<div class="col-12">
 				<div class="d-flex align-items-center justify-content-between admin-topbar">
 					<div class="dashboard-header">
-						<div class="title">BEATPASS Admin Dashboard</div>
-					</div>
-					<div>
-						<a href="{{ path('app_dashboard') }}" class="btn btn-sm btn-beatpass-primary">Refresh</a>
-					</div>
+						<div class="title">Admin Dashboard</div>
+					</div>					
 				</div>
 			</div>
 		</div>
@@ -34,8 +34,8 @@
 			<div class="col-6 col-md-3">
 				<div class="metric-card metric-pink h-100">
 					<div class="metric-body">
-						<div class="metric-left position-relative d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
-							<i class="fas fa-users" style="font-size: 1.3rem; color: #fff;"></i>
+						<div class="metric-left metric-icon-box d-flex align-items-center justify-content-center rounded-3 bg-white bg-opacity-10">
+							<i class="fas fa-users text-white fs-5"></i>
 						</div>
 						<div class="metric-right">
 							<div class="metric-number">{{ data.stats.totalUsers|default(0)|number_format(0, '.', ',') }}</div>
@@ -48,8 +48,8 @@
 			<div class="col-6 col-md-3">
 				<div class="metric-card metric-orange h-100">
 					<div class="metric-body">
-						<div class="metric-left position-relative d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
-							<i class="fas fa-user-tie" style="font-size: 1.3rem; color: #fff;"></i>
+						<div class="metric-left metric-icon-box d-flex align-items-center justify-content-center rounded-3 bg-white bg-opacity-10">
+							<i class="fas fa-user-tie text-white fs-5"></i>
 						</div>
 						<div class="metric-right">
 							<div class="metric-number">{{ data.stats.totalStaff|default(0)|number_format(0, '.', ',') }}</div>
@@ -62,8 +62,8 @@
 			<div class="col-6 col-md-3">
 				<div class="metric-card metric-purple h-100">
 					<div class="metric-body">
-						<div class="metric-left d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
-							<i class="fas fa-database" style="font-size: 1.3rem; color: #fff;"></i>
+						<div class="metric-left metric-icon-box d-flex align-items-center justify-content-center rounded-3 bg-white bg-opacity-10">
+							<i class="fas fa-database text-white fs-5"></i>
 						</div>
 						<div class="metric-right">
 							<div class="metric-number">{{ data.stats.totalRecords|default(0)|number_format(0, '.', ',') }}</div>
@@ -76,8 +76,8 @@
 			<div class="col-6 col-md-3">
 				<div class="metric-card metric-teal h-100">
 					<div class="metric-body">
-						<div class="metric-left d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
-							<i class="fas fa-receipt" style="font-size: 1.3rem; color: #fff;"></i>
+						<div class="metric-left metric-icon-box d-flex align-items-center justify-content-center rounded-3 bg-white bg-opacity-10">
+							<i class="fas fa-receipt text-white fs-5"></i>
 						</div>
 						<div class="metric-right">
 							<div class="metric-number">{{ data.stats.totalTransactions|default(0)|number_format(0, '.', ',') }}</div>
@@ -94,10 +94,10 @@
 			class="row g-3 mb-4">
 			{# Sales Revenue - spans 2 columns #}
 			<div class="col-lg-6">
-				<div class="card p-4 admin-dashboard-card h-100 bg-body border border-secondary">
+				<div class="card p-4 admin-dashboard-card h-100 bg-body border border-secondary-subtle">
 					<div class="d-flex justify-content-between align-items-center mb-2">
 						<div>
-							<div style="color: #15305A; font-weight: 700;">Sales Revenue</div>
+							<div class="fw-semibold text-body">Sales Revenue</div>
 							<div id="sales-filter-summary" class="sales-filter-summary">All events · This year</div>
 						</div>
 						<div class="d-flex align-items-center gap-2">
@@ -134,8 +134,8 @@
 
 			{# Ticket Distribution - spans 1 column #}
 			<div class="col-lg-3">
-				<div class="card p-4 admin-dashboard-card h-100 bg-body border border-secondary">
-					<div style="color: #15305A; font-weight: 700; margin-bottom: 16px; font-size: 0.95rem;">Ticket Distribution</div>
+				<div class="card p-4 admin-dashboard-card h-100 bg-body border border-secondary-subtle">
+					<div class="fw-semibold text-body mb-3 small">Ticket Distribution</div>
 					<div class="chart-area admin-dashboard-chart">
 						<canvas id="pieChart"></canvas>
 					</div>
@@ -146,7 +146,7 @@
 			<div
 				class="col-lg-3 d-flex flex-column" style="gap: 12px;">
 				{# This Week Stats #}
-				<div class="card p-3 quick-card-week flex-shrink-0">
+				<div class="card p-3 quick-card-week flex-shrink-0 bg-body border border-secondary-subtle">
 					<div class="quick-card-title">This Week</div>
 					<div class="d-flex align-items-baseline justify-content-between">
 						<div class="quick-card-value" style="color: #20C997;">45k pcs</div>
@@ -159,7 +159,7 @@
 				</div>
 
 				{# Increase Stats #}
-				<div class="card p-3 quick-card-conversion flex-shrink-0">
+				<div class="card p-3 quick-card-conversion flex-shrink-0 bg-body border border-secondary-subtle">
 					<div class="quick-card-title">Conversion</div>
 					<div class="d-flex align-items-baseline justify-content-between">
 						<div class="quick-card-value" style="color: #F9B233;">+25%</div>
@@ -172,8 +172,8 @@
 				</div>
 
 				{# Best Selling Stats #}
-				<div class="card p-3 quick-card-best-selling flex-grow-1">
-					<div style="color: #15305A; font-weight: 700; margin-bottom: 12px; font-size: 0.85rem;">Best Selling</div>
+				<div class="card p-3 quick-card-best-selling flex-grow-1 bg-body border border-secondary-subtle">
+					<div class="fw-semibold text-body mb-2 small">Best Selling</div>
 					<div class="chart-area admin-dashboard-chart-sm">
 						<canvas id="bestSellingChart"></canvas>
 					</div>
@@ -186,10 +186,10 @@
 			class="row g-3 mb-4">
 			{# Best Selling Performance - spans full width on large screens #}
 			<div class="col-12">
-				<div class="card p-4 best-selling-wrapper bg-body border border-secondary">
+				<div class="card p-4 best-selling-wrapper bg-body border border-secondary-subtle">
 					<div class="d-flex justify-content-between align-items-center mb-3">
 						<div>
-							<div style="color: #15305A; font-weight: 700; font-size: 0.95rem;">Best Selling</div>
+							<div class="fw-semibold text-body">Best Selling</div>
 							<div class="best-selling-subtitle">Top events & ticket types by sales and revenue</div>
 						</div>
 						<div class="btn-group btn-group-sm" role="group" aria-label="Best selling date range">
@@ -449,14 +449,19 @@ const yearFilterEl = document.getElementById('sales-year-filter');
 const dateFromEl = document.getElementById('sales-date-from');
 const dateToEl = document.getElementById('sales-date-to');
 
+const rootStyles = getComputedStyle(document.documentElement);
+const bodyStyles = getComputedStyle(document.body);
+const bodyColor = bodyStyles.getPropertyValue('color') || rootStyles.getPropertyValue('--bs-body-color') || '#15305A';
+const secondaryColor = rootStyles.getPropertyValue('--bs-secondary-color') || 'rgba(148,163,184,0.8)';
+
 // Golden gradient fill under the line
 const gradient = ctx.createLinearGradient(0, 0, 0, 340);
 gradient.addColorStop(0, 'rgba(249,178,51,0.28)');
 gradient.addColorStop(0.5, 'rgba(249,178,51,0.10)');
 gradient.addColorStop(1, 'rgba(249,178,51,0.00)');
 
-const lineColor = getComputedStyle(document.documentElement).getPropertyValue('--beatpass-yellow').trim() || '#F9B233';
-const labelGray = 'rgba(255,255,255,0.65)';
+const lineColor = rootStyles.getPropertyValue('--beatpass-yellow').trim() || '#F9B233';
+const labelGray = secondaryColor.trim() || 'rgba(148,163,184,0.8)';
 
 const labels = [
 'Jan',
@@ -533,13 +538,13 @@ const y = yScale.getPixelForValue(currentYearValues[targetIndex]);
 ctx.save();
 // faint vertical marker for October
 ctx.beginPath();
-ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+ctx.strokeStyle = secondaryColor.replace('0.8', '0.10') || 'rgba(148,163,184,0.10)';
 ctx.lineWidth = 1;
 ctx.moveTo(x, yScale.top);
 ctx.lineTo(x, yScale.bottom);
 ctx.stroke();
 // outer white dot and inner gold dot
-ctx.fillStyle = '#ffffff';
+ctx.fillStyle = bodyColor;
 ctx.beginPath();
 ctx.arc(x, y, 5, 0, Math.PI * 2);
 ctx.fill();
@@ -548,7 +553,7 @@ ctx.beginPath();
 ctx.arc(x, y, 3, 0, Math.PI * 2);
 ctx.fill();
 // draw the month label more prominently at the bottom
-ctx.fillStyle = '#ffffff';
+ctx.fillStyle = bodyColor;
 ctx.font = '600 12px sans-serif';
 ctx.textAlign = 'center';
 const labelY = chart.height - 8;
@@ -583,13 +588,13 @@ const y = el.y;
 ctx.save();
 // vertical line
 ctx.beginPath();
-ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+ctx.strokeStyle = secondaryColor.replace('0.8', '0.12') || 'rgba(148,163,184,0.12)';
 ctx.lineWidth = 1;
 ctx.moveTo(x, yScale.top);
 ctx.lineTo(x, yScale.bottom);
 ctx.stroke();
 // outer white circle
-ctx.fillStyle = '#ffffff';
+ctx.fillStyle = bodyColor;
 ctx.beginPath();
 ctx.arc(x, y, 6, 0, Math.PI * 2);
 ctx.fill();
@@ -680,7 +685,7 @@ y: {
 min: 200000,
 max: 1000000,
 grid: {
-color: 'rgba(255,255,255,0.06)',
+color: secondaryColor.replace('0.8', '0.06') || 'rgba(148,163,184,0.06)',
 drawBorder: false,
 drawOnChartArea: true
 },
@@ -767,7 +772,7 @@ datasets: [
 data: [
 55, 30, 15
 ],
-backgroundColor: ['#15305A', '#F9B233', '#e9ecef']
+backgroundColor: [bodyColor, lineColor, rootStyles.getPropertyValue('--bs-border-color') || '#e9ecef']
 }
 ]
 },
@@ -777,7 +782,7 @@ plugins: {
 legend: {
 position: 'bottom',
 labels: {
-color: '#15305A',
+color: bodyColor,
 font: {
 weight: '600'
 },
@@ -804,7 +809,7 @@ datasets: [
 data: [
 120, 90, 75, 60
 ],
-backgroundColor: '#15305A',
+backgroundColor: bodyColor,
 borderRadius: 8,
 borderSkipped: false
 }
@@ -820,18 +825,18 @@ display: false
 scales: {
 x: {
 ticks: {
-color: '#15305A',
+color: bodyColor,
 font: {
 weight: '600'
 }
 },
 grid: {
-color: 'rgba(21,48,90,0.1)'
+color: secondaryColor.replace('0.8', '0.1') || 'rgba(148,163,184,0.1)'
 }
 },
 y: {
 ticks: {
-color: '#15305A',
+color: bodyColor,
 font: {
 weight: '600'
 }

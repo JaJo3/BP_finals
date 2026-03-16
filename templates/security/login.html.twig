@@ -1,65 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in{% endblock %}
+{% block title %}Log in
+{% endblock %}
 
 {% block body %}
-	<div class="d-flex align-items-center justify-content-center min-vh-100 p-3 py-4 py-lg-5" style="background: linear-gradient(160deg, #eef2f7 0%, #e0e7ef 40%, #d4dce8 100%);">
-		<div class="card border-0 shadow-sm" style="max-width: 440px; width: 95%; background: #fff; border-radius: 14px; padding: 2rem 2.25rem;">
-			<div class="card-body p-0">
+	<div class="d-flex vh-100 align-items-center justify-content-center w-100" style="background: linear-gradient(160deg, #eef2f7 0%, #e0e7ef 40%, #d4dce8 100%);">
+		<div
+			class="card border-0 shadow-sm rounded-3" style="max-width: 400px; width: 95%;">
+			{# Header: Logo and "Log in" text stacked vertically #}
+			<div class="d-flex flex-column align-items-center justify-content-center gap-2 pt-4 pb-3 px-4 border-bottom">
+				<img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass" class="d-block" style="width: 120px; height: auto;">
+				<h1 class="m-0 fw-bold" style="font-size: 1.5rem; color: #1A3D7C;">Log in</h1>
+			</div>
 
-				{# 1. BeatPass logo - tight spacing to heading #}
-				<div class="text-center p-0 mb-2">
-					<img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass" class="d-block mx-auto" style="width: 140px; height: auto; max-height: 200px; padding: 0; border: none;">
-				</div>
-
-				{# 2. Log in heading - sits close to logo #}
-				<h1 class="text-center mb-3 mt-0 fw-bold" style="font-size: 1.75rem; color: #1A3D7C;">Log in</h1>
-
+			<div class="card-body p-4">
 				{% if error is defined and error %}
-					<div class="alert alert-danger small mb-2">{{ error }}</div>
+					<div class="alert alert-danger small mb-3">{{ error }}</div>
 				{% endif %}
 
 				<form method="post" action="{{ path('app_login') }}" novalidate>
-					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+					<input
+					type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-					{# 3. Email input #}
-					<div class="mb-2">
+					{# Email input #}
+					<div class="mb-3">
 						<label for="username" class="form-label small mb-1" style="color: #374151;">Email</label>
-						<input id="username" name="username" type="email" value="{{ last_username|default('') }}"
-							class="form-control" required autocomplete="email"
-							style="border: 1px solid #E5E7EB; border-radius: 8px; padding: 0.6rem 0.75rem;">
+						<input id="username" name="username" type="email" value="{{ last_username|default('') }}" class="form-control form-control-sm" required autocomplete="email">
 					</div>
 
-					{# 4. Password input (eye toggle injected by base.html.twig) #}
-					<div class="mb-1">
+					{# Password input #}
+					<div class="mb-3">
 						<label for="password" class="form-label small mb-1" style="color: #374151;">Password</label>
-						<input id="password" name="password" type="password" class="form-control" required autocomplete="current-password"
-							style="border: 1px solid #E5E7EB; border-radius: 8px; padding: 0.6rem 0.75rem;">
+						<input id="password" name="password" type="password" class="form-control form-control-sm" required autocomplete="current-password">
 					</div>
 
-					{# 5. Forgot Password link #}
-					<div class="text-end mb-2">
-						<a href="#" style="color: #3B82F6; font-size: 0.875rem; text-decoration: none;">Forgot Password?</a>
+					{# Forgot Password link #}
+					<div class="text-end mb-3">
+						<a href="#" class="small text-primary text-decoration-none">Forgot Password?</a>
 					</div>
 
-					{# 6. Log in button #}
-					<div class="d-grid mb-2">
-						<button type="submit" class="btn btn-lg py-2 fw-semibold" style="background-color: #1A3D7C; color: #fff; border: none; border-radius: 8px;">
+					{# Log in button #}
+					<div class="d-grid mb-3">
+						<button type="submit" class="btn btn-lg fw-semibold" style="background-color: #1A3D7C; color: #fff; border: none;">
 							Log in
 						</button>
 					</div>
 
-					{# 7. Sign up prompt #}
-					<div class="text-center small mb-1" style="color: #6B7280;">
+					{# Sign up prompt #}
+					<div class="text-center small mb-3" style="color: #6B7280;">
 						Don't have an account?
-						<a href="{{ path('app_register') }}" style="color: #3B82F6; text-decoration: none; font-weight: 500;">Sign Up</a>
+						<a href="{{ path('app_register') }}" class="text-primary text-decoration-none fw-500">Sign Up</a>
 					</div>
 
-					{# 8. Terms & Privacy (optional) #}
+					{# Terms & Privacy #}
 					<div class="text-center" style="font-size: 0.75rem; color: #9CA3AF;">
-						<a href="#" style="color: #9CA3AF; text-decoration: none;">Terms</a>
+						<a href="#" class="text-secondary text-decoration-none">Terms</a>
 						<span class="mx-1">·</span>
-						<a href="#" style="color: #9CA3AF; text-decoration: none;">Privacy</a>
+						<a href="#" class="text-secondary text-decoration-none">Privacy</a>
 					</div>
 				</form>
 			</div>

@@ -4,7 +4,24 @@
 {% endblock %}
 
 {% block body %}
-	<div class="content-wrapper">
+	{% set paidCount = 0 %}
+	{% set pendingCount = 0 %}
+	{% set refundedCount = 0 %}
+	{% set failedCount = 0 %}
+	{% for txc in transactions|default([]) %}
+		{% set st = txc.paymentStatus|default('') %}
+		{% if st == 'paid' %}
+			{% set paidCount = paidCount + 1 %}
+		{% elseif st == 'pending' %}
+			{% set pendingCount = pendingCount + 1 %}
+		{% elseif st == 'refunded' %}
+			{% set refundedCount = refundedCount + 1 %}
+		{% else %}
+			{% set failedCount = failedCount + 1 %}
+		{% endif %}
+	{% endfor %}
+
+	<div class="content-wrapper content-wrapper--tight">
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<h1 class="h3 mb-0 d-flex align-items-center" style="color: #1A3D7C; font-weight: 700; gap: 12px;">
 				<i class="fas fa-exchange-alt me-2;" style="color: #F9B233;"></i>
@@ -21,10 +38,26 @@
 
 		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
 			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
-				<h3 class="card-title mb-0" style="font-weight: 600;">
-					<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Transactions
-					<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ transactions|default([])|length }}</span>
-				</h3>
+				<div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
+					<div class="d-flex align-items-center gap-3 flex-wrap">
+						<h3 class="card-title mb-0" style="font-weight: 600;">
+							<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Transactions
+							<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ transactions|default([])|length }}</span>
+						</h3>
+						<div class="beatpass-pillbar">
+							<span class="beatpass-pill">Paid: {{ paidCount }}</span>
+							<span class="beatpass-pill">Pending: {{ pendingCount }}</span>
+							<span class="beatpass-pill">Refunded: {{ refundedCount }}</span>
+							<span class="beatpass-pill">Other: {{ failedCount }}</span>
+						</div>
+					</div>
+					<div class="d-flex align-items-center gap-2">
+						<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
+							<input class="form-check-input m-0" type="checkbox" id="toggleTransactionsActions" role="switch" aria-label="Show actions column">
+							<label class="form-check-label small text-white-50" for="toggleTransactionsActions" style="user-select:none;">Show actions</label>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
@@ -38,7 +71,7 @@
 								<th class="col-status text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:10%">Status</th>
 								<th class="col-method text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:10%">Method</th>
 								<th class="col-created text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:14%">Created</th>
-								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center" style="width:10%">Actions</th>
+								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center d-none" style="width:10%">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -53,18 +86,19 @@
 									<td class="col-amount text-end align-middle text-truncate py-1 px-2" data-order="{{ tx.totalAmount }}" style="text-align: right; width:10%">₱{{ tx.totalAmount|number_format(2, '.', ',') }}</td>
 									<td class="col-status align-middle text-center py-1 px-2">
 										{% set status = tx.paymentStatus %}
-										<span class="small fw-semibold
-											{% if status == 'paid' %} text-success
-											{% elseif status == 'pending' %} text-warning
-											{% elseif status == 'refunded' %} text-secondary
-											{% else %} text-danger
-											{% endif %}">
-											{{ status|upper }}
-										</span>
+										{% if status == 'paid' %}
+											<span class="badge rounded-pill bg-success bg-opacity-10 text-success small fw-semibold px-3 py-2">PAID</span>
+										{% elseif status == 'pending' %}
+											<span class="badge rounded-pill bg-warning bg-opacity-10 text-warning small fw-semibold px-3 py-2">PENDING</span>
+										{% elseif status == 'refunded' %}
+											<span class="badge rounded-pill bg-secondary bg-opacity-10 text-secondary small fw-semibold px-3 py-2">REFUNDED</span>
+										{% else %}
+											<span class="badge rounded-pill bg-danger bg-opacity-10 text-danger small fw-semibold px-3 py-2">{{ status ? status|upper : '—' }}</span>
+										{% endif %}
 									</td>
 									<td class="col-method align-middle text-truncate py-1 px-2">{{ tx.paymentMethod ?? '—' }}</td>
 									<td class="col-created text-end align-middle text-truncate py-1 px-2" data-order="{{ tx.createdAt ? tx.createdAt.format('Y-m-d H:i') : '' }}" style="text-align: right">{{ tx.createdAt ? tx.createdAt.format('Y-m-d H:i') : '—' }}</td>
-									<td class="actions text-center align-middle">
+									<td class="actions text-center align-middle d-none">
 										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
 											<button class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded view-transaction-btn" data-id="{{ tx.id }}" data-csrf="{{ csrf_token('transaction_action_' ~ tx.id) }}" title="View details" style="width:32px;height:32px;font-size:12px;">
 												<i class="fas fa-eye"></i>
@@ -139,7 +173,7 @@ var tableBody = $('#transactionTable tbody');
 var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
 
 if (hasDataRows) {
-$('#transactionTable').DataTable({
+var dt = $('#transactionTable').DataTable({
 responsive: true,
 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 pageLength: 10,
@@ -173,6 +207,32 @@ targets: 6
 order: [
 [6, 'desc']
 ]
+});
+
+function setActionsVisible(visible) {
+$('#transactionTable thead th.actions').toggleClass('d-none', !visible);
+$('#transactionTable tbody td.actions').toggleClass('d-none', !visible);
+try {
+localStorage.setItem('transactions.showActions', visible ? '1' : '0');
+} catch (e) {}
+}
+
+try {
+var stored = localStorage.getItem('transactions.showActions');
+var initialVisible = stored === '1';
+$('#toggleTransactionsActions').prop('checked', initialVisible);
+setActionsVisible(initialVisible);
+} catch (e) {
+$('#toggleTransactionsActions').prop('checked', false);
+setActionsVisible(false);
+}
+
+$('#toggleTransactionsActions').on('change', function () {
+setActionsVisible($(this).is(':checked'));
+});
+
+dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
+setActionsVisible($('#toggleTransactionsActions').is(':checked'));
 });
 }
 

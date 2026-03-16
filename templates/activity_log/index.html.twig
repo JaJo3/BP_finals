@@ -3,7 +3,29 @@
 {% endblock %}
 
 {% block body %}
-	<div class="content-wrapper">
+	{% set createCount = 0 %}
+	{% set updateCount = 0 %}
+	{% set deleteCount = 0 %}
+	{% set loginCount = 0 %}
+	{% set logoutCount = 0 %}
+	{% set otherCount = 0 %}
+	{% for l in logs|default([]) %}
+		{% if l.action == 'Create' %}
+			{% set createCount = createCount + 1 %}
+		{% elseif l.action == 'Update' %}
+			{% set updateCount = updateCount + 1 %}
+		{% elseif l.action == 'Delete' %}
+			{% set deleteCount = deleteCount + 1 %}
+		{% elseif l.action == 'Login' %}
+			{% set loginCount = loginCount + 1 %}
+		{% elseif l.action == 'Logout' %}
+			{% set logoutCount = logoutCount + 1 %}
+		{% else %}
+			{% set otherCount = otherCount + 1 %}
+		{% endif %}
+	{% endfor %}
+
+	<div class="content-wrapper content-wrapper--tight">
 		<div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
 			<div class="card-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
 				<div class="d-flex align-items-center">
@@ -23,9 +45,20 @@
 						<i class="fas fa-filter me-2"></i>Filters
 					</button>
 				</div>
-				<div class="text-muted small d-flex align-items-center gap-2">
-					<span class="badge bg-light text-dark" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 700;">{{ total|default(logs|length) }}
-						items</span>
+				<div class="d-flex align-items-center gap-2 flex-wrap">
+					<div class="beatpass-pillbar">
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Create: {{ createCount }}</span>
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Update: {{ updateCount }}</span>
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Delete: {{ deleteCount }}</span>
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Login: {{ loginCount }}</span>
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Logout: {{ logoutCount }}</span>
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Other: {{ otherCount }}</span>
+					</div>
+					<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
+						<input class="form-check-input m-0" type="checkbox" id="toggleActivityLogsActions" role="switch" aria-label="Show actions column">
+						<label class="form-check-label small text-muted" for="toggleActivityLogsActions" style="user-select:none;">Show actions</label>
+					</div>
+					<span class="badge bg-light text-dark" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 700;">{{ total|default(logs|length) }} items</span>
 				</div>
 			</div>
 
@@ -77,7 +110,7 @@
 								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2" style="color: #1A3D7C;">Module</th>
 								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2" style="color: #1A3D7C;">Date & Time</th>
 								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2" style="color: #1A3D7C;">Status</th>
-								<th class="text-center text-nowrap small fw-bold text-uppercase py-1 px-2" style="color: #1A3D7C;">Actions</th>
+								<th class="actions text-center text-nowrap small fw-bold text-uppercase py-1 px-2 d-none" style="color: #1A3D7C;">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -92,9 +125,9 @@
 											{# Show role badge for staff/admin actors #}
 											{% set roles = log.user.getRoles() %}
 											{% if 'ROLE_ADMIN' in roles %}
-												<div class="small mt-1 fw-semibold text-muted">Admin</div>
+												<span class="badge rounded-pill bg-primary bg-opacity-10 text-primary small fw-semibold px-3 py-2 mt-1">Admin</span>
 											{% elseif 'ROLE_STAFF' in roles %}
-												<div class="small mt-1 fw-semibold text-muted">Staff</div>
+												<span class="badge rounded-pill bg-warning bg-opacity-10 text-warning small fw-semibold px-3 py-2 mt-1">Staff</span>
 											{% endif %}
 										</td>
 										<td class="align-middle py-1 px-2">
@@ -127,17 +160,22 @@
 										<td class="text-nowrap align-middle py-1 px-2">
 											<small class="text-muted">{{ log.createdAt|date('M d, Y h:i A') }}</small>
 										</td>
-										<td class="align-middle py-1 px-2 small fw-semibold">
-											{% if log.action == 'Create' %}Completed
-												{% elseif log.action == 'Update' %}Updated
-												{% elseif log.action == 'Delete' %}Deleted
-												{% elseif log.action == 'Login' %}Login
-												{% elseif log.action == 'Logout' %}Logout
+										<td class="align-middle py-1 px-2">
+											{% if log.action == 'Create' %}
+												<span class="badge rounded-pill bg-success bg-opacity-10 text-success small fw-semibold px-3 py-2">Completed</span>
+											{% elseif log.action == 'Update' %}
+												<span class="badge rounded-pill bg-info bg-opacity-10 text-info small fw-semibold px-3 py-2">Updated</span>
+											{% elseif log.action == 'Delete' %}
+												<span class="badge rounded-pill bg-danger bg-opacity-10 text-danger small fw-semibold px-3 py-2">Deleted</span>
+											{% elseif log.action == 'Login' %}
+												<span class="badge rounded-pill bg-primary bg-opacity-10 text-primary small fw-semibold px-3 py-2">Login</span>
+											{% elseif log.action == 'Logout' %}
+												<span class="badge rounded-pill bg-secondary bg-opacity-10 text-secondary small fw-semibold px-3 py-2">Logout</span>
 											{% else %}
-												{{ log.action }}
+												<span class="badge rounded-pill bg-secondary bg-opacity-10 text-secondary small fw-semibold px-3 py-2">{{ log.action }}</span>
 											{% endif %}
 										</td>
-										<td class="text-center align-middle py-1 px-2">
+										<td class="actions text-center align-middle py-1 px-2 d-none">
 											<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
 												<a href="{{ path('app_activity_log_show', {'id': log.id}) }}" class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded" title="View Details" style="width:32px;height:32px;font-size:12px;">
 													<i class="fas fa-eye"></i>
@@ -180,7 +218,7 @@ var tableBody = $('#activityLogsTable tbody');
 var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
 
 if (hasDataRows) {
-$('#activityLogsTable').DataTable({
+var dt = $('#activityLogsTable').DataTable({
 responsive: true,
 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 pageLength: 10,
@@ -207,6 +245,32 @@ searchable: false,
 targets: -1
 }
 ]
+});
+
+function setActionsVisible(visible) {
+$('#activityLogsTable thead th.actions').toggleClass('d-none', !visible);
+$('#activityLogsTable tbody td.actions').toggleClass('d-none', !visible);
+try {
+localStorage.setItem('activityLogs.showActions', visible ? '1' : '0');
+} catch (e) {}
+}
+
+try {
+var stored = localStorage.getItem('activityLogs.showActions');
+var initialVisible = stored === '1';
+$('#toggleActivityLogsActions').prop('checked', initialVisible);
+setActionsVisible(initialVisible);
+} catch (e) {
+$('#toggleActivityLogsActions').prop('checked', false);
+setActionsVisible(false);
+}
+
+$('#toggleActivityLogsActions').on('change', function () {
+setActionsVisible($(this).is(':checked'));
+});
+
+dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
+setActionsVisible($('#toggleActivityLogsActions').is(':checked'));
 });
 }
 });

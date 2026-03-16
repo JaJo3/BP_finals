@@ -4,7 +4,17 @@
 {% endblock %}
 
 {% block body %}
-	<div class="content-wrapper">
+	{% set availableCount = 0 %}
+	{% set soldOutCount = 0 %}
+	{% for t in tickets %}
+		{% if t.quantity > 0 %}
+			{% set availableCount = availableCount + 1 %}
+		{% else %}
+			{% set soldOutCount = soldOutCount + 1 %}
+		{% endif %}
+	{% endfor %}
+
+	<div class="content-wrapper content-wrapper--tight">
 
 
 		<div class="d-flex justify-content-between align-items-center mb-4">
@@ -19,10 +29,24 @@
 		<!-- Tickets Table -->
 		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
 			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
-				<h3 class="card-title mb-0" style="font-weight: 600;">
-					<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Tickets
-					<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ tickets|length }}</span>
-				</h3>
+				<div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
+					<div class="d-flex align-items-center gap-3 flex-wrap">
+						<h3 class="card-title mb-0" style="font-weight: 600;">
+							<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Tickets
+							<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ tickets|length }}</span>
+						</h3>
+						<div class="beatpass-pillbar">
+							<span class="beatpass-pill">Available: {{ availableCount }}</span>
+							<span class="beatpass-pill">Sold out: {{ soldOutCount }}</span>
+						</div>
+					</div>
+					<div class="d-flex align-items-center gap-2">
+						<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
+							<input class="form-check-input m-0" type="checkbox" id="toggleTicketsActions" role="switch" aria-label="Show actions column">
+							<label class="form-check-label small text-white-50" for="toggleTicketsActions" style="user-select:none;">Show actions</label>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
@@ -34,7 +58,7 @@
 								<th class="col-price text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:15%">Price</th>
 								<th class="col-quantity text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:15%">Quantity</th>
 								<th class="col-status text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:15%">Status</th>
-								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center" style="width:15%">Actions</th>
+								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center d-none" style="width:15%">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -53,11 +77,13 @@
 										{{ ticket.quantity }}
 									</td>
 									<td class="col-status align-middle text-center py-1 px-2">
-										<span class="small fw-semibold {% if ticket.quantity > 0 %}text-success{% else %}text-danger{% endif %}">
-											{{ ticket.quantity > 0 ? 'Available' : 'Sold Out' }}
-										</span>
+										{% if ticket.quantity > 0 %}
+											<span class="badge rounded-pill bg-success bg-opacity-10 text-success small fw-semibold px-3 py-2">Available</span>
+										{% else %}
+											<span class="badge rounded-pill bg-danger bg-opacity-10 text-danger small fw-semibold px-3 py-2">Sold out</span>
+										{% endif %}
 									</td>
-									<td class="actions text-center align-middle">
+									<td class="actions text-center align-middle d-none">
 										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
 											<a href="{{ path('admin_ticket_show', {'id': ticket.id}) }}" class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded" style="width:32px;height:32px;font-size:12px;" title="View">
 												<i class="fas fa-eye"></i>
@@ -107,7 +133,7 @@ var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').firs
 
 if (hasDataRows) { // Prevent double-init by checking if DataTable already exists
 if (! $.fn.DataTable.isDataTable('#ticketsTable')) {
-$('#ticketsTable').DataTable({
+var dt = $('#ticketsTable').DataTable({
 responsive: true,
 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 pageLength: 10,
@@ -132,6 +158,32 @@ searchable: false,
 targets: -1
 }
 ]
+});
+
+function setActionsVisible(visible) {
+$('#ticketsTable thead th.actions').toggleClass('d-none', !visible);
+$('#ticketsTable tbody td.actions').toggleClass('d-none', !visible);
+try {
+localStorage.setItem('tickets.showActions', visible ? '1' : '0');
+} catch (e) {}
+}
+
+try {
+var stored = localStorage.getItem('tickets.showActions');
+var initialVisible = stored === '1';
+$('#toggleTicketsActions').prop('checked', initialVisible);
+setActionsVisible(initialVisible);
+} catch (e) {
+$('#toggleTicketsActions').prop('checked', false);
+setActionsVisible(false);
+}
+
+$('#toggleTicketsActions').on('change', function () {
+setActionsVisible($(this).is(':checked'));
+});
+
+dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
+setActionsVisible($('#toggleTicketsActions').is(':checked'));
 });
 }
 }
