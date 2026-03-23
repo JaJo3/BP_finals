@@ -1,93 +1,340 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-        {% endblock %}
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+		{% block stylesheets %}
+			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+			<style>:root
+			{
+				--brand-primary: #1A3D7C;
+				--brand-accent: #F9B233;
+				--brand-primary-600: #153266;
+			}
+			html {
+				scroll-behavior: smooth;
+			}
+			section[id] {
+				scroll-margin-top: 84px;
+			}
+			.bg-brand {
+				background-color: var(--brand-primary) !important;
+			}
+			.text-brand {
+				color: var(--brand-primary) !important;
+			}
+			.bg-brand-gradient {
+				background: radial-gradient(800px 300px at 20% 10%, rgba(249, 178, 51, 0.20), rgba(249, 178, 51, 0)), radial-gradient(700px 280px at 80% 15%, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0)), linear-gradient(180deg, var(--brand-primary), #102a55);
+			}
 
-        {% block javascripts %}
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-            <script>
-                (function(){
-                    const DEBOUNCE_MS = 700;
-                    function attachPasswordToggles(root){
-                        root = root || document;
-                        const inputs = root.querySelectorAll('input[type="password"]');
-                        inputs.forEach(function(input){
-                            if (input.dataset.pwToggleAttached) return;
-                            input.dataset.pwToggleAttached = '1';
+			.btn-brand {
+				--bs-btn-bg: var(--brand-primary);
+				--bs-btn-border-color: var(--brand-primary);
+				--bs-btn-hover-bg: var(--brand-primary-600);
+				--bs-btn-hover-border-color: var(--brand-primary-600);
+				--bs-btn-color: #fff;
+			}
+			.btn-accent {
+				--bs-btn-bg: var(--brand-accent);
+				--bs-btn-border-color: var(--brand-accent);
+				--bs-btn-hover-bg: #e7a127;
+				--bs-btn-hover-border-color: #e7a127;
+				--bs-btn-color: #151515;
+				--bs-btn-hover-color: #151515;
+				--bs-btn-active-bg: #d89420;
+				--bs-btn-active-border-color: #d89420;
+			}
+			.btn-outline-brand {
+				--bs-btn-color: #fff;
+				--bs-btn-border-color: rgba(255, 255, 255, 0.55);
+				--bs-btn-hover-bg: rgba(255, 255, 255, 0.10);
+				--bs-btn-hover-border-color: rgba(255, 255, 255, 0.85);
+				--bs-btn-hover-color: #fff;
+				--bs-btn-active-bg: rgba(255, 255, 255, 0.16);
+				--bs-btn-active-border-color: rgba(255, 255, 255, 0.9);
+			}
+			.btn-outline-accent {
+				--bs-btn-color: var(--brand-accent);
+				--bs-btn-border-color: rgba(249, 178, 51, 0.85);
+				--bs-btn-hover-bg: rgba(249, 178, 51, 0.15);
+				--bs-btn-hover-border-color: rgba(249, 178, 51, 1);
+				--bs-btn-hover-color: var(--brand-accent);
+			}
+			.btn-pill {
+				border-radius: 999px !important;
+			}
+			.btn-cta {
+				font-weight: 600;
+				transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
+				will-change: transform;
+			}
+			.btn-cta:hover {
+				transform: translateY(-1px) scale(1.02);
+			}
+			.btn-cta:active {
+				transform: translateY(0) scale(0.99);
+			}
 
-                            const wrapper = document.createElement('div');
-                            wrapper.style.position = 'relative';
-                            input.parentNode.insertBefore(wrapper, input);
-                            wrapper.appendChild(input);
-                            input.style.paddingRight = '40px';
+			/* Enhanced Navbar Styling */
+			.navbar {
+				transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+				border-bottom-width: 1px;
+				border-bottom-color: rgba(26, 61, 124, 0);
+			}
 
-                            const btn = document.createElement('button');
-                            btn.type = 'button';
-                            btn.setAttribute('aria-label', 'Toggle password visibility');
-                            btn.style.position = 'absolute';
-                            btn.style.top = '50%';
-                            btn.style.transform = 'translateY(-50%)';
-                            btn.style.right = '10px';
-                            btn.style.border = 'none';
-                            btn.style.background = 'transparent';
-                            btn.style.padding = '4px';
-                            btn.style.cursor = 'pointer';
-                            btn.style.color = '#6c757d';
-                            btn.style.fontSize = '0.95rem';
-                            btn.innerHTML = '<i class="fas fa-eye"></i>';
-                            btn.style.display = 'none';
-                            wrapper.appendChild(btn);
+			.navbar-shadow-transition.scrolled {
+				background-color: rgba(255, 255, 255, 0.98) !important;
+				box-shadow: 0 4px 20px rgba(16, 24, 40, 0.08);
+				border-bottom-color: rgba(26, 61, 124, 0.1);
+				backdrop-filter: blur(10px);
+			}
 
-                            let debounce = null;
-                            function updateVisibility(){
-                                if (input.value && input.value.length > 0) {
-                                    btn.style.display = 'block';
-                                } else {
-                                    btn.style.display = 'none';
-                                    if (input.type !== 'password') {
-                                        input.type = 'password';
-                                        btn.innerHTML = '<i class="fas fa-eye"></i>';
-                                    }
-                                }
-                            }
+			/* Navbar link underline on hover */
+			.navbar .nav-link {
+				position: relative;
+				transition: color 0.22s ease, opacity 0.22s ease;
+				color: #6c757d !important;
+				font-weight: 500;
+				font-size: 0.95rem;
+			}
 
-                            input.addEventListener('input', function(){
-                                if (debounce) clearTimeout(debounce);
-                                debounce = setTimeout(updateVisibility, DEBOUNCE_MS);
-                            });
+			.navbar .nav-link i {
+				transition: transform 0.2s ease;
+			}
 
-                            updateVisibility();
+			.navbar .nav-link::after {
+				content: '';
+				position: absolute;
+				left: 50%;
+				bottom: -3px;
+				width: 0;
+				height: 3px;
+				background: var(--brand-accent);
+				border-radius: 3px;
+				transform: translateX(-50%);
+				transition: width 0.3s ease;
+			}
 
-                            btn.addEventListener('click', function(e){
-                                e.preventDefault();
-                                if (input.type === 'password'){
-                                    input.type = 'text';
-                                    btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
-                                } else {
-                                    input.type = 'password';
-                                    btn.innerHTML = '<i class="fas fa-eye"></i>';
-                                }
-                            });
-                        });
-                    }
-                    document.addEventListener('DOMContentLoaded', function(){ attachPasswordToggles(document); });
-                    // Re-run on Turbo navigations and frame loads so dynamically replaced content gets toggles attached
-                    document.addEventListener('turbo:load', function(e){ attachPasswordToggles(e.target || document); document.dispatchEvent(new Event('app:load')); });
-                    document.addEventListener('turbo:frame-load', function(e){ attachPasswordToggles(e.target || document); document.dispatchEvent(new Event('app:load')); });
-                })();
-            </script>
-        {% endblock %}
-    </head>
-    <body>
-        <div class="container mt-4">
-            {% block body %}{% endblock %}
-        </div>
-    </body>
+			.navbar .nav-link:hover {
+				opacity: 1;
+				color: var(--brand-primary) !important;
+			}
 
-</html>
+			.navbar .nav-link:hover i {
+				transform: scale(1.15);
+			}
+
+			.navbar .nav-link:hover::after {
+				width: 55%;
+			}
+
+			.navbar .nav-link.active {
+				font-weight: 600;
+				color: var(--brand-primary) !important;
+			}
+
+			.navbar .nav-link.active::after {
+				width: 100%;
+			}
+
+			/* Mobile navbar adjustments */
+			.navbar-collapse {
+				transition: max-height 0.3s ease;
+			}
+
+			.navbar .btn-accent {
+				transition: all 0.2s ease;
+			}
+
+			.navbar .btn-accent:hover {}
+
+			.shadow-soft {
+				box-shadow: 0 12px 30px rgba(16, 24, 40, 0.10) !important;
+			}
+			.lift {
+				transition: transform 0.18s ease, box-shadow 0.18s ease;
+			}
+			.lift:hover {
+				transform: translateY(-4px);
+			}
+			.card-media {
+				overflow: hidden;
+				border-top-left-radius: 0.95rem;
+				border-top-right-radius: 0.95rem;
+			}
+			.card-media img {
+				transition: transform 0.35s ease;
+				transform-origin: center;
+			}
+			.lift:hover .card-media img {
+				transform: scale(1.06);
+			}
+			.fade-up {
+				opacity: 0;
+				transform: translateY(14px);
+				transition: opacity 0.7s ease, transform 0.7s ease;
+				transition-delay: var(--reveal-delay, 0ms);
+			}
+			.fade-up.is-visible {
+				opacity: 1;
+				transform: translateY(0);
+			}
+			.form-control:focus,
+			.form-select:focus {
+				border-color: rgba(249, 178, 51, 0.95);
+				box-shadow: 0 0 0 0.25rem rgba(249, 178, 51, 0.22);
+			}
+			.input-group:focus-within .input-group-text {
+				border-color: rgba(249, 178, 51, 0.95);
+			}
+			.hero-float {
+				animation: heroFloat 4.8s ease-in-out infinite;
+			}
+			@keyframes heroFloat {
+				0,
+				100% {
+					transform: translateY(0);
+				}
+				50% {
+					transform: translateY(-6px);
+				}
+			}
+			@media(prefers-reduced-motion: reduce) {
+				html {
+					scroll-behavior: auto;
+				}
+				.fade-up,
+				.lift,
+				.btn-cta,
+				.card-media img {
+					transition: none !important;
+				}
+				.hero-float {
+					animation: none !important;
+				}
+			}
+		</style>
+	{% endblock %}
+
+	{% block javascripts %}
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+		<script>
+			// Reveal/Fade-up Animation for js-reveal elements
+(function () {
+function reveal(root) {
+const els = Array.from((root || document).querySelectorAll('.js-reveal'));
+if (!('IntersectionObserver' in window)) {
+els.forEach((el) => el.classList.add('is-visible'));
+return;
+}
+const io = new IntersectionObserver((entries) => {
+entries.forEach((e) => {
+if (e.isIntersecting) {
+const delay = e.target.getAttribute('data-delay');
+if (delay) 
+e.target.style.setProperty('--reveal-delay', delay);
+
+
+
+e.target.classList.add('is-visible');
+io.unobserve(e.target);
+}
+});
+}, {threshold: 0.15});
+els.forEach((el) => io.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+reveal(document);
+});
+document.addEventListener('app:load', function () {
+reveal(document);
+});
+})();
+		</script>
+	{% endblock %}
+
+</head>
+<body
+	class="{% block body_class %}{% endblock %}">
+	{# Navigation Navbar #}
+	<nav id="mainNavbar" class="navbar navbar-expand-lg navbar-light bg-white sticky-top navbar-shadow-transition border-bottom border-opacity-0">
+		<div
+			class="container">
+			{# Brand Logo #}
+			<a class="navbar-brand d-flex align-items-center gap-2 fw-semibold text-decoration-none" href="{{ path('app_landing') }}">
+				<img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass" width="34" height="34" class="rounded">
+				<span class="text-brand">BeatPass</span>
+			</a>
+
+			{# Mobile Toggle #}
+			<button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			{# Navigation Menu #}
+			<div class="collapse navbar-collapse" id="mainNav">
+				<ul
+					class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+					{# Home Link #}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_landing') }}" data-nav-link="home">
+							<i class="bi bi-house me-1"></i>Home
+						</a>
+					</li>
+
+					{# About Link (Anchor) #}
+					<li class="nav-item">
+						<a class="nav-link" href="#about" data-nav-link="about">
+							<i class="bi bi-info-circle me-1"></i>About
+						</a>
+					</li>
+
+					{# Events Link (Anchor) #}
+					<li class="nav-item">
+						<a class="nav-link" href="#events" data-nav-link="events">
+							<i class="bi bi-calendar2-event me-1"></i>Events
+						</a>
+					</li>
+
+					{# Features Link (Anchor) #}
+					<li class="nav-item">
+						<a class="nav-link" href="#features" data-nav-link="features">
+							<i class="bi bi-stars me-1"></i>Features
+						</a>
+					</li>
+
+					{# Contact Link (Anchor) #}
+					<li class="nav-item">
+						<a class="nav-link" href="#contact" data-nav-link="contact">
+							<i class="bi bi-chat-left-text me-1"></i>Contact
+						</a>
+					</li>
+
+					{# CTA Button - Login #}
+					<li class="nav-item ms-lg-2">
+						<a class="btn btn-sm btn-accent btn-pill btn-cta px-3" href="{{ path('app_login') }}" title="Login to your account">
+							<i class="bi bi-box-arrow-in-right me-lg-1"></i>
+							<span class="d-lg-none">Login</span>
+							<span class="d-none d-lg-inline">Login</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	{% block body_outer %}
+		<div>
+			{% block body_container_class %}
+			{% endblock %}
+			{% block body %}{% endblock %}
+		</div>
+	{% endblock %}

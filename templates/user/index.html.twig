@@ -38,9 +38,12 @@
 							<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ users|length }}</span>
 						</h3>
 						<div class="beatpass-pillbar">
-							<span class="beatpass-pill">Admins: {{ adminCount }}</span>
-							<span class="beatpass-pill">Staff: {{ staffCount }}</span>
-							<span class="beatpass-pill">Users: {{ userCount }}</span>
+							<span class="beatpass-pill">Admins:
+								{{ adminCount }}</span>
+							<span class="beatpass-pill">Staff:
+								{{ staffCount }}</span>
+							<span class="beatpass-pill">Users:
+								{{ userCount }}</span>
 						</div>
 					</div>
 					<div class="d-flex align-items-center gap-2">
@@ -117,7 +120,14 @@
 	{{ parent() }}
 	<script>
 		(function ($) {
-$(document).ready(function () {
+var dtInstance = null;
+function initUsersTable() {
+if ($.fn.DataTable.isDataTable('#usersTable')) {
+dtInstance = $('#usersTable').DataTable();
+dtInstance.destroy();
+dtInstance = null;
+}
+
 var dt = $('#usersTable').DataTable({
 responsive: true,
 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -145,9 +155,11 @@ targets: -1
 ]
 });
 
+dtInstance = dt;
+
 function setActionsVisible(visible) {
-$('#usersTable thead th.actions').toggleClass('d-none', !visible);
-$('#usersTable tbody td.actions').toggleClass('d-none', !visible);
+$('#usersTable thead th.actions').toggleClass('d-none', ! visible);
+$('#usersTable tbody td.actions').toggleClass('d-none', ! visible);
 try {
 localStorage.setItem('users.showActions', visible ? '1' : '0');
 } catch (e) {}
@@ -163,13 +175,37 @@ $('#toggleUsersActions').prop('checked', false);
 setActionsVisible(false);
 }
 
-$('#toggleUsersActions').on('change', function () {
+$('#toggleUsersActions').off('change').on('change', function () {
 setActionsVisible($(this).is(':checked'));
 });
 
 dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
 setActionsVisible($('#toggleUsersActions').is(':checked'));
 });
+}
+
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', function () {
+if (window.jQuery) 
+initUsersTable();
+
+});
+} else {
+if (window.jQuery) 
+initUsersTable();
+
+}
+
+document.addEventListener('turbo:load', function (e) {
+if (window.jQuery) 
+initUsersTable();
+
+});
+
+document.addEventListener('turbo:frame-load', function (e) {
+if (window.jQuery) 
+initUsersTable();
+
 });
 })(jQuery);
 	</script>

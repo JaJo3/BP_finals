@@ -36,8 +36,10 @@
 							<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ tickets|length }}</span>
 						</h3>
 						<div class="beatpass-pillbar">
-							<span class="beatpass-pill">Available: {{ availableCount }}</span>
-							<span class="beatpass-pill">Sold out: {{ soldOutCount }}</span>
+							<span class="beatpass-pill">Available:
+								{{ availableCount }}</span>
+							<span class="beatpass-pill">Sold out:
+								{{ soldOutCount }}</span>
 						</div>
 					</div>
 					<div class="d-flex align-items-center gap-2">
@@ -127,12 +129,18 @@
 	{{ parent() }}
 	<script>
 		(function ($) {
-function initTicketsTable() { // Only initialize DataTable if there are actual data rows (not empty state)
+var dtInstance = null;
+function initTicketsTable() {
 var tableBody = $('#ticketsTable tbody');
 var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
 
-if (hasDataRows) { // Prevent double-init by checking if DataTable already exists
-if (! $.fn.DataTable.isDataTable('#ticketsTable')) {
+if (hasDataRows) { // Destroy existing DataTable instance if it exists
+if ($.fn.DataTable.isDataTable('#ticketsTable')) {
+dtInstance = $('#ticketsTable').DataTable();
+dtInstance.destroy();
+dtInstance = null;
+}
+
 var dt = $('#ticketsTable').DataTable({
 responsive: true,
 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -160,9 +168,11 @@ targets: -1
 ]
 });
 
+dtInstance = dt;
+
 function setActionsVisible(visible) {
-$('#ticketsTable thead th.actions').toggleClass('d-none', !visible);
-$('#ticketsTable tbody td.actions').toggleClass('d-none', !visible);
+$('#ticketsTable thead th.actions').toggleClass('d-none', ! visible);
+$('#ticketsTable tbody td.actions').toggleClass('d-none', ! visible);
 try {
 localStorage.setItem('tickets.showActions', visible ? '1' : '0');
 } catch (e) {}
@@ -178,14 +188,13 @@ $('#toggleTicketsActions').prop('checked', false);
 setActionsVisible(false);
 }
 
-$('#toggleTicketsActions').on('change', function () {
+$('#toggleTicketsActions').off('change').on('change', function () {
 setActionsVisible($(this).is(':checked'));
 });
 
 dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
 setActionsVisible($('#toggleTicketsActions').is(':checked'));
 });
-}
 }
 }
 
@@ -196,10 +205,12 @@ if (window.jQuery)
 initTicketsTable();
 
 
+
 });
 } else {
 if (window.jQuery) 
 initTicketsTable();
+
 
 
 }
@@ -210,10 +221,12 @@ if (window.jQuery)
 initTicketsTable();
 
 
+
 });
 document.addEventListener('turbo:frame-load', function (e) {
 if (window.jQuery) 
 initTicketsTable();
+
 
 
 });

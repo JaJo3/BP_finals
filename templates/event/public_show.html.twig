@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ event.eventName ?: 'Event' }} | BeatPass{% endblock %}
+
+{% block body %}
+    <div class="container py-4 py-lg-5">
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="ratio ratio-16x9 rounded-4 shadow-soft overflow-hidden bg-body-tertiary">
+                    <img
+                        src="{{ asset(event.poster ?: 'images/beatpass.png') }}"
+                        alt="{{ event.eventName ?: 'Event' }}"
+                        style="object-fit: cover;"
+                    >
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="d-flex align-items-start justify-content-between gap-3 mb-2">
+                    <h1 class="h3 fw-bold mb-0">{{ event.eventName ?: 'Untitled event' }}</h1>
+                    <span class="badge rounded-pill text-bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                        {{ event.status ?: 'Upcoming' }}
+                    </span>
+                </div>
+
+                <div class="text-secondary mb-3">
+                    {{ event.organizer ? event.organizer.orgName : 'Organizer TBA' }}
+                </div>
+
+                <div class="d-flex flex-column gap-2 mb-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-calendar-event text-brand"></i>
+                        <span>{{ event.date ? event.date|date('l, d M Y') : 'Date TBA' }}</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-clock text-brand"></i>
+                        <span>{{ event.date ? event.date|date('H:i') : 'Time TBA' }}</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-geo-alt text-brand"></i>
+                        <span>{{ event.venue ?: 'Location TBA' }}</span>
+                    </div>
+                </div>
+
+                <p class="text-secondary">
+                    {{ event.description ?: 'More details coming soon.' }}
+                </p>
+
+                <div class="d-flex flex-wrap gap-2 mt-4">
+                    <a class="btn btn-accent btn-pill btn-cta btn-lg px-4" href="{{ path('app_login') }}">
+                        Buy tickets
+                    </a>
+                    <a class="btn btn-outline-secondary btn-pill btn-cta btn-lg px-4" href="{{ path('app_landing') }}#events">
+                        Back to events
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -88,13 +88,6 @@
 									{% endif %}
 								{% endif %}
 								<tr>
-									{# <td class="col-poster align-middle">
-																		{% if event.poster %}
-																			<img src="{{ event.poster }}" alt="Poster" style="width:32px;height:32px;object-fit:cover;border-radius:6px;" class="me-2">
-																		{% else %}
-																			<div style="width:32px;height:32px;background:#e9ecef;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;color:#6c757d;"><i class="fas fa-image"></i></div>
-																			{% endif %}
-																		</td> #}
 									<td class="col-name align-middle text-truncate py-1 px-2" style="max-width: 28ch;">
 										<span class="text-nowrap text-body fw-semibold">{{ event.eventName }}</span>
 									</td>
@@ -171,11 +164,18 @@
 	{{ parent() }}
 	<script>
 		(function ($) {
-$(document).ready(function () { // Only initialize DataTable if there are actual data rows (not empty state)
+var dtInstance = null;
+$(document).ready(function () {
 var tableBody = $('#eventsTable tbody');
 var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
 
-if (hasDataRows) {
+if (hasDataRows) { // Destroy existing DataTable instance if it exists
+if ($.fn.DataTable.isDataTable('#eventsTable')) {
+dtInstance = $('#eventsTable').DataTable();
+dtInstance.destroy();
+dtInstance = null;
+}
+
 var dt = $('#eventsTable').DataTable({
 responsive: true,
 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -203,10 +203,11 @@ targets: -1
 ]
 });
 
-function setActionsVisible(visible) {
-// Toggle header + all body cells (including newly drawn rows)
-$('#eventsTable thead th.actions').toggleClass('d-none', !visible);
-$('#eventsTable tbody td.actions').toggleClass('d-none', !visible);
+dtInstance = dt;
+
+function setActionsVisible(visible) { // Toggle header + all body cells (including newly drawn rows)
+$('#eventsTable thead th.actions').toggleClass('d-none', ! visible);
+$('#eventsTable tbody td.actions').toggleClass('d-none', ! visible);
 try {
 localStorage.setItem('events.showActions', visible ? '1' : '0');
 } catch (e) {}
@@ -223,7 +224,7 @@ $('#toggleEventsActions').prop('checked', false);
 setActionsVisible(false);
 }
 
-$('#toggleEventsActions').on('change', function () {
+$('#toggleEventsActions').off('change').on('change', function () {
 setActionsVisible($(this).is(':checked'));
 });
 
@@ -232,6 +233,137 @@ dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
 setActionsVisible($('#toggleEventsActions').is(':checked'));
 });
 }
+});
+
+// Re-initialize after Turbo navigation or frame loads
+document.addEventListener('turbo:load', function (e) {
+if (window.jQuery) 
+$(document).ready(function () {
+var tableBody = $('#eventsTable tbody');
+var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
+if (hasDataRows) {
+if ($.fn.DataTable.isDataTable('#eventsTable')) {
+dtInstance = $('#eventsTable').DataTable();
+dtInstance.destroy();
+dtInstance = null;
+}
+var dt = $('#eventsTable').DataTable({
+responsive: true,
+dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+pageLength: 10,
+lengthMenu: [
+[
+10, 25, 50, -1
+],
+[
+10, 25, 50, 'All'
+]
+],
+language: {
+search: '',
+searchPlaceholder: 'Search events...'
+},
+autoWidth: true,
+scrollX: false,
+columnDefs: [
+{
+orderable: false,
+searchable: false,
+targets: -1
+}
+]
+});
+dtInstance = dt;
+function setActionsVisible(visible) {
+$('#eventsTable thead th.actions').toggleClass('d-none', ! visible);
+$('#eventsTable tbody td.actions').toggleClass('d-none', ! visible);
+try {
+localStorage.setItem('events.showActions', visible ? '1' : '0');
+} catch (e) {}
+}
+try {
+var stored = localStorage.getItem('events.showActions');
+var initialVisible = stored === '1';
+$('#toggleEventsActions').prop('checked', initialVisible);
+setActionsVisible(initialVisible);
+} catch (e) {
+$('#toggleEventsActions').prop('checked', false);
+setActionsVisible(false);
+}
+$('#toggleEventsActions').off('change').on('change', function () {
+setActionsVisible($(this).is(':checked'));
+});
+dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
+setActionsVisible($('#toggleEventsActions').is(':checked'));
+});
+}
+});
+
+});
+
+document.addEventListener('turbo:frame-load', function (e) {
+if (window.jQuery) 
+$(document).ready(function () {
+var tableBody = $('#eventsTable tbody');
+var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
+if (hasDataRows) {
+if ($.fn.DataTable.isDataTable('#eventsTable')) {
+dtInstance = $('#eventsTable').DataTable();
+dtInstance.destroy();
+dtInstance = null;
+}
+var dt = $('#eventsTable').DataTable({
+responsive: true,
+dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+pageLength: 10,
+lengthMenu: [
+[
+10, 25, 50, -1
+],
+[
+10, 25, 50, 'All'
+]
+],
+language: {
+search: '',
+searchPlaceholder: 'Search events...'
+},
+autoWidth: true,
+scrollX: false,
+columnDefs: [
+{
+orderable: false,
+searchable: false,
+targets: -1
+}
+]
+});
+dtInstance = dt;
+function setActionsVisible(visible) {
+$('#eventsTable thead th.actions').toggleClass('d-none', ! visible);
+$('#eventsTable tbody td.actions').toggleClass('d-none', ! visible);
+try {
+localStorage.setItem('events.showActions', visible ? '1' : '0');
+} catch (e) {}
+}
+try {
+var stored = localStorage.getItem('events.showActions');
+var initialVisible = stored === '1';
+$('#toggleEventsActions').prop('checked', initialVisible);
+setActionsVisible(initialVisible);
+} catch (e) {
+$('#toggleEventsActions').prop('checked', false);
+setActionsVisible(false);
+}
+$('#toggleEventsActions').off('change').on('change', function () {
+setActionsVisible($(this).is(':checked'));
+});
+dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
+setActionsVisible($('#toggleEventsActions').is(':checked'));
+});
+}
+});
+
 });
 })(jQuery);
 	</script>

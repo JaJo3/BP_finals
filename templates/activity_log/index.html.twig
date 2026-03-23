@@ -40,63 +40,28 @@
 			</div>
 
 			<div class="px-3 pt-3 pb-2 d-flex flex-wrap align-items-center justify-content-between" style="background: #f8f9fb;">
-				<div class="d-flex align-items-center gap-2">
-					<button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#logsFilterCollapse" aria-expanded="false" aria-controls="logsFilterCollapse" style="border-color: #1A3D7C; color: #1A3D7C;">
-						<i class="fas fa-filter me-2"></i>Filters
-					</button>
-				</div>
+				<div class="d-flex align-items-center gap-2"></div>
 				<div class="d-flex align-items-center gap-2 flex-wrap">
 					<div class="beatpass-pillbar">
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Create: {{ createCount }}</span>
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Update: {{ updateCount }}</span>
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Delete: {{ deleteCount }}</span>
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Login: {{ loginCount }}</span>
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Logout: {{ logoutCount }}</span>
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Other: {{ otherCount }}</span>
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Create:
+							{{ createCount }}</span>
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Update:
+							{{ updateCount }}</span>
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Delete:
+							{{ deleteCount }}</span>
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Login:
+							{{ loginCount }}</span>
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Logout:
+							{{ logoutCount }}</span>
+						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Other:
+							{{ otherCount }}</span>
 					</div>
 					<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
 						<input class="form-check-input m-0" type="checkbox" id="toggleActivityLogsActions" role="switch" aria-label="Show actions column">
 						<label class="form-check-label small text-muted" for="toggleActivityLogsActions" style="user-select:none;">Show actions</label>
 					</div>
-					<span class="badge bg-light text-dark" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 700;">{{ total|default(logs|length) }} items</span>
-				</div>
-			</div>
-
-			<div class="collapse" id="logsFilterCollapse">
-				<div class="px-3 pb-3">
-					<form method="get" class="row g-3 align-items-end">
-						<div class="col-md-3">
-							<label for="filterUser" class="form-label small text-muted mb-1">User</label>
-							<input type="text" id="filterUser" name="user" class="form-control form-control-sm" placeholder="Search user..." value="{{ filters.user|default('') }}">
-						</div>
-						<div class="col-md-3">
-							<label for="filterAction" class="form-label small text-muted mb-1">Action</label>
-							<select id="filterAction" name="action" class="form-select form-select-sm">
-								<option value="">All Actions</option>
-								{% for action in availableActions %}
-									<option value="{{ action }}" {% if filters.action == action %} selected {% endif %}>{{ action }}</option>
-								{% endfor %}
-							</select>
-						</div>
-						<div class="col-md-2">
-							<label for="filterDateFrom" class="form-label small text-muted mb-1">From</label>
-							<input type="date" id="filterDateFrom" name="dateFrom" class="form-control form-control-sm" value="{{ filters.dateFrom|default('') }}">
-						</div>
-						<div class="col-md-2">
-							<label for="filterDateTo" class="form-label small text-muted mb-1">To</label>
-							<input type="date" id="filterDateTo" name="dateTo" class="form-control form-control-sm" value="{{ filters.dateTo|default('') }}">
-						</div>
-						<div class="col-md-2 d-flex gap-2">
-							<button type="submit" class="btn btn-sm w-100" style="background-color: #1A3D7C; color: white; border: none;">
-								<i class="fas fa-search me-1"></i>Apply
-							</button>
-							{% if filters.user or filters.action or filters.dateFrom or filters.dateTo %}
-								<a href="{{ path('app_activity_log_index') }}" class="btn btn-outline-secondary btn-sm w-100">
-									<i class="fas fa-redo me-1"></i>Reset
-								</a>
-							{% endif %}
-						</div>
-					</form>
+					<span class="badge bg-light text-dark" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 700;">{{ total|default(logs|length) }}
+						items</span>
 				</div>
 			</div>
 
@@ -117,7 +82,8 @@
 							{% if logs|length > 0 %}
 								{% for log in logs %}
 									<tr>
-										<td class="align-middle py-1 px-2">
+										<td
+											class="align-middle py-1 px-2">
 											{# <div class="fw-bold small">{{ log.user.username }}</div> #}
 											{% if log.user.email %}
 												<div class="small text-muted">{{ log.user.email }}</div>
@@ -213,11 +179,18 @@
 	{{ parent() }}
 	<script>
 		(function ($) {
-$(document).ready(function () {
+var dtInstance = null;
+function initActivityLogsTable() {
 var tableBody = $('#activityLogsTable tbody');
 var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
 
 if (hasDataRows) {
+if ($.fn.DataTable.isDataTable('#activityLogsTable')) {
+dtInstance = $('#activityLogsTable').DataTable();
+dtInstance.destroy();
+dtInstance = null;
+}
+
 var dt = $('#activityLogsTable').DataTable({
 responsive: true,
 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -247,9 +220,11 @@ targets: -1
 ]
 });
 
+dtInstance = dt;
+
 function setActionsVisible(visible) {
-$('#activityLogsTable thead th.actions').toggleClass('d-none', !visible);
-$('#activityLogsTable tbody td.actions').toggleClass('d-none', !visible);
+$('#activityLogsTable thead th.actions').toggleClass('d-none', ! visible);
+$('#activityLogsTable tbody td.actions').toggleClass('d-none', ! visible);
 try {
 localStorage.setItem('activityLogs.showActions', visible ? '1' : '0');
 } catch (e) {}
@@ -265,7 +240,7 @@ $('#toggleActivityLogsActions').prop('checked', false);
 setActionsVisible(false);
 }
 
-$('#toggleActivityLogsActions').on('change', function () {
+$('#toggleActivityLogsActions').off('change').on('change', function () {
 setActionsVisible($(this).is(':checked'));
 });
 
@@ -273,6 +248,34 @@ dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
 setActionsVisible($('#toggleActivityLogsActions').is(':checked'));
 });
 }
+}
+
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', function () {
+if (window.jQuery) 
+initActivityLogsTable();
+
+
+});
+} else {
+if (window.jQuery) 
+initActivityLogsTable();
+
+
+}
+
+document.addEventListener('turbo:load', function (e) {
+if (window.jQuery) 
+initActivityLogsTable();
+
+
+});
+
+document.addEventListener('turbo:frame-load', function (e) {
+if (window.jQuery) 
+initActivityLogsTable();
+
+
 });
 })(jQuery);
 	</script>

@@ -1,0 +1,492 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BeatPass | Concert Ticketing
+{% endblock %}
+
+{% block body_class %}bg-body-tertiary
+{% endblock %}
+{% block body_outer %}
+
+	{# HERO #}
+	<section id="home" class="position-relative overflow-hidden">
+		<div class="bg-brand-gradient">
+			<div class="container py-5 py-lg-5">
+				<div class="row align-items-center g-4 g-lg-5">
+					<div class="col-lg-6 text-white">
+						<div class="fade-up js-reveal" data-delay="0ms">
+							<span class="badge rounded-pill text-bg-light text-brand px-3 py-2 mb-3 shadow-soft">
+								Concert ticketing made simple
+							</span>
+							<h1 class="display-5 fw-bold lh-sm mb-3">
+								Discover events. Buy tickets.
+								<span class="text-warning">Go live.</span>
+							</h1>
+							<p class="lead text-white-50 mb-4">
+								BeatPass is your modern concert ticketing system—browse featured shows, book in seconds,
+																                                and get real-time updates from trusted organizers.
+							</p>
+							<div class="d-flex flex-wrap gap-2 align-items-center">
+								<a class="btn btn-accent btn-lg btn-pill btn-cta px-4" href="#contact">
+									<i class="bi bi-ticket-perforated me-2"></i>
+									Buy Tickets
+								</a>
+								<a class="btn btn-outline-light btn-outline-brand btn-lg btn-pill btn-cta px-4" href="#events">
+									<i class="bi bi-calendar2-event me-2"></i>
+									Browse Events
+								</a>
+							</div>
+							<div class="d-flex flex-wrap gap-3 mt-4 text-white-50 small">
+								<div class="d-flex align-items-center gap-2">
+									<i class="bi bi-shield-check"></i>
+									Secure payments
+								</div>
+								<div class="d-flex align-items-center gap-2">
+									<i class="bi bi-lightning-charge"></i>
+									Instant booking
+								</div>
+								<div class="d-flex align-items-center gap-2">
+									<i class="bi bi-bell"></i>
+									Real-time updates
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-6">
+						<div class="fade-up js-reveal shadow-soft rounded-4 bg-white p-3 p-md-4 hero-float" data-delay="90ms">
+							<div class="d-flex align-items-center justify-content-between mb-3">
+								<div class="fw-semibold text-brand">Featured package</div>
+								<span class="badge text-bg-warning">New</span>
+							</div>
+							<img class="img-fluid rounded-3" src="{{ asset('images/beatpass.png') }}" alt="Concert ticketing preview" loading="lazy">
+							<div class="d-flex align-items-center justify-content-between mt-3">
+								<div>
+									<div class="fw-semibold">SBS MTV The Kpop Show</div>
+									<div class="text-secondary small">Jakarta • This weekend</div>
+								</div>
+								<a class="btn btn-sm btn-brand btn-pill btn-cta px-3" href="#events">
+									Get tickets
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="bg-white shadow-soft rounded-4 p-3 p-md-4 position-relative" style="margin-top:-2.25rem; border: 1px solid rgba(16,24,40,.06);">
+						<div class="row g-3 align-items-end">
+							<div class="col-md-4">
+								<label class="form-label small text-secondary mb-1">Search</label>
+								<div class="input-group">
+									<span class="input-group-text bg-white">
+										<i class="bi bi-search"></i>
+									</span>
+									<input type="text" class="form-control" placeholder="Artist, venue, keyword">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<label class="form-label small text-secondary mb-1">Location</label>
+								<div class="input-group">
+									<span class="input-group-text bg-white">
+										<i class="bi bi-geo-alt"></i>
+									</span>
+									<input type="text" class="form-control" placeholder="City or country">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<label class="form-label small text-secondary mb-1">Date</label>
+								<div class="input-group">
+									<span class="input-group-text bg-white">
+										<i class="bi bi-calendar3"></i>
+									</span>
+									<input type="date" class="form-control">
+								</div>
+							</div>
+							<div class="col-md-1 d-grid">
+								<button class="btn btn-brand btn-pill btn-cta">
+									<i class="bi bi-arrow-right"></i>
+								</button>
+							</div>
+						</div>
+						<div class="small text-secondary mt-2">
+							Tip: connect this to your events search later.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# ABOUT #}
+	<section id="about" class="py-5 py-lg-5">
+		<div class="container">
+			<div class="row align-items-end g-3 mb-4">
+				<div class="col-lg-7">
+					<h2 class="fw-bold mb-2">About BeatPass</h2>
+					<p class="text-secondary mb-0">
+						A clean SaaS experience for concerts—built for speed, trust, and delightful checkout.
+												                        Manage events and organizers, sell tickets, and keep fans informed in real-time.
+					</p>
+				</div>
+				<div class="col-lg-5 text-lg-end">
+					<a class="btn btn-outline-secondary btn-pill btn-cta" href="{{ path('app_register') }}">
+						<i class="bi bi-person-plus me-2"></i>
+						Create an account
+					</a>
+				</div>
+			</div>
+
+			<div class="row g-3 g-lg-4">
+				<div class="col-md-4">
+					<div class="card border-0 shadow-soft lift h-100 fade-up js-reveal" data-delay="0ms">
+						<div class="card-body p-4">
+							<div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-brand text-white mb-3" style="width:44px;height:44px;">
+								<i class="bi bi-ticket-perforated"></i>
+							</div>
+							<h5 class="card-title fw-semibold">Easy ticket booking</h5>
+							<p class="card-text text-secondary mb-0">
+								Find the right event and secure seats in a few clicks with a fast, modern checkout.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card border-0 shadow-soft lift h-100 fade-up js-reveal" data-delay="70ms">
+						<div class="card-body p-4">
+							<div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-brand text-white mb-3" style="width:44px;height:44px;">
+								<i class="bi bi-patch-check"></i>
+							</div>
+							<h5 class="card-title fw-semibold">Trusted organizers</h5>
+							<p class="card-text text-secondary mb-0">
+								Verified organizers and clear policies help fans buy with confidence.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card border-0 shadow-soft lift h-100 fade-up js-reveal" data-delay="140ms">
+						<div class="card-body p-4">
+							<div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-brand text-white mb-3" style="width:44px;height:44px;">
+								<i class="bi bi-stars"></i>
+							</div>
+							<h5 class="card-title fw-semibold">Seamless experience</h5>
+							<p class="card-text text-secondary mb-0">
+								Mobile-first pages, smooth navigation, and real-time updates from purchase to entry.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# FEATURED EVENTS #}
+	<section id="events" class="py-5 py-lg-5 bg-white border-top border-bottom">
+		<div class="container">
+			<div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
+				<div>
+					<h2 class="fw-bold mb-2">Featured Events</h2>
+					<p class="text-secondary mb-0">Handpicked shows, updated regularly. Hover to preview.</p>
+				</div>
+				<a class="btn btn-outline-secondary btn-pill btn-cta" href="{{ path('app_dash') }}">
+					View dashboard
+					<i class="bi bi-arrow-right ms-1"></i>
+				</a>
+			</div>
+
+			<div class="row g-3 g-lg-4">
+				{% if events is defined and events|length > 0 %}
+					{% for item in events %}
+						{% set event = item.event %}
+						<div class="col-sm-6 col-lg-4">
+							<div class="card border-0 shadow-soft lift h-100 fade-up js-reveal" data-delay="{{ (loop.index0 * 70) ~ 'ms' }}" style="border-radius: .95rem;">
+								<div class="card-media">
+									<img src="{{ asset(event.poster ?: 'images/beatpass.png') }}" class="w-100" alt="{{ event.eventName ?: 'Event' }}" loading="lazy" style="aspect-ratio: 16/10; object-fit: cover;">
+								</div>
+								<div class="card-body p-4 d-flex flex-column">
+									<div class="d-flex align-items-start justify-content-between gap-3">
+										<h5 class="card-title fw-semibold mb-2">{{ event.eventName ?: 'Untitled event' }}</h5>
+										<span class="badge rounded-pill text-bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+											{{ event.status ?: 'Upcoming' }}
+										</span>
+									</div>
+									<div class="text-secondary small d-flex flex-wrap gap-3 mb-3">
+										<span class="d-inline-flex align-items-center gap-1">
+											<i class="bi bi-calendar-event"></i>
+											{{ event.date ? event.date|date('D, d M Y') : 'Date TBA' }}
+										</span>
+										<span class="d-inline-flex align-items-center gap-1">
+											<i class="bi bi-clock"></i>
+											{{ event.date ? event.date|date('H:i') : 'Time TBA' }}
+										</span>
+										<span class="d-inline-flex align-items-center gap-1">
+											<i class="bi bi-geo-alt"></i>
+											{{ event.venue ?: 'Location TBA' }}
+										</span>
+									</div>
+									<div class="text-secondary small mb-3">
+										<i class="bi bi-building me-1"></i>
+										{{ event.organizer ? event.organizer.orgName : 'Organizer TBA' }}
+									</div>
+									<div class="mt-auto pt-2 d-flex align-items-center justify-content-between">
+										<div class="fw-semibold text-brand">
+											{% if item.minPrice is not null %}
+												From €{{ item.minPrice|number_format(2, '.', ',') }}
+											{% else %}
+												Price TBA
+											{% endif %}
+										</div>
+										<a class="btn btn-sm btn-accent btn-pill btn-cta px-3" href="{{ path('event_show', {'id': event.id}) }}">
+											Buy tickets
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				{% else %}
+					<div class="col-12">
+						<div class="alert alert-light border shadow-soft mb-0 d-flex flex-wrap align-items-center justify-content-between gap-2">
+							<div>
+								<div class="fw-semibold">No upcoming events yet</div>
+								<div class="text-secondary small">Once events are published, they’ll appear here automatically.</div>
+							</div>
+							<a class="btn btn-brand btn-pill btn-cta" href="{{ path('app_login') }}">Login to create events</a>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+
+	{# WHY CHOOSE US / FEATURES #}
+	<section id="features" class="py-5 py-lg-5 bg-body-tertiary">
+		<div class="container">
+			<div class="row align-items-end g-3 mb-4">
+				<div class="col-lg-7">
+					<h2 class="fw-bold mb-2">Why choose BeatPass</h2>
+					<p class="text-secondary mb-0">
+						Built with reliability in mind—so fans can focus on the show while you handle the operations.
+					</p>
+				</div>
+			</div>
+
+			<div class="row g-3 g-lg-4">
+				<div class="col-lg-4">
+					<div class="p-4 bg-white rounded-4 shadow-soft lift h-100 fade-up js-reveal" data-delay="0ms">
+						<div class="d-flex align-items-start gap-3">
+							<div class="rounded-3 bg-warning-subtle text-warning-emphasis d-inline-flex align-items-center justify-content-center" style="width:44px;height:44px;">
+								<i class="bi bi-shield-lock"></i>
+							</div>
+							<div>
+								<h5 class="fw-semibold mb-2">Secure payments</h5>
+								<p class="text-secondary mb-0">Modern security practices and clear transaction tracking.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="p-4 bg-white rounded-4 shadow-soft lift h-100 fade-up js-reveal" data-delay="70ms">
+						<div class="d-flex align-items-start gap-3">
+							<div class="rounded-3 bg-primary-subtle text-primary-emphasis d-inline-flex align-items-center justify-content-center" style="width:44px;height:44px;">
+								<i class="bi bi-broadcast"></i>
+							</div>
+							<div>
+								<h5 class="fw-semibold mb-2">Real-time updates</h5>
+								<p class="text-secondary mb-0">Instant confirmations, event changes, and notification-ready flows.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="p-4 bg-white rounded-4 shadow-soft lift h-100 fade-up js-reveal" data-delay="140ms">
+						<div class="d-flex align-items-start gap-3">
+							<div class="rounded-3 bg-success-subtle text-success-emphasis d-inline-flex align-items-center justify-content-center" style="width:44px;height:44px;">
+								<i class="bi bi-lightning-charge"></i>
+							</div>
+							<div>
+								<h5 class="fw-semibold mb-2">Easy booking</h5>
+								<p class="text-secondary mb-0">Designed to reduce friction and boost conversions on mobile.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row g-3 g-lg-4 mt-1">
+				<div class="col-lg-6">
+					<div class="p-4 p-lg-5 bg-brand rounded-4 text-white shadow-soft fade-up js-reveal" data-delay="70ms">
+						<h3 class="fw-bold mb-2">Make your own event</h3>
+						<p class="text-white-50 mb-4">
+							Create, manage, and publish events with organizer profiles, ticket inventory, and sales tracking.
+						</p>
+						<a class="btn btn-accent btn-pill btn-cta px-4" href="{{ path('app_register') }}">
+							Get started
+							<i class="bi bi-arrow-right ms-1"></i>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="p-4 p-lg-5 bg-white rounded-4 shadow-soft fade-up js-reveal" data-delay="140ms">
+						<h3 class="fw-bold mb-2 text-brand">Built for your workflow</h3>
+						<p class="text-secondary mb-4">
+							Admin dashboard, logs, organizers, tickets, transactions—everything in one place.
+						</p>
+						<div class="row g-3">
+							<div class="col-6">
+								<div class="d-flex gap-2 align-items-center">
+									<i class="bi bi-check-circle text-success"></i>
+									<span class="small">Organizer management</span>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex gap-2 align-items-center">
+									<i class="bi bi-check-circle text-success"></i>
+									<span class="small">Ticket inventory</span>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex gap-2 align-items-center">
+									<i class="bi bi-check-circle text-success"></i>
+									<span class="small">Transaction history</span>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex gap-2 align-items-center">
+									<i class="bi bi-check-circle text-success"></i>
+									<span class="small">Activity logs</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# CONTACT #}
+	<section id="contact" class="py-5 py-lg-5 bg-white border-top">
+		<div class="container">
+			<div class="row g-4 g-lg-5">
+				<div class="col-lg-5">
+					<h2 class="fw-bold mb-2">Contact</h2>
+					<p class="text-secondary mb-4">
+						Have questions about events, organizers, or ticket purchases? Send a message and we’ll get back to you.
+					</p>
+
+					<div class="d-flex flex-column gap-3">
+						<div class="d-flex gap-3 align-items-start">
+							<div class="rounded-3 bg-body-tertiary d-inline-flex align-items-center justify-content-center" style="width:44px;height:44px;">
+								<i class="bi bi-envelope text-brand"></i>
+							</div>
+							<div>
+								<div class="fw-semibold">Email</div>
+								<div class="text-secondary small">beatpass.ph@gmail.com</div>
+							</div>
+						</div>
+						<div class="d-flex gap-3 align-items-start">
+							<div class="rounded-3 bg-body-tertiary d-inline-flex align-items-center justify-content-center" style="width:44px;height:44px;">
+								<i class="bi bi-telephone text-brand"></i>
+							</div>
+							<div>
+								<div class="fw-semibold">Phone</div>
+								<div class="text-secondary small">+63 9302349377</div>
+							</div>
+						</div>
+						<div class="d-flex gap-3 align-items-start">
+							<div class="rounded-3 bg-body-tertiary d-inline-flex align-items-center justify-content-center" style="width:44px;height:44px;">
+								<i class="bi bi-geo-alt text-brand"></i>
+							</div>
+							<div>
+								<div class="fw-semibold">Office</div>
+								<div class="text-secondary small">3rd Floor, Tempo Building, Perdices Street,<br>
+									Dumaguete City, Negros Oriental</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-7">
+					<div class="p-4 p-lg-5 rounded-4 shadow-soft bg-body-tertiary fade-up js-reveal" data-delay="70ms">
+						<form action="#" method="post" class="row g-3">
+							<div class="col-md-6">
+								<label class="form-label fw-semibold">Name</label>
+								<input class="form-control form-control-lg" type="text" placeholder="Your name" required>
+							</div>
+							<div class="col-md-6">
+								<label class="form-label fw-semibold">Email</label>
+								<input class="form-control form-control-lg" type="email" placeholder="you@email.com" required>
+							</div>
+							<div class="col-12">
+								<label class="form-label fw-semibold">Message</label>
+								<textarea class="form-control" rows="5" placeholder="Tell us what you need..." required></textarea>
+							</div>
+							<div class="col-12 d-flex flex-wrap align-items-center justify-content-between gap-2">
+								<div class="text-secondary small">
+									We’ll respond within 1–2 business days.
+								</div>
+								<button class="btn btn-accent btn-pill btn-cta btn-lg px-4" type="submit">
+									Send message
+									<i class="bi bi-send ms-2"></i>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# FOOTER #}
+	<footer class="bg-brand text-white py-4">
+		<div class="container">
+			<div class="row g-3 align-items-center">
+				<div class="col-md-4">
+					<div class="d-flex align-items-center gap-2 fw-semibold">
+						<img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass" width="28" height="28" class="rounded">
+						<span>BeatPass</span>
+					</div>
+					<div class="text-white-50 small mt-2">Concert ticketing system</div>
+				</div>
+				<div class="col-md-4">
+					<ul class="nav justify-content-md-center">
+						<li class="nav-item">
+							<a class="nav-link px-2 text-white-50" href="#about">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link px-2 text-white-50" href="#events">Events</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link px-2 text-white-50" href="#contact">Contact</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-md-4">
+					<div class="d-flex justify-content-md-end gap-2">
+						<a class="btn btn-outline-light btn-sm btn-pill btn-cta" href="#" aria-label="Twitter">
+							<i class="bi bi-twitter-x"></i>
+						</a>
+						<a class="btn btn-outline-light btn-sm btn-pill btn-cta" href="#" aria-label="Instagram">
+							<i class="bi bi-instagram"></i>
+						</a>
+						<a class="btn btn-outline-light btn-sm btn-pill btn-cta" href="#" aria-label="Facebook">
+							<i class="bi bi-facebook"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<hr class="border-white border-opacity-25 my-3">
+			<div class="d-flex flex-wrap justify-content-between gap-2 small text-white-50">
+				<span>©
+					{{ "now"|date("Y") }}
+					BeatPass. All rights reserved.</span>
+				<span>jacques gwapo</span>
+			</div>
+		</div>
+	</footer>
+{% endblock %}

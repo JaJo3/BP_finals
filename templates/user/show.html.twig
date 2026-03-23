@@ -1,52 +1,74 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}User Profile{% endblock %}
+{% block title %}User Profile
+{% endblock %}
 
 {% block body %}
-    <div class="content-wrapper">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h3 mb-0" style="color: #15305A; font-weight: 700;"><i class="fas fa-user me-2" style="color: #F9B233;"></i>User Profile</h1>
-                <div>
-                <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-sm" style="background: #F9B233; color: #15305A; border: none; border-radius: 8px; padding: 8px 12px; font-weight:600;"><i class="fas fa-edit me-2"></i>Edit</a>
-                <a href="{{ path('app_user_change_password', {'id': user.id}) }}" class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-key me-2"></i>Change password</a>
-                <a href="{{ path('app_user_index') }}" class="btn btn-sm btn-outline-secondary ms-2"><i class="fas fa-arrow-left me-2"></i>Back</a>
-            </div>
-        </div>
+	<div class="content-wrapper">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1 class="h3 mb-0" style="color: #15305A; font-weight: 700;">
+				<i class="fas fa-user me-2" style="color: #F9B233;"></i>User Profile</h1>
+			<div>
+				<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-beatpass-edit" style="border: none; border-radius: 8px; padding: 8px 12px; font-weight:600;">
+					<i class="fas fa-edit me-2"></i>Edit</a>
+				<a href="{{ path('app_user_change_password', {'id': user.id}) }}" class="btn btn-sm btn-outline-primary ms-2">
+					<i class="fas fa-key me-2"></i>Change password</a>
+				<a href="{{ path('app_user_index') }}" class="btn btn-sm btn-outline-secondary ms-2">
+					<i class="fas fa-arrow-left me-2"></i>Back</a>
+			</div>
+		</div>
 
-        <div class="card shadow-sm" style="border-radius: 12px;">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3 text-center">
-                        {% if user.profileImage %}
-                            <img src="/uploads/profile/{{ user.profileImage }}" alt="Profile" class="img-fluid rounded-circle mb-3" style="width:140px; height:140px; object-fit:cover;">
-                        {% else %}
-                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:140px; height:140px;">
-                                <i class="fas fa-user fa-3x text-secondary"></i>
-                            </div>
-                        {% endif %}
-                        <h5 class="mt-2" style="color:#15305A; font-weight:700;">{{ user.getFullName ? user.getFullName() : (user.firstName ~ ' ' ~ user.lastName) }}</h5>
-                        <p class="text-muted">{% if 'ROLE_ADMIN' in user.roles %}Admin{% elseif 'ROLE_STAFF' in user.roles %}Staff{% else %}User{% endif %}</p>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="row mb-2">
-                            <div class="col-sm-4"><strong>Email</strong></div>
-                            <div class="col-sm-8">{{ user.email|default(user.username) }}</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-4"><strong>Phone</strong></div>
-                            <div class="col-sm-8">{{ user.phone|default('—') }}</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-4"><strong>Date created</strong></div>
-                            <div class="col-sm-8">{{ user.createdAt ? user.createdAt|date('Y-m-d H:i') : '—' }}</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-4"><strong>Status</strong></div>
-                            <div class="col-sm-8">{% if user.isActive %}<span class="badge" style="background:#28a745;color:white;">Active</span>{% else %}<span class="badge" style="background:#dc3545;color:white;">Inactive</span>{% endif %}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+		<div class="card shadow-sm" style="border-radius: 12px;">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-3 text-center">
+						{% if user.profileImage %}
+							<img src="/uploads/profile/{{ user.profileImage }}" alt="Profile" class="img-fluid rounded-circle mb-3" style="width:140px; height:140px; object-fit:cover;">
+						{% else %}
+							<div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:140px; height:140px;">
+								<i class="fas fa-user fa-3x text-secondary"></i>
+							</div>
+						{% endif %}
+						<h5 class="mt-2" style="color:#15305A; font-weight:700;">{{ user.getFullName ? user.getFullName() : (user.firstName ~ ' ' ~ user.lastName) }}</h5>
+						<p class="text-muted">
+							{% if 'ROLE_ADMIN' in user.roles %}Admin{% elseif 'ROLE_STAFF' in user.roles %}Staff{% else %}User
+							{% endif %}
+						</p>
+					</div>
+					<div class="col-md-9">
+						<div class="row mb-2">
+							<div class="col-sm-4">
+								<strong>Email</strong>
+							</div>
+							<div class="col-sm-8">{{ user.email|default(user.username) }}</div>
+						</div>
+						<div class="row mb-2">
+							<div class="col-sm-4">
+								<strong>Phone</strong>
+							</div>
+							<div class="col-sm-8">{{ user.phone|default('—') }}</div>
+						</div>
+						<div class="row mb-2">
+							<div class="col-sm-4">
+								<strong>Date created</strong>
+							</div>
+							<div class="col-sm-8">{{ user.createdAt ? user.createdAt|date('Y-m-d H:i') : '—' }}</div>
+						</div>
+						<div class="row mb-2">
+							<div class="col-sm-4">
+								<strong>Status</strong>
+							</div>
+							<div class="col-sm-8">
+								{% if user.isActive %}
+									<span class="badge" style="background:#28a745;color:white;">Active</span>
+								{% else %}
+									<span class="badge" style="background:#dc3545;color:white;">Inactive</span>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

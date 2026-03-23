@@ -19,20 +19,9 @@
 		{% endblock %}
 	</head>
 	<body class="admin bg-body text-body">
-		<script>
-			(function () {
-try {
-var s = localStorage.getItem('beatpass.admin.theme');
-if (s === 'dark') {
-document.documentElement.setAttribute('data-bs-theme', 'dark');
-document.body.classList.add('dark-mode');
-}
-} catch (e) {}
-})();
-		</script>
 		<div class="layout-container">
 			<aside class="sidebar d-flex flex-column vh-100">
-				<div class="brand d-flex justify-content-center pt-4 pb-2">
+				<div class="brand d-flex justify-content-center pt-2 pb-3" draggable="true" title="Drag to reposition logo">
 					<a href="{{ path('app_dashboard') }}" class="d-block text-decoration-none text-start">
 						<img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass Logo" class="logo-img d-block">
 					</a>
@@ -125,9 +114,6 @@ document.body.classList.add('dark-mode');
 									<button class="btn btn-sm btn-outline-secondary border-0 header-icon d-none d-md-inline-flex" title="Messages">
 										<i class="fas fa-envelope"></i>
 									</button>
-									<button id="themeToggle" class="btn btn-sm btn-outline-secondary border-0 header-icon" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">
-										<i class="fas fa-moon"></i>
-									</button>
 									<div class="dropdown">
 										<a href="#" class="d-flex align-items-center text-decoration-none user-link" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
 											{% if app.user is defined and app.user %}
@@ -190,54 +176,6 @@ document.body.classList.add('dark-mode');
 				<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 				<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 				<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-				<script>
-					// Admin theme (light / dark) toggle - uses Bootstrap data-bs-theme
-(function () {
-const STORAGE_KEY = 'beatpass.admin.theme';
-const html = document.documentElement;
-const body = document.body;
-function applyTheme(theme) {
-const isDark = theme === 'dark';
-if (isDark) {
-html.setAttribute('data-bs-theme', 'dark');
-body.classList.add('dark-mode');
-} else {
-html.removeAttribute('data-bs-theme');
-body.classList.remove('dark-mode');
-}
-}
-try {
-const saved = localStorage.getItem(STORAGE_KEY);
-if (saved) {
-applyTheme(saved);
-}
-} catch (e) {}
-
-document.addEventListener('DOMContentLoaded', function () {
-const toggle = document.getElementById('themeToggle');
-if (! toggle) 
-return;
-
-
-
-const icon = toggle.querySelector('i');
-if (icon && body.classList.contains('dark-mode')) {
-icon.className = 'fas fa-sun';
-}
-toggle.addEventListener('click', function () {
-const isDark = body.classList.contains('dark-mode');
-const next = isDark ? 'light' : 'dark';
-applyTheme(next);
-try {
-localStorage.setItem(STORAGE_KEY, next);
-} catch (e) {}
-if (icon) {
-icon.className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-}
-});
-});
-})();
-				</script>
 				<script>
 					(function () {
 const DEBOUNCE_MS = 700;
@@ -333,5 +271,6 @@ document.dispatchEvent(new Event('app:load'));
 })();
 				</script>
 			{% endblock %}
+		</body>
 	</body>
 </html>
