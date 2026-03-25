@@ -57,7 +57,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 20, nullable: true)]
     #[Assert\Length(max: 20, maxMessage: 'Phone cannot be longer than {{ limit }} characters.')]
-    #[Assert\Regex(pattern: '/^[0-9+\-\s()]*$/', message: 'Phone may contain only numbers, spaces, parentheses, plus and hyphen.')] 
+    #[Assert\Regex(pattern: '/^[0-9+\-\s()]*$/', message: 'Phone may contain only numbers, spaces, parentheses, plus and hyphen.')]
     private ?string $phone = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -70,6 +70,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $createdAt = null;
     #[ORM\Column(type: 'boolean')]
     private bool $isActive = true;
+
+    #[ORM\Column]
+    private ?bool $isVerified = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $verificationToken = null;
 
     public function getId(): ?int
     {
@@ -269,7 +275,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __serialize(): array
     {
         $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
+        $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
 
         return $data;
     }
@@ -278,5 +284,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // @deprecated, to be removed when upgrading to Symfony 8
+    }
+
+    public function isVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getVerificationToken(): ?string
+    {
+        return $this->verificationToken;
+    }
+
+    public function setVerificationToken(?string $verificationToken): static
+    {
+        $this->verificationToken = $verificationToken;
+
+        return $this;
     }
 }

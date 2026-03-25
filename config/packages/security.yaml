@@ -20,7 +20,8 @@ security:
                 check_path: /api/login
                 username_path: username
                 password_path: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
+                # success_handler: lexik_jwt_authentication.handler.authentication_success
+                success_handler: App\Security\JWTAuthenticationSuccessHandler
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
         api:
             pattern: ^/api
@@ -85,9 +86,12 @@ security:
         # Public routes - no role required
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/home, roles: PUBLIC_ACCESS }
+        - { path: ^/api/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
-
+        
+        # email verification
+        - { path: ^/verify-email, roles: PUBLIC_ACCESS }
 when@test:
     security:
         password_hashers:
