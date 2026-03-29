@@ -37,31 +37,40 @@
 						<p class="mb-0" style="color: rgba(255,255,255,0.85);">View and audit all system activities</p>
 					</div>
 				</div>
+				<span class="badge" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 700; padding: 8px 16px; font-size: 0.95rem;">{{ total|default(logs|length) }}
+					items</span>
 			</div>
 
-			<div class="px-3 pt-3 pb-2 d-flex flex-wrap align-items-center justify-content-between" style="background: #f8f9fb;">
-				<div class="d-flex align-items-center gap-2"></div>
-				<div class="d-flex align-items-center gap-2 flex-wrap">
-					<div class="beatpass-pillbar">
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Create:
-							{{ createCount }}</span>
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Update:
-							{{ updateCount }}</span>
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Delete:
-							{{ deleteCount }}</span>
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Login:
-							{{ loginCount }}</span>
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Logout:
-							{{ logoutCount }}</span>
-						<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12);">Other:
-							{{ otherCount }}</span>
-					</div>
-					<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
-						<input class="form-check-input m-0" type="checkbox" id="toggleActivityLogsActions" role="switch" aria-label="Show actions column">
-						<label class="form-check-label small text-muted" for="toggleActivityLogsActions" style="user-select:none;">Show actions</label>
-					</div>
-					<span class="badge bg-light text-dark" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 700;">{{ total|default(logs|length) }}
-						items</span>
+			<div class="px-3 py-3 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: #f8f9fb; border-bottom: 1px solid #e9ecef;">
+				<div class="beatpass-pillbar d-flex flex-wrap gap-2">
+					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
+						<i class="fas fa-plus-circle me-1" style="opacity: 0.7;"></i>Create:
+						{{ createCount }}
+					</span>
+					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
+						<i class="fas fa-edit me-1" style="opacity: 0.7;"></i>Update:
+						{{ updateCount }}
+					</span>
+					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
+						<i class="fas fa-trash-alt me-1" style="opacity: 0.7;"></i>Delete:
+						{{ deleteCount }}
+					</span>
+					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
+						<i class="fas fa-sign-in-alt me-1" style="opacity: 0.7;"></i>Login:
+						{{ loginCount }}
+					</span>
+					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
+						<i class="fas fa-sign-out-alt me-1" style="opacity: 0.7;"></i>Logout:
+						{{ logoutCount }}
+					</span>
+					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
+						<i class="fas fa-ellipsis-h me-1" style="opacity: 0.7;"></i>Other:
+						{{ otherCount }}
+					</span>
+				</div>
+				<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
+					<input class="form-check-input m-0" type="checkbox" id="toggleActivityLogsActions" role="switch" aria-label="Show actions column">
+					<label class="form-check-label small text-muted fw-500" for="toggleActivityLogsActions" style="user-select:none;">Show actions</label>
 				</div>
 			</div>
 
@@ -193,7 +202,7 @@ dtInstance = null;
 
 var dt = $('#activityLogsTable').DataTable({
 responsive: true,
-dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+dom: "<'row g-0'<'col-auto'l><'col-auto ms-auto'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row g-0 small'<'col-auto'i><'col-auto ms-auto'p>>",
 pageLength: 10,
 lengthMenu: [
 [
@@ -256,10 +265,12 @@ if (window.jQuery)
 initActivityLogsTable();
 
 
+
 });
 } else {
 if (window.jQuery) 
 initActivityLogsTable();
+
 
 
 }
@@ -269,11 +280,13 @@ if (window.jQuery)
 initActivityLogsTable();
 
 
+
 });
 
 document.addEventListener('turbo:frame-load', function (e) {
 if (window.jQuery) 
 initActivityLogsTable();
+
 
 
 });

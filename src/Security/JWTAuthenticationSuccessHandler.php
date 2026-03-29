@@ -20,8 +20,8 @@ class JWTAuthenticationSuccessHandler implements AuthenticationSuccessHandlerInt
         /** @var User $user */
         $user = $token->getUser();
 
-        // Check if email is verified
-        if (!$user->isVerified()) {
+        // Check if email is verified (skip for admin users)
+        if (!$user->isVerified() && !in_array('ROLE_ADMIN', $user->getRoles())) {
             return new JsonResponse([
                 'success' => false,
                 'message' => 'Please verify your email address before logging in',

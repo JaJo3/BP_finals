@@ -58,6 +58,8 @@ class EmailVerificationService
         $user->setIsVerified(true);
         $user->setVerificationToken(null);  // Clear the token
 
+        // Persist and flush changes
+        $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         return $user;

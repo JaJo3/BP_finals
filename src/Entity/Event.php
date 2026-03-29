@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;  
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\User;
@@ -59,11 +59,11 @@ class Event
     private ?\DateTimeImmutable $date_created = null;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Organizer $organizer = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $createdBy = null;
 
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: Ticket::class, cascade: ['persist', 'remove'])]
@@ -107,7 +107,7 @@ class Event
         // Only proceed if status has changed
         if ($this->previousStatus !== $this->status) {
             // Map event status to ticket status
-            $ticketStatus = match($this->status) {
+            $ticketStatus = match ($this->status) {
                 self::STATUS_CANCELLED => Ticket::STATUS_CANCELLED,
                 self::STATUS_COMPLETED => Ticket::STATUS_USED,
                 self::STATUS_ONGOING => Ticket::STATUS_ACTIVE,
@@ -232,12 +232,12 @@ class Event
         }
 
         $this->status = $status;
-        
+
         // If status is set to COMPLETED, mark all tickets as unavailable
         if ($status === self::STATUS_COMPLETED) {
             $this->updateTicketsToUnavailable();
         }
-        
+
         return $this;
     }
 

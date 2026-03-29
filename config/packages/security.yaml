@@ -34,7 +34,9 @@ security:
             provider: app_user_provider
             user_checker: App\Security\UserChecker
             entry_point: form_login
-            custom_authenticator: App\Security\LoginAuthenticator
+            custom_authenticators: 
+                - App\Security\LoginAuthenticator
+                - App\Security\GoogleAuthenticator
             form_login:
                 login_path: app_login
                 check_path: app_login
@@ -45,6 +47,7 @@ security:
                 secret: "%kernel.secret%"
                 lifetime: 604800
                 path: /
+            
                 # by default, the feature is enabled by checking a checkbox in the
                 # login form, uncomment the following line to always enable it.
                 #always_remember_me: true
@@ -84,6 +87,7 @@ security:
         - { path: ^/dashboard, roles: IS_AUTHENTICATED }
 
         # Public routes - no role required
+        - { path: ^/$, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/home, roles: PUBLIC_ACCESS }
         - { path: ^/api/register, roles: PUBLIC_ACCESS }

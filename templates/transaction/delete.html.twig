@@ -1,146 +1,148 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Delete Transaction #{{ transaction.id }}{% endblock %}
+{% block title %}Delete Transaction #{{ transaction.id }}
+{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <!-- Header Section -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0" style="color: #1A3D7C">
-            <i class="fas fa-exclamation-triangle me-2"></i>Delete Transaction
-        </h1>
-    </div>
+	<div
+		class="container-fluid">
+		<!-- Header Section -->
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1 class="h3 mb-0" style="color: #1A3D7C">
+				<i class="fas fa-exclamation-triangle me-2"></i>Delete Transaction
+			</h1>
+		</div>
 
-    <!-- Warning Card -->
-    <div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden; border-left: 4px solid #dc3545;">
-        <div class="card-body p-4" style="background-color: #fff5f5;">
-            <div class="d-flex gap-3 align-items-start">
-                <div style="font-size: 2em; color: #dc3545;">
-                    <i class="fas fa-exclamation-circle"></i>
-                </div>
-                <div>
-                    <h5 style="color: #dc3545; font-weight: 700; margin-bottom: 8px;">
-                        This action cannot be undone
-                    </h5>
-                    <p style="color: #495057; margin: 0;">
-                        You are about to permanently delete <strong>Transaction #{{ transaction.id }}</strong> and all its associated data. This includes buyer information, ticket records, and payment details.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
+		<!-- Warning Card -->
+		<div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden; border-left: 4px solid #dc3545;">
+			<div class="card-body p-4" style="background-color: #fff5f5;">
+				<div class="d-flex gap-3 align-items-start">
+					<div style="font-size: 2em; color: #dc3545;">
+						<i class="fas fa-exclamation-circle"></i>
+					</div>
+					<div>
+						<h5 style="color: #dc3545; font-weight: 700; margin-bottom: 8px;">
+							This action cannot be undone
+						</h5>
+						<p style="color: #495057; margin: 0;">
+							You are about to permanently delete
+							<strong>Transaction #{{ transaction.id }}</strong>
+							and all its associated data. This includes buyer information, ticket records, and payment details.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <!-- Transaction Summary Card -->
-    <div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden;">
-        <div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
-            <h3 class="card-title mb-0">
-                <i class="fas fa-receipt me-2"></i>Transaction Summary
-            </h3>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-borderless mb-0">
-                    <tbody>
-                        <tr style="border-bottom: 1px solid #e9ecef;">
-                            <th style="width: 200px; padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Transaction ID</th>
-                            <td style="padding: 20px;">
-                                <strong style="color: #1A3D7C; font-size: 1.1em;">#{{ transaction.id }}</strong>
-                            </td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #e9ecef;">
-                            <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Buyer</th>
-                            <td style="padding: 20px;">
-                                <strong style="color: #1A3D7C;">{{ transaction.user.getFullName() ?? transaction.user.email }}</strong>
-                                <br><small class="text-muted">{{ transaction.user.email }}</small>
-                            </td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #e9ecef;">
-                            <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Event</th>
-                            <td style="padding: 20px;">
-                                <strong style="color: #1A3D7C;">{{ transaction.event.eventName }}</strong>
-                                <br><small class="text-muted">{{ transaction.event.date ? transaction.event.date|date('Y-m-d H:i') : '—' }}</small>
-                            </td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #e9ecef;">
-                            <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Total Amount</th>
-                            <td style="padding: 20px;">
-                                <span style="color: #F9B233; font-size: 1.3em; font-weight: 700;">₱{{ transaction.totalAmount|number_format(2, '.', ',') }}</span>
-                            </td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #e9ecef;">
-                            <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Payment Status</th>
-                            <td style="padding: 20px;">
-                                <span class="badge {% if transaction.paymentStatus == 'paid' %}bg-success{% elseif transaction.paymentStatus == 'refunded' %}bg-secondary{% elseif transaction.paymentStatus == 'failed' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
-                                    {{ transaction.paymentStatus|upper }}
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Created</th>
-                            <td style="padding: 20px;">
-                                <small class="text-muted">{{ transaction.createdAt|date('Y-m-d H:i:s') }}</small>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+		<!-- Transaction Summary Card -->
+		<div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden;">
+			<div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
+				<h3 class="card-title mb-0">
+					<i class="fas fa-receipt me-2"></i>Transaction Summary
+				</h3>
+			</div>
+			<div class="card-body p-0">
+				<div class="table-responsive">
+					<table class="table table-borderless mb-0">
+						<tbody>
+							<tr style="border-bottom: 1px solid #e9ecef;">
+								<th style="width: 200px; padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Transaction ID</th>
+								<td style="padding: 20px;">
+									<strong style="color: #1A3D7C; font-size: 1.1em;">#{{ transaction.id }}</strong>
+								</td>
+							</tr>
+							<tr style="border-bottom: 1px solid #e9ecef;">
+								<th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Buyer</th>
+								<td style="padding: 20px;">
+									<strong style="color: #1A3D7C;">{{ transaction.user.getFullName() ?? transaction.user.email }}</strong>
+									<br><small class="text-muted">{{ transaction.user.email }}</small>
+								</td>
+							</tr>
+							<tr style="border-bottom: 1px solid #e9ecef;">
+								<th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Event</th>
+								<td style="padding: 20px;">
+									<strong style="color: #1A3D7C;">{{ transaction.event.eventName }}</strong>
+									<br><small class="text-muted">{{ transaction.event.date ? transaction.event.date|date('Y-m-d H:i') : '—' }}</small>
+								</td>
+							</tr>
+							<tr style="border-bottom: 1px solid #e9ecef;">
+								<th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Total Amount</th>
+								<td style="padding: 20px;">
+									<span style="color: #F9B233; font-size: 1.3em; font-weight: 700;">₱{{ transaction.totalAmount|number_format(2, '.', ',') }}</span>
+								</td>
+							</tr>
+							<tr style="border-bottom: 1px solid #e9ecef;">
+								<th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Payment Status</th>
+								<td style="padding: 20px;">
+									<span class="badge {% if transaction.paymentStatus == 'paid' %}bg-success{% elseif transaction.paymentStatus == 'refunded' %}bg-secondary{% elseif transaction.paymentStatus == 'failed' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+										{{ transaction.paymentStatus|upper }}
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Created</th>
+								<td style="padding: 20px;">
+									<small class="text-muted">{{ transaction.createdAt|date('Y-m-d H:i:s') }}</small>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 
-    <!-- Tickets Section -->
-    <div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden;">
-        <div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
-            <h3 class="card-title mb-0">
-                <i class="fas fa-ticket-alt me-2"></i>Tickets Purchased (Will be deleted)
-            </h3>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-borderless mb-0">
-                    <thead style="background-color: #f8f9fa;">
-                        <tr>
-                            <th style="padding: 15px; color: #1A3D7C; font-weight: 600;">Type</th>
-                            <th style="padding: 15px; color: #1A3D7C; font-weight: 600; text-align: right;">Quantity</th>
-                            <th style="padding: 15px; color: #1A3D7C; font-weight: 600; text-align: right;">Price</th>
-                            <th style="padding: 15px; color: #1A3D7C; font-weight: 600; text-align: right;">Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for t in transaction.tickets %}
-                            <tr style="border-bottom: 1px solid #e9ecef;">
-                                <td style="padding: 15px;">
-                                    <span class="badge" style="background-color: #6c757d;">{{ t.ticketType }}</span>
-                                </td>
-                                <td style="padding: 15px; text-align: right;" class="text-muted">{{ t.quantity }}</td>
-                                <td style="padding: 15px; text-align: right;" class="text-muted">₱{{ t.price|number_format(2, '.', ',') }}</td>
-                                <td style="padding: 15px; text-align: right;">
-                                    <strong style="color: #1A3D7C;">₱{{ (t.price * t.quantity)|number_format(2, '.', ',') }}</strong>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+		<!-- Tickets Section -->
+		<div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden;">
+			<div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
+				<h3 class="card-title mb-0">
+					<i class="fas fa-ticket-alt me-2"></i>Tickets Purchased (Will be deleted)
+				</h3>
+			</div>
+			<div class="card-body p-0">
+				<div class="table-responsive">
+					<table class="table table-borderless mb-0">
+						<thead style="background-color: #f8f9fa;">
+							<tr>
+								<th style="padding: 15px; color: #1A3D7C; font-weight: 600;">Type</th>
+								<th style="padding: 15px; color: #1A3D7C; font-weight: 600; text-align: right;">Quantity</th>
+								<th style="padding: 15px; color: #1A3D7C; font-weight: 600; text-align: right;">Price</th>
+								<th style="padding: 15px; color: #1A3D7C; font-weight: 600; text-align: right;">Subtotal</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for t in transaction.tickets %}
+								<tr style="border-bottom: 1px solid #e9ecef;">
+									<td style="padding: 15px;">
+										<span class="badge" style="background-color: #6c757d;">{{ t.ticketType }}</span>
+									</td>
+									<td style="padding: 15px; text-align: right;" class="text-muted">{{ t.quantity }}</td>
+									<td style="padding: 15px; text-align: right;" class="text-muted">₱{{ t.price|number_format(2, '.', ',') }}</td>
+									<td style="padding: 15px; text-align: right;">
+										<strong style="color: #1A3D7C;">₱{{ (t.price * t.quantity)|number_format(2, '.', ',') }}</strong>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 
-    <!-- Action Buttons -->
-    <div class="card shadow-sm" style="border-radius: 12px; overflow: hidden;">
-        <div class="card-body p-4">
-            <div class="d-flex gap-3 justify-content-end">
-                <a href="{{ path('admin_transaction_show', {'id': transaction.id}) }}" class="btn btn-lg" style="background-color: #6c757d; color: white; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 600; transition: all 0.3s ease;">
-                    <i class="fas fa-times me-2"></i>Cancel
-                </a>
-                <form method="POST" action="{{ path('admin_transaction_delete', {'id': transaction.id}) }}" style="display: inline;">
-                    <input type="hidden" name="_token" value="{{ csrf_token('transaction_delete_' ~ transaction.id) }}">
-                    <button type="submit" class="btn btn-lg" style="background-color: #dc3545; color: white; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 600; transition: all 0.3s ease;" 
-                            onmouseover="this.style.backgroundColor='#c82333'" 
-                            onmouseout="this.style.backgroundColor='#dc3545'">
-                        <i class="fas fa-trash me-2"></i>Yes, Delete This Transaction
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+		<!-- Action Buttons -->
+		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden;">
+			<div class="card-body p-4">
+				<div class="d-flex gap-3 justify-content-end">
+					<a href="{{ path('admin_transaction_show', {'id': transaction.id}) }}" class="btn btn-lg" style="background-color: #6c757d; color: white; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 600; transition: all 0.3s ease;">
+						<i class="fas fa-times me-2"></i>Cancel
+					</a>
+					<form method="POST" action="{{ path('admin_transaction_delete', {'id': transaction.id}) }}" style="display: inline;">
+						<input type="hidden" name="_token" value="{{ csrf_token('transaction_delete_' ~ transaction.id) }}">
+						<button type="submit" class="btn btn-lg" style="background-color: #dc3545; color: white; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 600; transition: all 0.3s ease;" onmouseover="if(this) this.style.backgroundColor='#c82333'" onmouseout="if(this) this.style.backgroundColor='#dc3545'">
+							<i class="fas fa-trash me-2"></i>Yes, Delete This Transaction
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

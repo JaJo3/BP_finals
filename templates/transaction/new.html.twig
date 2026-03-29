@@ -1,299 +1,381 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Create Transaction{% endblock %}
+{% block title %}Create Transaction
+{% endblock %}
 
 {% block body %}
-    <div class="content-wrapper">
-        <div class="card shadow-sm p-4">
-            <div class="d-flex align-items-center gap-3">
-                <i class="fas fa-exchange-alt fa-lg" style="color: #F9B233;"></i>
-                <h3 style="color: #1A3D7C; font-weight:700; margin:0;">Create Transaction</h3>
-            </div>
+	<div class="content-wrapper">
+		<div class="card shadow-sm p-4">
+			<div class="d-flex align-items-center gap-3">
+				<i class="fas fa-exchange-alt fa-lg" style="color: #F9B233;"></i>
+				<h3 style="color: #1A3D7C; font-weight:700; margin:0;">Create Transaction</h3>
+			</div>
 
-            <form method="post" class="row g-3 mt-3" id="transactionCreateForm">
-                <input type="hidden" name="_token" value="{{ csrf_token('transaction_new') }}">
+			<form method="post" class="row g-3 mt-3" id="transactionCreateForm">
+				<input
+				type="hidden" name="_token" value="{{ csrf_token('transaction_new') }}">
 
-                {# Server-side validation errors summary #}
-                {% if errors is defined and errors|length > 0 %}
-                    <div class="alert alert-danger">
-                        <strong>There are problems with your submission:</strong>
-                        <ul class="mb-0">
-                            {% for e in errors %}
-                                <li>{{ e }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
+				{# Server-side validation errors summary #}
+				{% if errors is defined and errors|length > 0 %}
+					<div class="alert alert-danger">
+						<strong>There are problems with your submission:</strong>
+						<ul class="mb-0">
+							{% for e in errors %}
+								<li>{{ e }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+				{% endif %}
 
-                <div class="col-md-6">
-                    <label class="form-label">Buyer</label>
-                    {# Admin context (users list provided) #}
-                    {% if users is defined and users|length > 0 %}
-                        {# keep selected user if form was re-rendered due to validation errors #}
-                        <select name="user" class="form-select" required>
-                            <option value="">-- Select buyer --</option>
-                            {% for u in users %}
-                                <option value="{{ u.id }}" {% if old.user is defined and old.user == u.id %}selected{% endif %}>{{ u.email }}{% if u.getFullName is defined %} — {{ u.getFullName() }}{% endif %}</option>
-                            {% endfor %}
-                        </select>
+				<div class="col-md-6">
+					<label class="form-label">Buyer</label>
+					{# Admin context (users list provided) #}
+					{% if users is defined and users|length > 0 %}
+						{# keep selected user if form was re-rendered due to validation errors #}
+						<select name="user" class="form-select" required>
+							<option value="">-- Select buyer --</option>
+							{% for u in users %}
+								<option value="{{ u.id }}" {% if old.user is defined and old.user == u.id %} selected {% endif %}>{{ u.email }}
+									{% if u.getFullName is defined %}
+										—
+										{{ u.getFullName() }}
+									{% endif %}
+								</option>
+							{% endfor %}
+						</select>
 
-                    {# Logged-in non-admin user (readonly) #}
-                    {% elseif app.user and not (isAdmin is defined and isAdmin) %}
-                        <input type="hidden" name="user" value="{{ app.user.id }}">
-                        <input class="form-control" disabled value="{{ app.user.email }}{% if app.user.getFullName is defined %} — {{ app.user.getFullName() }}{% endif %}">
+						{# Logged-in non-admin user (readonly) #}
+					{% elseif app.user and not (isAdmin is defined and isAdmin) %}
+						<input type="hidden" name="user" value="{{ app.user.id }}">
+						<input
+						class="form-control" disabled value="{{ app.user.email }}{% if app.user.getFullName is defined %} — {{ app.user.getFullName() }}{% endif %}">
 
-                    {# Admin logged-in but no buyer accounts available #}
-                    {% elseif app.user and (isAdmin is defined and isAdmin) %}
-                        <div class="form-text text-warning">No buyer accounts (ROLE_USER) available to select. Create a buyer user or remove ROLE_ADMIN/ROLE_STAFF from an account.</div>
+						{# Admin logged-in but no buyer accounts available #}
+					{% elseif app.user and (isAdmin is defined and isAdmin) %}
+						<div class="form-text text-warning">No buyer accounts (ROLE_USER) available to select. Create a buyer user or remove ROLE_ADMIN/ROLE_STAFF from an account.</div>
 
-                    {# Anonymous buyer: collect basic info (email) #}
-                    {% else %}
-                        <input type="email" name="buyer_email" class="form-control" placeholder="Buyer email (optional)" value="{{ old.buyer_email|default('') }}">
-                        <div class="invalid-feedback">Please enter a valid buyer email when not logged in.</div>
-                        <div class="form-text">If not logged-in, provide a buyer email to associate with this transaction.</div>
-                    {% endif %}
-                </div>
+						{# Anonymous buyer: collect basic info (email) #}
+					{% else %}
+						<input type="email" name="buyer_email" class="form-control" placeholder="Buyer email (optional)" value="{{ old.buyer_email|default('') }}">
+						<div class="invalid-feedback">Please enter a valid buyer email when not logged in.</div>
+						<div class="form-text">If not logged-in, provide a buyer email to associate with this transaction.</div>
+					{% endif %}
+				</div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Event</label>
-                    <select name="event" class="form-select" id="transactionEventSelect">
-                        {% for e in events %}
-                            <option value="{{ e.id }}" {% if old.event is defined and old.event == e.id %}selected{% endif %}>{{ e.eventName }} — {{ e.date ? e.date|date('Y-m-d') : '' }}</option>
-                        {% endfor %}
-                    </select>
-                    <div class="invalid-feedback" id="eventValidation">Please select an event.</div>
-                </div>
-                        <div class="small text-muted mb-2">Choose ticket types and quantities. Total updates automatically.</div>
+				<div class="col-md-6">
+					<label class="form-label">Event</label>
+					<select name="event" class="form-select" id="transactionEventSelect">
+						{% for e in events %}
+							<option value="{{ e.id }}" {% if old.event is defined and old.event == e.id %} selected {% endif %}>{{ e.eventName }}
+								—
+								{{ e.date ? e.date|date('Y-m-d') : '' }}</option>
+						{% endfor %}
+					</select>
+					<div class="invalid-feedback" id="eventValidation">Please select an event.</div>
+				</div>
+				<div class="small text-muted mb-2">Choose ticket types and quantities. Total updates automatically.</div>
 
-                        <div class="table-responsive">
-                            <table class="table table-sm mb-0" id="ticketSelectorTable">
-                                <thead>
-                                    <tr>
-                                        <th style="width:40%">Type</th>
-                                        <th style="width:20%">Price</th>
-                                        <th style="width:20%">Available</th>
-                                        <th style="width:20%">Qty</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                            <tr class="empty-note">
-                                                <td colspan="4" class="text-center text-muted py-4">Select an event to load available ticket types.</td>
-                                            </tr>
-                                </tbody>
-                            </table>
-                        </div>
+				<div class="table-responsive">
+					<table class="table table-sm mb-0" id="ticketSelectorTable">
+						<thead>
+							<tr>
+								<th style="width:40%">Type</th>
+								<th style="width:20%">Price</th>
+								<th style="width:20%">Available</th>
+								<th style="width:20%">Qty</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="empty-note">
+								<td colspan="4" class="text-center text-muted py-4">Select an event to load available ticket types.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div><strong>Total:</strong> <span id="ticketTotalDisplay">₱0.00</span></div>
-                            <div><small id="ticketValidation" class="text-danger" style="display:none"></small></div>
-                        </div>
+				<div class="d-flex justify-content-between align-items-center mt-3">
+					<div>
+						<strong>Total:</strong>
+						<span id="ticketTotalDisplay">₱0.00</span>
+					</div>
+					<div>
+						<small id="ticketValidation" class="text-danger" style="display:none"></small>
+					</div>
+				</div>
 
-                        <input type="hidden" name="tickets" id="ticketsInput" value='{{ old.tickets|default('') }}'>
-                    </div>
-                </div>
+				<input type="hidden" name="tickets" id="ticketsInput" value='{{ old.tickets|default('') }}'>
+			</div>
+		</div>
 
-                <div class="col-12">
-                    <div class="row g-2">
-                        <div class="col-md-4">
-                            <label class="form-label small mb-1">Payment method <span class="text-danger">*</span></label>
-                            <select name="payment_method" class="form-select form-select-sm" id="paymentMethodSelect" required>
-                                <option value="">-- Select --</option>
-                                <option value="GCash" {% if old.payment_method is defined and old.payment_method == 'GCash' %}selected{% endif %}>GCash</option>
-                                <option value="PayPal" {% if old.payment_method is defined and old.payment_method == 'PayPal' %}selected{% endif %}>PayPal</option>
-                                <option value="Card" {% if old.payment_method is defined and old.payment_method == 'Card' %}selected{% endif %}>Card</option>
-                                <option value="Manual" {% if old.payment_method is defined and old.payment_method == 'Manual' %}selected{% endif %}>Manual</option>
-                            </select>
-                            <div class="invalid-feedback" id="paymentMethodValidation">Please choose a payment method.</div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label small mb-1">Payment reference <span class="text-danger">*</span></label>
-                            <input type="text" name="payment_reference" class="form-control form-control-sm" placeholder="Transaction reference or receipt" value="{{ old.payment_reference|default('') }}" id="paymentRefInput" required>
-                            <div class="invalid-feedback" id="paymentRefValidation">Provide a payment reference.</div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label small mb-1">Status</label>
-                            <input type="text" class="form-control form-control-sm" value="Paid (auto)" disabled>
-                            <div class="form-text small">Auto-marked as paid when payment info is provided.</div>
-                        </div>
-                    </div>
-                </div>
+		<div class="col-12">
+			<div class="row g-2">
+				<div class="col-md-4">
+					<label class="form-label small mb-1">Payment method
+						<span class="text-danger">*</span>
+					</label>
+					<select name="payment_method" class="form-select form-select-sm" id="paymentMethodSelect" required>
+						<option value="">-- Select --</option>
+						<option value="GCash" {% if old.payment_method is defined and old.payment_method == 'GCash' %} selected {% endif %}>GCash</option>
+						<option value="PayPal" {% if old.payment_method is defined and old.payment_method == 'PayPal' %} selected {% endif %}>PayPal</option>
+						<option value="Card" {% if old.payment_method is defined and old.payment_method == 'Card' %} selected {% endif %}>Card</option>
+						<option value="Manual" {% if old.payment_method is defined and old.payment_method == 'Manual' %} selected {% endif %}>Manual</option>
+					</select>
+					<div class="invalid-feedback" id="paymentMethodValidation">Please choose a payment method.</div>
+				</div>
+				<div class="col-md-4">
+					<label class="form-label small mb-1">Payment reference
+						<span class="text-danger">*</span>
+					</label>
+					<input type="text" name="payment_reference" class="form-control form-control-sm" placeholder="Transaction reference or receipt" value="{{ old.payment_reference|default('') }}" id="paymentRefInput" required>
+					<div class="invalid-feedback" id="paymentRefValidation">Provide a payment reference.</div>
+				</div>
+				<div class="col-md-4">
+					<label class="form-label small mb-1">Status</label>
+					<input type="text" class="form-control form-control-sm" value="Paid (auto)" disabled>
+					<div class="form-text small">Auto-marked as paid when payment info is provided.</div>
+				</div>
+			</div>
+		</div>
 
-                <div class="col-12 d-flex gap-2 mt-2">
-                    <button class="btn btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C;">Create</button>
-                    <a href="{% if users is defined %}{{ path('admin_transaction_index') }}{% else %}{{ path('app_transaction') }}{% endif %}" class="btn btn-outline-secondary">Cancel</a>
-                </div>
-            </form>
-        </div>
-    </div>
-{% endblock %}
+		<div class="col-12 d-flex gap-2 mt-2">
+			<button class="btn btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C;">Create</button>
+			<a href="{% if users is defined %}{{ path('admin_transaction_index') }}{% else %}{{ path('app_transaction') }}{% endif %}" class="btn btn-outline-secondary">Cancel</a>
+		</div>
+	</form>
+</div></div>{% endblock %}{% block javascripts %}{{ parent() }}<script>
+(function () {
+function moneyFmt(v) {
+return '₱' + Number(v).toLocaleString(undefined, {
+minimumFractionDigits: 2,
+maximumFractionDigits: 2
+});
+}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        (function(){
-            function moneyFmt(v){ return '₱' + Number(v).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function setTicketsPayload() {
+var payload = [];
+$('#ticketSelectorTable tbody tr').each(function () {
+var $row = $(this);
+var id = $row.data('id');
+if (! id) 
+return;
 
-            function setTicketsPayload(){
-                var payload = [];
-                $('#ticketSelectorTable tbody tr').each(function(){
-                    var $row = $(this);
-                    var id = $row.data('id');
-                    if(!id) return;
-                    var qty = parseInt($row.find('.qty-input').val() || '0', 10);
-                    if(qty > 0){
-                        payload.push({
-                            ticketId: id,
-                            ticketType: $row.data('type'),
-                            quantity: qty,
-                            price: parseFloat($row.data('price'))
-                        });
-                    }
-                });
-                $('#ticketsInput').val(JSON.stringify(payload));
-                return payload;
-            }
 
-            function recalcTotal(){
-                var total = 0;
-                var ok = true;
-                $('#ticketSelectorTable tbody tr').each(function(){
-                    var id = $(this).data('id');
-                    if(!id) return;
-                    var price = parseFloat($(this).data('price')) || 0;
-                    var available = parseInt($(this).data('available')||0, 10);
-                    var qty = parseInt($(this).find('.qty-input').val() || '0', 10);
-                    if(qty > available){ ok = false; }
-                    total += price * qty;
-                });
-                $('#ticketTotalDisplay').text(moneyFmt(total));
-                if(!ok){ $('#ticketValidation').text('Quantity cannot exceed available stock').show(); } else { $('#ticketValidation').hide().text(''); }
-                setTicketsPayload();
-            }
+var qty = parseInt($row.find('.qty-input').val() || '0', 10);
+if (qty > 0) {
+payload.push({
+ticketId: id,
+ticketType: $row.data('type'),
+quantity: qty,
+price: parseFloat($row.data('price'))
+});
+}
+});
+$('#ticketsInput').val(JSON.stringify(payload));
+return payload;
+}
 
-            function loadTicketsForEvent(eventId){
-                var $tbody = $('#ticketSelectorTable tbody');
-                $tbody.html('<tr><td colspan="4" class="text-center py-4 text-muted">Loading ticket types…</td></tr>');
+function recalcTotal() {
+var total = 0;
+var ok = true;
+$('#ticketSelectorTable tbody tr').each(function () {
+var id = $(this).data('id');
+if (! id) 
+return;
 
-                $.getJSON('/event/' + eventId + '/tickets/json')
-                    .done(function(data){
-                        if(!Array.isArray(data) || data.length === 0){
-                            $tbody.html('<tr><td colspan="4" class="text-center py-4 text-muted">No ticket types available for this event.</td></tr>');
-                            recalcTotal();
-                            return;
-                        }
 
-                        var rows = '';
-                        data.forEach(function(t){
-                            rows += '<tr data-id="'+t.id+'" data-type="'+t.ticketType+'" data-price="'+t.price+'" data-available="'+t.available+'">';
-                            rows += '<td><span class="beatpass-badge" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white; padding: 6px 10px; border-radius: 20px;">'+t.ticketType+'</span></td>';
-                            rows += '<td>'+moneyFmt(t.price)+'</td>';
-                            rows += '<td>'+t.available+'</td>';
-                            rows += '<td><input type="number" min="0" max="'+t.available+'" value="0" class="form-control form-control-sm qty-input" style="width:110px"></td>';
-                            rows += '</tr>';
-                        });
+var price = parseFloat($(this).data('price')) || 0;
+var available = parseInt($(this).data('available') || 0, 10);
+var qty = parseInt($(this).find('.qty-input').val() || '0', 10);
+if (qty > available) {
+ok = false;
+}
+total += price * qty;
+});
+$('#ticketTotalDisplay').text(moneyFmt(total));
+if (! ok) {
+$('#ticketValidation').text('Quantity cannot exceed available stock').show();
+} else {
+$('#ticketValidation').hide().text('');
+} setTicketsPayload();
+}
 
-                        $tbody.html(rows);
-                        // if old tickets present, prefill quantities
-                        try {
-                            var pre = preTicketsRaw !== null ? (typeof preTicketsRaw === 'string' ? JSON.parse(preTicketsRaw) : preTicketsRaw) : null;
-                            if (Array.isArray(pre)) {
-                                pre.forEach(function(it){
-                                    $tbody.find('tr[data-id="'+it.ticketId+'"]').find('.qty-input').val(it.quantity);
-                                });
-                            }
-                        } catch (err) {
-                            // ignore parse errors
-                        }
-                        // attach listeners
-                        $tbody.find('.qty-input').on('input change', function(){ recalcTotal(); });
-                        recalcTotal();
-                    }).fail(function(){
-                        $tbody.html('<tr><td colspan="4" class="text-center py-4 text-danger">Failed to load ticket types.</td></tr>');
-                    });
-            }
+function loadTicketsForEvent(eventId) {
+var $tbody = $('#ticketSelectorTable tbody');
 
-            // prepare prefilled ticket data if the controller returned old values on validation error
-            var preTicketsRaw = {{ old.tickets is defined and old.tickets ? old.tickets|json_encode|raw : 'null' }};
+// Validate eventId exists and is a positive integer
+if (! eventId || isNaN(eventId) || parseInt(eventId) <= 0) {
+$tbody.html('<tr><td colspan="4" class="text-center py-4 text-muted">Select an event to load available ticket types.</td></tr>');
+recalcTotal();
+return;
+}
 
-            $(document).ready(function(){
-                var $eventSelect = $('select[name="event"]');
+$tbody.html('<tr><td colspan="4" class="text-center py-4 text-muted">Loading ticket types…</td></tr>');
 
-                // load initially if pre-selected
-                var initial = $eventSelect.val();
-                if(initial){ loadTicketsForEvent(initial); }
+$.getJSON('/event/' + eventId + '/tickets/json').done(function (data) {
+if (!Array.isArray(data) || data.length === 0) {
+$tbody.html('<tr><td colspan="4" class="text-center py-4 text-muted">No ticket types available for this event.</td></tr>');
+recalcTotal();
+return;
+}
 
-                $eventSelect.on('change', function(){
-                    var id = $(this).val();
-                    if(id){ loadTicketsForEvent(id); }
-                    // pre-select payment method & status from previous values (if any)
-                    {% if old.payment_method is defined and old.payment_method %}
-                        $('#paymentMethodSelect').val('{{ old.payment_method|e('js') }}');
-                    {% endif %}
-                    {% if old.payment_status is defined and old.payment_status %}
-                        $('#paymentStatusSelect').val('{{ old.payment_status|e('js') }}');
-                    {% endif %}
+var rows = '';
+data.forEach(function (t) {
+rows += '<tr data-id="' + t.id + '" data-type="' + t.ticketType + '" data-price="' + t.price + '" data-available="' + t.available + '">';
+rows += '<td><span class="beatpass-badge" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white; padding: 6px 10px; border-radius: 20px;">' + t.ticketType + '</span></td>';
+rows += '<td>' + moneyFmt(t.price) + '</td>';
+rows += '<td>' + t.available + '</td>';
+rows += '<td><input type="number" min="0" max="' + t.available + '" value="0" class="form-control form-control-sm qty-input" style="width:110px"></td>';
+rows += '</tr>';
+});
 
-                    // if event selected and we have old ticket quantities, load tickets for event and prefill
-                    if (initial && preTicketsRaw !== null) {
-                        loadTicketsForEvent(initial);
-                    }
-                });
+$tbody.html(rows);
+// if old tickets present, prefill quantities
+try {
+var pre = preTicketsRaw !== null ? (typeof preTicketsRaw === 'string' ? JSON.parse(preTicketsRaw) : preTicketsRaw) : null;
+if (Array.isArray(pre)) {
+pre.forEach(function (it) {
+var $row = $tbody.find('tr[data-id="' + it.ticketId + '"]');
+if ($row.length > 0) {
+var $input = $row.find('.qty-input');
+if ($input.length > 0) {
+$input.val(it.quantity);
+}
+}
+});
+}
+} catch (err) { // ignore parse errors
+console.warn('Error prefilling quantities:', err);
+}
+// attach listeners
+$tbody.find('.qty-input').on('input change', function () {
+recalcTotal();
+});
+recalcTotal();
+}).fail(function (jqXHR) {
+var errorMsg = 'Failed to load ticket types.';
+if (jqXHR.status === 404) {
+errorMsg = 'This event was not found. Please select a different event.';
+// Clear the select if the event doesn't exist
+$eventSelect.val('');
+} else if (jqXHR.status === 0) {
+errorMsg = 'Network error. Please check your connection.';
+}
 
-                // build payload on submit and validate
-                $('form').on('submit', function(e){
-                    var payload = setTicketsPayload();
-                    // clear previous invalid states
-                    $('input, select').removeClass('is-invalid');
-                    $('#ticketValidation').hide();
+if ($tbody.length > 0) {
+$tbody.html('<tr><td colspan="4" class="text-center py-4 text-danger">' + errorMsg + '</td></tr>');
+}
+recalcTotal();
+});
+}
 
-                    var hasError = false;
+// prepare prefilled ticket data if the controller returned old values on validation error
+var preTicketsRaw = {{ old.tickets is defined and old.tickets ? old.tickets|json_encode|raw : 'null' }};
 
-                    // Event required
-                    if (!$eventSelect.val()) {
-                        $('#transactionEventSelect').addClass('is-invalid');
-                        $('#eventValidation').show();
-                        hasError = true;
-                    }
+$(document).ready(function () {
+var $eventSelect = $('select[name="event"]');
+var $tbody = $('#ticketSelectorTable tbody');
 
-                    // Buyer validation (when users list is provided, buyer select is required)
-                    {% if users is defined and users|length > 0 %}
-                        var buyerSelect = $('select[name="user"]');
-                        if (!buyerSelect.val()) {
-                            buyerSelect.addClass('is-invalid');
-                            hasError = true;
-                        }
-                    {% elseif users is not defined %}
-                        var buyerEmail = $('input[name="buyer_email"]').val() || '';
-                        if (!buyerEmail || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(buyerEmail)) {
-                            $('input[name="buyer_email"]').addClass('is-invalid');
-                            hasError = true;
-                        }
-                    {% endif %}
+// load initially if pre-selected
+var initial = $eventSelect.val();
+if (initial && $eventSelect.find('option[value="' + initial + '"]').length > 0) {
+loadTicketsForEvent(initial);
+} else if (initial) { // Pre-selected event doesn't exist in dropdown, clear it
+$eventSelect.val('');
+if ($tbody.length > 0) {
+$tbody.html('<tr><td colspan="4" class="text-center py-4 text-muted">Select an event to load available ticket types.</td></tr>');
+}
+}
 
-                    // tickets
-                    if(!payload || payload.length === 0) {
-                        e.preventDefault();
-                        $('#ticketValidation').text('Please select at least one ticket.').show();
-                        hasError = true;
-                    }
+$eventSelect.on('change', function () {
+var id = $(this).val();
+if (id) {
+loadTicketsForEvent(id);
+} else {
+if ($tbody.length > 0) {
+$tbody.html('<tr><td colspan="4" class="text-center py-4 text-muted">Select an event to load available ticket types.</td></tr>');
+}
+}
+// pre-select payment method & status from previous values (if any)
+{% if old.payment_method is defined and old.payment_method %}
+$('#paymentMethodSelect').val('{{ old.payment_method|e('js') }}');{% endif %}{% if old.payment_status is defined and old.payment_status %}
+$('#paymentStatusSelect').val('{{ old.payment_status|e('js') }}');{% endif %}
 
-                    // Payment method and reference are now required
-                    var pm = $('#paymentMethodSelect').val();
-                    var pref = $('#paymentRefInput').val();
-                    if (!pm) { $('#paymentMethodSelect').addClass('is-invalid'); $('#paymentMethodValidation').show(); hasError = true; }
-                    if (!pref) { $('#paymentRefInput').addClass('is-invalid'); $('#paymentRefValidation').show(); hasError = true; }
+// if event selected and we have old ticket quantities, load tickets for event and prefill
+if (initial && preTicketsRaw !== null && $eventSelect.find('option[value="' + initial + '"]').length > 0) {
+loadTicketsForEvent(initial);
+}
+});
 
-                    if (hasError) { e.preventDefault(); return false; }
-                    // ensure not exceeding available
-                    var ok = true;
-                    $('#ticketSelectorTable tbody tr').each(function(){
-                        var avail = parseInt($(this).data('available')||0, 10);
-                        var qty = parseInt($(this).find('.qty-input').val()||0, 10);
-                        if(qty > avail){ ok = false; }
-                    });
-                    if(!ok){ e.preventDefault(); $('#ticketValidation').text('Quantity cannot exceed available stock').show(); return false; }
-                });
-                });
-        })();
-    </script>
-{% endblock %}
+// build payload on submit and validate
+$('form').on('submit', function (e) {
+var payload = setTicketsPayload();
+// clear previous invalid states
+$('input, select').removeClass('is-invalid');
+$('#ticketValidation').hide();
+
+var hasError = false;
+
+// Event required
+if (! $eventSelect.val()) {
+$('#transactionEventSelect').addClass('is-invalid');
+$('#eventValidation').show();
+hasError = true;
+}
+
+// Buyer validation (when users list is provided, buyer select is required)
+{% if users is defined and users|length > 0 %}
+var buyerSelect = $('select[name="user"]');
+if (! buyerSelect.val()) {
+buyerSelect.addClass('is-invalid');
+hasError = true;
+}
+{% elseif users is not defined %}
+var buyerEmail = $('input[name="buyer_email"]').val() || '';
+if (! buyerEmail || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(buyerEmail)) {
+$('input[name="buyer_email"]').addClass('is-invalid');
+hasError = true;
+}
+{% endif %}
+
+// tickets
+if (! payload || payload.length === 0) {
+e.preventDefault();
+$('#ticketValidation').text('Please select at least one ticket.').show();
+hasError = true;
+}
+
+// Payment method and reference are now required
+var pm = $('#paymentMethodSelect').val();
+var pref = $('#paymentRefInput').val();
+if (! pm) {
+$('#paymentMethodSelect').addClass('is-invalid');
+$('#paymentMethodValidation').show();
+hasError = true;
+}
+if (! pref) {
+$('#paymentRefInput').addClass('is-invalid');
+$('#paymentRefValidation').show();
+hasError = true;
+}
+
+if (hasError) {
+e.preventDefault();
+return false;
+}
+// ensure not exceeding available
+var ok = true;
+$('#ticketSelectorTable tbody tr').each(function () {
+var avail = parseInt($(this).data('available') || 0, 10);
+var qty = parseInt($(this).find('.qty-input').val() || 0, 10);
+if (qty > avail) {
+ok = false;
+}
+});
+if (! ok) {
+e.preventDefault();
+$('#ticketValidation').text('Quantity cannot exceed available stock').show();
+return false;
+}
+});
+});
+})();</script>{% endblock %}

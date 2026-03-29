@@ -25,7 +25,7 @@ class EmailVerificationController extends AbstractController
         $user = $emailVerificationService->verifyToken($token);
 
         if (!$user) {
-            $this->addFlash('error', 'Invalid or expired verification token.');
+            $this->addFlash('error', 'Invalid or expired verification token. Please register again.');
             return $this->redirectToRoute('app_register');
         }
 

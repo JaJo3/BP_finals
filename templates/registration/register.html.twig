@@ -1,20 +1,71 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Register
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		#mainNavbar {
+			display: none !important;
+		}
+	</style>
+{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+	<div class="d-flex vh-100 align-items-center justify-content-center w-100" style="background: linear-gradient(160deg, #eef2f7 0%, #e0e7ef 40%, #d4dce8 100%);">
+		<div class="card border-0 shadow-sm rounded-3" style="max-width: 400px; width: 95%;">
+			<div class="d-flex flex-column align-items-center justify-content-center pt-4 pb-3 px-4 border-bottom">
+				<h1 class="m-0 fw-bold" style="font-size: 1.5rem; color: #1A3D7C;">Register</h1>
+			</div>
 
-    {{ form_errors(registrationForm) }}
+			<div class="card-body p-4">
+				{{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+				{{ form_start(registrationForm) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+				<div class="mb-3">
+					{{ form_label(registrationForm.username, 'Username', {'label_attr': {'class': 'form-label small mb-1'}}) }}
+					{{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Enter your username'}}) }}
+					{{ form_errors(registrationForm.username) }}
+				</div>
+
+				<div class="mb-3">
+					{{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'form-label small mb-1'}}) }}
+					{{ form_widget(registrationForm.email, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Enter your email'}}) }}
+					{{ form_errors(registrationForm.email) }}
+				</div>
+
+				<div class="mb-3">
+					{{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'form-label small mb-1'}}) }}
+					{{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Enter your password'}}) }}
+					{{ form_errors(registrationForm.plainPassword) }}
+				</div>
+
+				<div class="mb-3 form-check">
+					{{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+					{{ form_label(registrationForm.agreeTerms, 'I agree to terms', {'label_attr': {'class': 'form-check-label'}}) }}
+					{{ form_errors(registrationForm.agreeTerms) }}
+				</div>
+
+				<div class="alert alert-info small mb-3" style="font-size: 0.9rem;">
+					<i class="bi bi-info-circle me-1"></i>
+					After registration, you'll receive a verification email. You must verify your email before you can log in.
+				</div>
+
+				<div class="d-grid mb-3">
+					<button type="submit" class="btn btn-lg fw-semibold" style="background-color: #1A3D7C; color: #fff; border: none;">
+						Register
+					</button>
+				</div>
+
+				{{ form_end(registrationForm) }}
+
+				<div class="text-center small" style="color: #6B7280;">
+					Already have an account?
+					<a href="{{ path('app_login') }}" class="text-primary text-decoration-none fw-500">Log in</a>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

@@ -18,11 +18,11 @@ class TicketPurchase
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Transaction::class, inversedBy: 'ticketPurchases')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Transaction $transaction = null;
 
     #[ORM\ManyToOne(targetEntity: Ticket::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Ticket $ticket = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -93,4 +93,3 @@ class TicketPurchase
         return $this->createdAt;
     }
 }
-

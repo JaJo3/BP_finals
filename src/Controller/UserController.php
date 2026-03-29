@@ -21,9 +21,7 @@ use App\Service\ActivityLogger;
 #[IsGranted('ROLE_ADMIN')]
 final class UserController extends AbstractController
 {
-    public function __construct(private ActivityLogger $activityLogger)
-    {
-    }
+    public function __construct(private ActivityLogger $activityLogger) {}
 
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
@@ -149,7 +147,7 @@ final class UserController extends AbstractController
         ], response: new Response(status: $statusCode));
     }
 
-    #[Route('/{id}/change-password', name: 'app_user_change_password', methods: ['GET','POST'])]
+    #[Route('/{id}/change-password', name: 'app_user_change_password', methods: ['GET', 'POST'])]
     public function changePasswordForUser(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         // Use the same ChangePasswordType as profile so form contains current + new + repeat
@@ -189,15 +187,108 @@ final class UserController extends AbstractController
     {
         // Use request->request to access POST form parameters (CSRF token)
         $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $token)) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $token)) {
             $deletedUserId = $user->getId();
             $deletedUsername = $user->getUsername();
+
+            // Get all events created by this user
+            $eventsCreatedByUser = $entityManager->getRepository(\App\Entity\Event::class)
+                ->findBy(['createdBy' => $user]);
+
+            $eventCount = count($eventsCreatedByUser);
+
+            // Delete all events created by this user
+            foreach ($eventsCreatedByUser as $event) {
+                $entityManager->remove($event);
+            }
+
+            // Get all transactions related to this user (either as user or createdBy)
+            $userTransactions = $entityManager->getRepository(\App\Entity\Transaction::class)
+                ->findBy(['user' => $user]);
+            $createdByTransactions = $entityManager->getRepository(\App\Entity\Transaction::class)
+                ->findBy(['createdBy' => $user]);
+
+            // Merge arrays and remove duplicates
+            $allTransactions = array_merge($userTransactions, $createdByTransactions);
+            $allTransactions = array_unique($allTransactions, SORT_REGULAR);
+            $transactionCount = count($allTransactions);
+
+            // Clear user references from transactions (set to NULL via database cascade)
+            foreach ($allTransactions as $transaction) {
+                if ($transaction->getUser() === $user) {
+                    $transaction->setUser(null);
+                }
+                if ($transaction->getCreatedBy() === $user) {
+                    $transaction->setCreatedBy(null);
+                }
+                $entityManager->persist($transaction);
+            }
+
+            // Delete the user
             $entityManager->remove($user);
             $entityManager->flush();
 
+            // Log the deletion
             $this->activityLogger->logDelete('User', (int) $deletedUserId, [
                 'username' => $deletedUsername,
+                'events_deleted' => $eventCount,
+                'transactions_cleaned' => $transactionCount,
             ]);
+
+            // Add success notice
+            $deletionMessages = [];
+            if ($eventCount > 0) {
+                $deletionMessages[] = sprintf('%d event(s)', $eventCount);
+            }
+            if ($transactionCount > 0) {
+                $deletionMessages[] = sprintf('%d transaction(s)', $transactionCount);
+            }
+
+            if (!empty($deletionMessages)) {
+                $this->addFlash('success', sprintf(
+                    'User "%s" deleted with %s cleaned up.',
+                    $deletedUsername,
+                    implode(' and ', $deletionMessages)
+                ));
+            } else {
+                $this->addFlash('success', sprintf(
+                    'User "%s" has been successfully deleted.',
+                    $deletedUsername
+                ));
+            }
+        }
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/toggle-status', name: 'app_user_toggle_status', methods: ['POST'])]
+    public function toggleStatus(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        // Only ADMIN can disable/enable staff accounts
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $token = $request->request->get('_token');
+        if ($this->isCsrfTokenValid('toggle_status_' . $user->getId(), $token)) {
+            $currentStatus = $user->getIsActive();
+            $newStatus = !$currentStatus;
+
+            $user->setIsActive($newStatus);
+            $entityManager->flush();
+
+            // Log the status change
+            $this->activityLogger->logUpdate(
+                'User Status',
+                (int) $user->getId(),
+                ['isActive' => $currentStatus],
+                ['isActive' => $newStatus, 'username' => $user->getUsername()]
+            );
+
+            // Flash message
+            if ($newStatus) {
+                $this->addFlash('success', sprintf('User "%s" has been enabled.', $user->getUsername()));
+            } else {
+                $this->addFlash('warning', sprintf('User "%s" has been disabled.', $user->getUsername()));
+            }
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);

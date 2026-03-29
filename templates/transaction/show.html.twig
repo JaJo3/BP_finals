@@ -1,31 +1,27 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Transaction #{{ transaction.id }}{% endblock %}
+{% block title %}Transaction #{{ transaction.id }}
+{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <!-- Header Section -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0" style="color: #1A3D7C">
-            <i class="fas fa-receipt me-2"></i>Transaction #{{ transaction.id }}
-        </h1>
-        <div class="btn-group">
-            <a href="{{ path('admin_transaction_index') }}"
-               class="btn"
-               style="background-color: #1A3D7C; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease;">
-                <i class="fas fa-arrow-left me-2"></i>Back to List
-            </a>
-            <a href="{{ path('admin_transaction_delete', {'id': transaction.id}) }}"
-               class="btn ms-2"
-               style="background-color: #dc3545; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease; cursor: pointer;"
-               onmouseover="this.style.backgroundColor='#c82333'"
-               onmouseout="this.style.backgroundColor='#dc3545'">
-                <i class="fas fa-trash me-2"></i>Delete
-            </a>
-        </div>
-    </div>
+	<div
+		class="container-fluid">
+		<!-- Header Section -->
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1 class="h3 mb-0" style="color: #1A3D7C">
+				<i class="fas fa-receipt me-2"></i>Transaction #{{ transaction.id }}
+			</h1>
+			<div class="btn-group">
+				<a href="{{ path('admin_transaction_index') }}" class="btn" style="background-color: #1A3D7C; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease;">
+					<i class="fas fa-arrow-left me-2"></i>Back to List
+				</a>
+				<a href="{{ path('admin_transaction_delete', {'id': transaction.id}) }}" class="btn ms-2" style="background-color: #dc3545; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease; cursor: pointer;" onmouseover="if(this) this.style.backgroundColor='#c82333'" onmouseout="if(this) this.style.backgroundColor='#dc3545'">
+					<i class="fas fa-trash me-2"></i>Delete
+				</a>
+			</div>
+		</div>
 
-    <!-- Transaction Details -->
-    {% include 'transaction/_details.html.twig' with {'transaction': transaction} %}
-</div>
+		<!-- Transaction Details -->
+		{% include 'transaction/_details.html.twig' with {'transaction': transaction} %}
+	</div>
 {% endblock %}

@@ -39,25 +39,28 @@
 					Event Management
 				{% endif %}
 			</h1>
-			<a href="{{ path('app_event_new', organizer is defined ? {'organizer': organizer.id} : {}) }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.15s ease;" onmouseover="this.style.backgroundColor='#15305A'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(26, 61, 124, 0.3)'" onmouseout="this.style.backgroundColor='#1A3D7C'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(26, 61, 124, 0.2)'">
+			<a href="{{ path('app_event_new', organizer is defined ? {'organizer': organizer.id} : {}) }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.15s ease;" onmouseover="if(this) { this.style.backgroundColor='#15305A'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(26, 61, 124, 0.3)'; }" onmouseout="if(this) { this.style.backgroundColor='#1A3D7C'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(26, 61, 124, 0.2)'; }">
 				<i class="fas fa-plus-circle me-2"></i>New Event
 			</a>
 		</div>
 
 		<!-- Events Table -->
 		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
-			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
-				<div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
+			<div class="card-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+				<div class="d-flex align-items-center">
 					<h3 class="card-title mb-0" style="font-weight: 600;">
 						<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Events
-						<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ events|length }}</span>
 					</h3>
-					<div class="d-flex align-items-center gap-2">
-						<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
-							<input class="form-check-input m-0" type="checkbox" id="toggleEventsActions" role="switch" aria-label="Show actions column">
-							<label class="form-check-label small text-white-50" for="toggleEventsActions" style="user-select:none;">Show actions</label>
-						</div>
-					</div>
+				</div>
+				<span class="badge" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 700; padding: 8px 16px; font-size: 0.95rem;">{{ events|length }}
+					items</span>
+			</div>
+
+			<div class="px-3 py-3 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: #f8f9fb; border-bottom: 1px solid #e9ecef;">
+				<div></div>
+				<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
+					<input class="form-check-input m-0" type="checkbox" id="toggleEventsActions" role="switch" aria-label="Show actions column">
+					<label class="form-check-label small text-muted fw-500" for="toggleEventsActions" style="user-select:none;">Show actions</label>
 				</div>
 			</div>
 			<div class="card-body p-0">
@@ -178,7 +181,7 @@ dtInstance = null;
 
 var dt = $('#eventsTable').DataTable({
 responsive: true,
-dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+dom: "<'row g-0'<'col-auto'l><'col-auto ms-auto'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row g-0 small'<'col-auto'i><'col-auto ms-auto'p>>",
 pageLength: 10,
 lengthMenu: [
 [
@@ -299,6 +302,8 @@ setActionsVisible($('#toggleEventsActions').is(':checked'));
 }
 });
 
+
+
 });
 
 document.addEventListener('turbo:frame-load', function (e) {
@@ -314,7 +319,7 @@ dtInstance = null;
 }
 var dt = $('#eventsTable').DataTable({
 responsive: true,
-dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+dom: "<'row g-0'<'col-auto'l><'col-auto ms-auto'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row g-0 small'<'col-auto'i><'col-auto ms-auto'p>>",
 pageLength: 10,
 lengthMenu: [
 [
@@ -363,6 +368,8 @@ setActionsVisible($('#toggleEventsActions').is(':checked'));
 });
 }
 });
+
+
 
 });
 })(jQuery);
