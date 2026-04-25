@@ -7,7 +7,7 @@
 	{# Ensure role/user flags are available even if not passed explicitly #}
 	{% set isAdmin = isAdmin is defined ? isAdmin : is_granted('ROLE_ADMIN') %}
 	{% set currentUserId = currentUserId is defined ? currentUserId : (app.user ? app.user.id : null) %}
-	<div class="content-wrapper content-wrapper--events">
+	<div class="content-wrapper">
 		{% if organizer is defined %}
 			<!-- Breadcrumb Navigation -->
 			<nav aria-label="breadcrumb" class="mb-3">
@@ -39,29 +39,18 @@
 					Event Management
 				{% endif %}
 			</h1>
-			<a href="{{ path('app_event_new', organizer is defined ? {'organizer': organizer.id} : {}) }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.15s ease;" onmouseover="if(this) { this.style.backgroundColor='#15305A'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(26, 61, 124, 0.3)'; }" onmouseout="if(this) { this.style.backgroundColor='#1A3D7C'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(26, 61, 124, 0.2)'; }">
+			<a href="{{ path('app_event_new', organizer is defined ? {'organizer': organizer.id} : {}) }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.15s ease;" onmouseover="this.style.backgroundColor='#15305A'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(26, 61, 124, 0.3)'" onmouseout="this.style.backgroundColor='#1A3D7C'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(26, 61, 124, 0.2)'">
 				<i class="fas fa-plus-circle me-2"></i>New Event
 			</a>
 		</div>
 
 		<!-- Events Table -->
 		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
-			<div class="card-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
-				<div class="d-flex align-items-center">
-					<h3 class="card-title mb-0" style="font-weight: 600;">
-						<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Events
-					</h3>
-				</div>
-				<span class="badge" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 700; padding: 8px 16px; font-size: 0.95rem;">{{ events|length }}
-					items</span>
-			</div>
-
-			<div class="px-3 py-3 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: #f8f9fb; border-bottom: 1px solid #e9ecef;">
-				<div></div>
-				<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
-					<input class="form-check-input m-0" type="checkbox" id="toggleEventsActions" role="switch" aria-label="Show actions column">
-					<label class="form-check-label small text-muted fw-500" for="toggleEventsActions" style="user-select:none;">Show actions</label>
-				</div>
+			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+				<h3 class="card-title mb-0" style="font-weight: 600;">
+					<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Events
+					<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ events|length }}</span>
+				</h3>
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
@@ -69,12 +58,12 @@
 						<thead style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
 							<tr>
 								{# <th class="col-poster text-nowrap small fw-bold text-uppercase py-1 px-2">Poster</th> #}
-								<th class="col-name text-nowrap text-body small fw-semibold text-uppercase py-1 px-2">Name</th>
-								<th class="col-organizer text-nowrap text-body small fw-semibold text-uppercase py-1 px-2">Organizer</th>
-								<th class="col-date text-nowrap text-body small fw-semibold text-uppercase py-1 px-2">Date</th>
-								<th class="col-venue text-nowrap text-body small fw-semibold text-uppercase py-1 px-2">Venue</th>
-								<th class="col-status text-nowrap text-body small fw-semibold text-uppercase py-1 px-2">Status</th>
-								<th class="actions text-nowrap text-body small fw-semibold text-uppercase py-1 px-2 text-center d-none">Actions</th>
+								<th class="col-name text-nowrap small fw-bold text-uppercase py-1 px-2">Name</th>
+								<th class="col-organizer text-nowrap small fw-bold text-uppercase py-1 px-2">Organizer</th>
+								<th class="col-date text-nowrap small fw-bold text-uppercase py-1 px-2">Date</th>
+								<th class="col-venue text-nowrap small fw-bold text-uppercase py-1 px-2">Venue</th>
+								<th class="col-status text-nowrap small fw-bold text-uppercase py-1 px-2">Status</th>
+								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -91,32 +80,29 @@
 									{% endif %}
 								{% endif %}
 								<tr>
+									{# <td class="col-poster align-middle">
+																		{% if event.poster %}
+																			<img src="{{ event.poster }}" alt="Poster" style="width:32px;height:32px;object-fit:cover;border-radius:6px;" class="me-2">
+																		{% else %}
+																			<div style="width:32px;height:32px;background:#e9ecef;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;color:#6c757d;"><i class="fas fa-image"></i></div>
+																			{% endif %}
+																		</td> #}
 									<td class="col-name align-middle text-truncate py-1 px-2" style="max-width: 28ch;">
-										<span class="text-nowrap text-body fw-semibold">{{ event.eventName }}</span>
+										<strong class="text-nowrap" style="color: #1A3D7C;">{{ event.eventName }}</strong>
 									</td>
 									<td class="col-organizer align-middle text-truncate py-1 px-2">
-										<span class="text-body">{{ event.organizer ? event.organizer.orgName : '—' }}</span>
+										{{ event.organizer ? event.organizer.orgName : '—' }}
 									</td>
 									<td class="col-date align-middle text-truncate py-1 px-2">
-										<span class="text-body">{{ event.date ? event.date|date('M d, Y g:i A') : 'TBA' }}</span>
+										{{ event.date ? event.date|date('M d, Y g:i A') : 'TBA' }}
 									</td>
 									<td class="col-venue align-middle text-truncate py-1 px-2">
-										<span class="text-body">{{ event.venue }}</span>
+										{{ event.venue }}
 									</td>
 									<td class="col-status align-middle text-center py-1 px-2">
-										{% set statusTextClass = 'text-secondary' %}
-										{% if event.status == 'Active' %}
-											{% set statusTextClass = 'text-success' %}
-										{% elseif event.status == 'Completed' %}
-											{% set statusTextClass = 'text-secondary' %}
-										{% elseif event.status == 'Cancelled' %}
-											{% set statusTextClass = 'text-danger' %}
-										{% endif %}
-										<span class="badge rounded-pill bg-primary bg-opacity-10 {{ statusTextClass }} small fw-semibold px-3 py-2">
-											{{ event.status }}
-										</span>
+										<span class="small fw-semibold {% if event.status == 'Active' %}text-success{% else %}text-muted{% endif %}">{{ event.status }}</span>
 									</td>
-									<td class="actions text-center align-middle py-1 px-2 d-none">
+									<td class="actions text-center align-middle py-1 px-2">
 										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
 											<a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded" style="width:32px;height:32px;font-size:12px;" title="View" aria-label="View">
 												<i class="fas fa-eye"></i>
@@ -137,7 +123,7 @@
 								</tr>
 							{% else %}
 								<tr>
-									<td colspan="6" class="text-center py-5" style="background-color: #ffffff;">
+									<td colspan="7" class="text-center py-5" style="background-color: #ffffff;">
 										<div class="text-muted py-5">
 											<div style="width: 120px; height: 120px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 												<i class="fas fa-calendar-alt fa-3x" style="color: #1A3D7C; opacity: 0.6;"></i>
@@ -167,90 +153,12 @@
 	{{ parent() }}
 	<script>
 		(function ($) {
-var dtInstance = null;
-$(document).ready(function () {
+$(document).ready(function () { // Only initialize DataTable if there are actual data rows (not empty state)
 var tableBody = $('#eventsTable tbody');
 var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
 
-if (hasDataRows) { // Destroy existing DataTable instance if it exists
-if ($.fn.DataTable.isDataTable('#eventsTable')) {
-dtInstance = $('#eventsTable').DataTable();
-dtInstance.destroy();
-dtInstance = null;
-}
-
-var dt = $('#eventsTable').DataTable({
-responsive: true,
-dom: "<'row g-0'<'col-auto'l><'col-auto ms-auto'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row g-0 small'<'col-auto'i><'col-auto ms-auto'p>>",
-pageLength: 10,
-lengthMenu: [
-[
-10, 25, 50, -1
-],
-[
-10, 25, 50, 'All'
-]
-],
-language: {
-search: '',
-searchPlaceholder: 'Search events...'
-},
-autoWidth: true,
-scrollX: false,
-columnDefs: [
-{
-orderable: false,
-searchable: false,
-targets: -1
-}
-]
-});
-
-dtInstance = dt;
-
-function setActionsVisible(visible) { // Toggle header + all body cells (including newly drawn rows)
-$('#eventsTable thead th.actions').toggleClass('d-none', ! visible);
-$('#eventsTable tbody td.actions').toggleClass('d-none', ! visible);
-try {
-localStorage.setItem('events.showActions', visible ? '1' : '0');
-} catch (e) {}
-}
-
-// Initialize actions visibility from localStorage (default: hidden)
-try {
-var stored = localStorage.getItem('events.showActions');
-var initialVisible = stored === '1';
-$('#toggleEventsActions').prop('checked', initialVisible);
-setActionsVisible(initialVisible);
-} catch (e) {
-$('#toggleEventsActions').prop('checked', false);
-setActionsVisible(false);
-}
-
-$('#toggleEventsActions').off('change').on('change', function () {
-setActionsVisible($(this).is(':checked'));
-});
-
-// Re-apply on every DataTables draw (pagination, search, responsive redraw)
-dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
-setActionsVisible($('#toggleEventsActions').is(':checked'));
-});
-}
-});
-
-// Re-initialize after Turbo navigation or frame loads
-document.addEventListener('turbo:load', function (e) {
-if (window.jQuery) 
-$(document).ready(function () {
-var tableBody = $('#eventsTable tbody');
-var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
 if (hasDataRows) {
-if ($.fn.DataTable.isDataTable('#eventsTable')) {
-dtInstance = $('#eventsTable').DataTable();
-dtInstance.destroy();
-dtInstance = null;
-}
-var dt = $('#eventsTable').DataTable({
+$('#eventsTable').DataTable({
 responsive: true,
 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 pageLength: 10,
@@ -271,106 +179,14 @@ scrollX: false,
 columnDefs: [
 {
 orderable: false,
+targets: -1
+}, {
 searchable: false,
 targets: -1
 }
 ]
 });
-dtInstance = dt;
-function setActionsVisible(visible) {
-$('#eventsTable thead th.actions').toggleClass('d-none', ! visible);
-$('#eventsTable tbody td.actions').toggleClass('d-none', ! visible);
-try {
-localStorage.setItem('events.showActions', visible ? '1' : '0');
-} catch (e) {}
 }
-try {
-var stored = localStorage.getItem('events.showActions');
-var initialVisible = stored === '1';
-$('#toggleEventsActions').prop('checked', initialVisible);
-setActionsVisible(initialVisible);
-} catch (e) {
-$('#toggleEventsActions').prop('checked', false);
-setActionsVisible(false);
-}
-$('#toggleEventsActions').off('change').on('change', function () {
-setActionsVisible($(this).is(':checked'));
-});
-dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
-setActionsVisible($('#toggleEventsActions').is(':checked'));
-});
-}
-});
-
-
-
-});
-
-document.addEventListener('turbo:frame-load', function (e) {
-if (window.jQuery) 
-$(document).ready(function () {
-var tableBody = $('#eventsTable tbody');
-var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
-if (hasDataRows) {
-if ($.fn.DataTable.isDataTable('#eventsTable')) {
-dtInstance = $('#eventsTable').DataTable();
-dtInstance.destroy();
-dtInstance = null;
-}
-var dt = $('#eventsTable').DataTable({
-responsive: true,
-dom: "<'row g-0'<'col-auto'l><'col-auto ms-auto'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row g-0 small'<'col-auto'i><'col-auto ms-auto'p>>",
-pageLength: 10,
-lengthMenu: [
-[
-10, 25, 50, -1
-],
-[
-10, 25, 50, 'All'
-]
-],
-language: {
-search: '',
-searchPlaceholder: 'Search events...'
-},
-autoWidth: true,
-scrollX: false,
-columnDefs: [
-{
-orderable: false,
-searchable: false,
-targets: -1
-}
-]
-});
-dtInstance = dt;
-function setActionsVisible(visible) {
-$('#eventsTable thead th.actions').toggleClass('d-none', ! visible);
-$('#eventsTable tbody td.actions').toggleClass('d-none', ! visible);
-try {
-localStorage.setItem('events.showActions', visible ? '1' : '0');
-} catch (e) {}
-}
-try {
-var stored = localStorage.getItem('events.showActions');
-var initialVisible = stored === '1';
-$('#toggleEventsActions').prop('checked', initialVisible);
-setActionsVisible(initialVisible);
-} catch (e) {
-$('#toggleEventsActions').prop('checked', false);
-setActionsVisible(false);
-}
-$('#toggleEventsActions').off('change').on('change', function () {
-setActionsVisible($(this).is(':checked'));
-});
-dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
-setActionsVisible($('#toggleEventsActions').is(':checked'));
-});
-}
-});
-
-
-
 });
 })(jQuery);
 	</script>

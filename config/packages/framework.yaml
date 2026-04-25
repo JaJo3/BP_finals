@@ -1,21 +1,16 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
-    secret: "%env(APP_SECRET)%"
-
+    secret: '%env(APP_SECRET)%'
+    
     # Trust ngrok reverse proxy headers for HTTPS detection
-    trusted_proxies: "%env(TRUSTED_PROXIES)%"
-    trusted_headers: "%env(TRUSTED_HEADERS)%"
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+    trusted_headers: '%env(TRUSTED_HEADERS)%'
 
     # Note that the session will be started ONLY if you read or write from it.
     session:
         enabled: true
         cookie_secure: auto
         cookie_samesite: none
-
-    http_client:
-        default_options:
-            verify_host: false
-            verify_peer: false
 
     #esi: true
     #fragments: true

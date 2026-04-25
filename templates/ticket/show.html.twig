@@ -1,87 +1,91 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Ticket Details
-{% endblock %}
+{% block title %}Ticket Details{% endblock %}
 
 {% block body %}
-	<div
-		class="container-fluid">
-		<!-- Header Section -->
-		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h1 class="h3 mb-0" style="color: #1A3D7C">
-				<i class="fas fa-ticket-alt me-2"></i>Ticket Details
-			</h1>
-			<div class="btn-group">
-				<a href="{{ path('admin_ticket_edit', {'id': ticket.id}) }}" class="btn" style="background-color: #F9B233; color: #1A3D7C; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease;" onmouseover="if(this) this.style.backgroundColor='#E6A02A'" onmouseout="if(this) this.style.backgroundColor='#F9B233'">
-					<i class="fas fa-edit me-2"></i>Edit Ticket
-				</a>
-				<a href="{{ path('admin_tickets') }}" class="btn ms-2" style="background-color: #1A3D7C; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease;">
-					<i class="fas fa-arrow-left me-2"></i>Back to List
-				</a>
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0" style="color: #1A3D7C">
+            <i class="fas fa-ticket-alt me-2"></i>Ticket Details
+        </h1>
+        <div class="btn-group">
+            <a href="{{ path('admin_ticket_edit', {'id': ticket.id}) }}"
+               class="btn"
+               style="background-color: #F9B233; color: #1A3D7C; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease;"
+               onmouseover="this.style.backgroundColor='#E6A02A'"
+               onmouseout="this.style.backgroundColor='#F9B233'">
+                <i class="fas fa-edit me-2"></i>Edit Ticket
+            </a>
+            <a href="{{ path('admin_tickets') }}"
+               class="btn ms-2"
+               style="background-color: #1A3D7C; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease;">
+                <i class="fas fa-arrow-left me-2"></i>Back to List
+            </a>
+            
+        </div>
+    </div>
 
-			</div>
-		</div>
-
-		<!-- Ticket Information Card -->
-		<div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden;">
-			<div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
-				<h3 class="card-title mb-0">
-					<i class="fas fa-info-circle me-2"></i>Ticket Information
-				</h3>
-			</div>
-			<div class="card-body p-0">
-				<div class="table-responsive">
-					<table class="table table-borderless mb-0">
-						<tbody>
-							<tr style="border-bottom: 1px solid #e9ecef;">
-								<th style="width: 200px; padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Event</th>
-								<td style="padding: 20px;">
-									<div>
-										<strong style="color: #1A3D7C; font-size: 1.1em;">{{ ticket.event.eventName }}</strong>
-										{% if ticket.event.organizer %}
-											<br><small class="text-muted">
-												<i class="fas fa-user me-1"></i>Organized by
-												{{ ticket.event.organizer.orgName }}
-											</small>
-										{% endif %}
-									</div>
-								</td>
-							</tr>
-							<tr style="border-bottom: 1px solid #e9ecef;">
-								<th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Ticket Type</th>
-								<td style="padding: 20px;">
-									<span class="badge {% if ticket.ticketType == 'VVIP' %}bg-warning text-dark{% elseif ticket.ticketType == 'VIP' %}bg-purple{% else %}bg-secondary{% endif %}">
-										{{ ticket.ticketType }}
-									</span>
-								</td>
-							</tr>
-							<tr style="border-bottom: 1px solid #e9ecef;">
-								<th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Price</th>
-								<td style="padding: 20px;">₱{{ ticket.price|number_format(2, '.', ',') }}</td>
-							</tr>
-							<tr style="border-bottom: 1px solid #e9ecef;">
-								<th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Quantity</th>
-								<td style="padding: 20px;">{{ ticket.quantity }}</td>
-							</tr>
-							<tr style="border-bottom: 1px solid #e9ecef;">
-								<th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Status</th>
-								<td style="padding: 20px;">
-									<span class="badge {% if ticket.quantity > 0 %}bg-success{% else %}bg-danger{% endif %}">
-										{{ ticket.quantity > 0 ? 'Available' : 'Sold Out' }}
-									</span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="card-footer bg-light" style="border-top: 1px solid #e9ecef;">
-				<div class="d-flex align-items-center gap-3">
-					<div class="text-muted small">
-						<i class="fas fa-info-circle me-1"></i>Ticket ID: #{{ ticket.id }}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>{% endblock %}
+    <!-- Ticket Information Card -->
+    <div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden;">
+        <div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
+            <h3 class="card-title mb-0">
+                <i class="fas fa-info-circle me-2"></i>Ticket Information
+            </h3>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-borderless mb-0">
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <th style="width: 200px; padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Event</th>
+                            <td style="padding: 20px;">
+                                <div>
+                                    <strong style="color: #1A3D7C; font-size: 1.1em;">{{ ticket.event.eventName }}</strong>
+                                    {% if ticket.event.organizer %}
+                                        <br><small class="text-muted">
+                                            <i class="fas fa-user me-1"></i>Organized by {{ ticket.event.organizer.orgName }}
+                                        </small>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Ticket Type</th>
+                            <td style="padding: 20px;">
+                                <span class="badge {% if ticket.ticketType == 'VVIP' %}bg-warning text-dark{% elseif ticket.ticketType == 'VIP' %}bg-purple{% else %}bg-secondary{% endif %}">
+                                    {{ ticket.ticketType }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Price</th>
+                            <td style="padding: 20px;">₱{{ ticket.price|number_format(2, '.', ',') }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Quantity</th>
+                            <td style="padding: 20px;">{{ ticket.quantity }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <th style="padding: 20px; background-color: #f8f9fa; font-weight: 600; color: #1A3D7C;">Status</th>
+                            <td style="padding: 20px;">
+                                <span class="badge {% if ticket.quantity > 0 %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ ticket.quantity > 0 ? 'Available' : 'Sold Out' }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-light" style="border-top: 1px solid #e9ecef;">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>Ticket ID: #{{ ticket.id }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

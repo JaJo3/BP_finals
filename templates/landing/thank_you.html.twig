@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Thank You - Contact Submitted | BeatPass
+{% endblock %}
+
+{% block body_class %}bg-body-tertiary
+{% endblock %}
+
+{% block body_outer %}
+	{# THANK YOU HERO #}
+	<section class="bg-brand-gradient text-white py-5 py-lg-5 position-relative overflow-hidden">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 text-center">
+					<div class="fade-up js-reveal" data-delay="0ms">
+						<span class="badge rounded-pill text-bg-light text-brand px-3 py-2 mb-3 shadow-soft d-inline-block">
+							<i class="bi bi-check-circle me-1"></i>Message Received
+						</span>
+						<h1 class="display-4 fw-bold lh-sm mb-3">Thank You!</h1>
+						<p class="lead text-white-50 mb-0">
+							We've received your message and appreciate you reaching out to BeatPass.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# THANK YOU CONTENT #}
+	<section class="py-5 py-lg-5 bg-body-tertiary border-top">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div
+					class="col-lg-8">
+					{# Success Message Card #}
+					<div class="p-4 p-lg-5 rounded-4 shadow-soft bg-white fade-up js-reveal mb-4" data-delay="0ms">
+						<div class="d-flex gap-4 mb-4">
+							<div class="flex-shrink-0">
+								<div class="d-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10" style="width:60px; height:60px;">
+									<i class="bi bi-check-circle-fill text-success" style="font-size:32px;"></i>
+								</div>
+							</div>
+							<div class="flex-grow-1">
+								<h2 class="fw-bold mb-2">Your message has been sent successfully!</h2>
+								<p class="text-secondary mb-0">
+									Our team will review your inquiry and respond within 24-48 business hours using the contact information you provided.
+								</p>
+							</div>
+						</div>
+					</div>
+
+					{# What Happens Next #}
+					<div class="p-4 p-lg-5 rounded-4 shadow-soft bg-white fade-up js-reveal mb-4" data-delay="70ms">
+						<h3 class="fw-bold mb-4">What Happens Next?</h3>
+
+						<div class="row g-3">
+							<div class="col-md-6">
+								<div class="d-flex gap-3">
+									<div class="badge bg-brand rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width:36px; height:36px; font-size:18px;">1</div>
+									<div>
+										<p class="fw-semibold mb-1">We Review Your Message</p>
+										<p class="small text-secondary mb-0">Our team carefully reads and understands your inquiry.</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="d-flex gap-3">
+									<div class="badge bg-brand rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width:36px; height:36px; font-size:18px;">2</div>
+									<div>
+										<p class="fw-semibold mb-1">We Prepare a Response</p>
+										<p class="small text-secondary mb-0">We gather all information needed to help you.</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="d-flex gap-3">
+									<div class="badge bg-brand rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width:36px; height:36px; font-size:18px;">3</div>
+									<div>
+										<p class="fw-semibold mb-1">We Send You an Update</p>
+										<p class="small text-secondary mb-0">You'll receive our response via email shortly.</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="d-flex gap-3">
+									<div class="badge bg-brand rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width:36px; height:36px; font-size:18px;">4</div>
+									<div>
+										<p class="fw-semibold mb-1">We Follow Up</p>
+										<p class="small text-secondary mb-0">We ensure your issue is fully resolved.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{# Alternative Contact Methods #}
+					<div class="p-4 p-lg-5 rounded-4 shadow-soft bg-white fade-up js-reveal" data-delay="140ms">
+						<h3 class="fw-bold mb-4">Need Immediate Assistance?</h3>
+
+						<div class="row g-3">
+							<div class="col-sm-6">
+								<div class="d-flex gap-3 p-3 rounded-3 bg-light border border-opacity-10">
+									<div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-white flex-shrink-0" style="width:44px; height:44px;">
+										<i class="bi bi-envelope text-brand"></i>
+									</div>
+									<div class="flex-grow-1 min-w-0">
+										<div class="small fw-semibold">Email Us</div>
+										<a href="mailto:beatpass.ph@gmail.com" class="text-decoration-none small">beatpass.ph@gmail.com</a>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-6">
+								<div class="d-flex gap-3 p-3 rounded-3 bg-light border border-opacity-10">
+									<div class="d-inline-flex align-items-center justify-content-center rounded-3 bg-white flex-shrink-0" style="width:44px; height:44px;">
+										<i class="bi bi-telephone text-brand"></i>
+									</div>
+									<div class="flex-grow-1 min-w-0">
+										<div class="small fw-semibold">Call Us</div>
+										<a href="tel:+639302349377" class="text-decoration-none small">+63 930-234-9377</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="mt-3 p-3 bg-body-secondary rounded-3 border border-opacity-10">
+							<p class="small text-secondary mb-0">
+								<i class="bi bi-clock me-2 text-brand"></i>
+								<strong>Business Hours:</strong>
+								Monday - Friday, 9:00 AM - 6:00 PM (Philippine Time)
+							</p>
+						</div>
+					</div>
+
+					{# Action Buttons #}
+					<div class="d-flex flex-column flex-sm-row gap-3 justify-content-center mt-5">
+						<a href="{{ path('app_events') }}" class="btn btn-brand btn-pill btn-cta px-4">
+							<i class="bi bi-calendar2-event me-2"></i>Browse Events
+						</a>
+						<a href="{{ path('app_landing') }}" class="btn btn-outline-brand btn-pill btn-cta px-4">
+							<i class="bi bi-house me-2"></i>Back to Home
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+{% endblock %}

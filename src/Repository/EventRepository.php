@@ -17,36 +17,6 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
-     * Optimized query for the landing page.
-     *
-     * Returns rows shaped like: [0 => Event, 'minPrice' => ?string]
-     *
-     * @return array<int, array{0: Event, minPrice: mixed}>
-     */
-    public function findUpcomingForLanding(int $limit = 6): array
-    {
-        $now = new \DateTimeImmutable();
-
-        return $this->createQueryBuilder('e')
-            ->select('e, o, MIN(t.price) AS minPrice')
-            ->leftJoin('e.organizer', 'o')
-            ->leftJoin('e.tickets', 't')
-            ->andWhere('e.date >= :now')
-            ->andWhere('e.status IN (:statuses)')
-            ->setParameter('now', $now)
-            ->setParameter('statuses', [
-                Event::STATUS_ACTIVE,
-                Event::STATUS_UPCOMING,
-                Event::STATUS_ONGOING,
-            ])
-            ->groupBy('e.id, o.id')
-            ->orderBy('e.date', 'ASC')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * @return Event[]
      */
     public function findWithFilters(

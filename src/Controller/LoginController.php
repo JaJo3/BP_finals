@@ -20,7 +20,7 @@ class LoginController extends AbstractController
             return $this->redirectToRoute('app_event_index');
         } elseif ($this->getUser()) {
             // Logged in regular users go to home
-            return $this->redirectToRoute('app_landing');
+            return $this->redirectToRoute('app_home');
         }
 
         // get the login error if there is one

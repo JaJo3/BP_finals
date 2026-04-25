@@ -4,20 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	{% set adminCount = 0 %}
-	{% set staffCount = 0 %}
-	{% set userCount = 0 %}
-	{% for u in users %}
-		{% if 'ROLE_ADMIN' in u.roles %}
-			{% set adminCount = adminCount + 1 %}
-		{% elseif 'ROLE_STAFF' in u.roles %}
-			{% set staffCount = staffCount + 1 %}
-		{% else %}
-			{% set userCount = userCount + 1 %}
-		{% endif %}
-	{% endfor %}
-
-	<div class="content-wrapper content-wrapper--tight">
+	<div class="content-wrapper">
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<h1 class="h3 mb-0" style="color: #1A3D7C; font-weight: 700;">
 				<i class="fas fa-user me-2" style="color: #F9B233;"></i>
@@ -29,35 +16,12 @@
 		</div>
 
 		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
-			<div class="card-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
-				<div class="d-flex align-items-center">
-					<h3 class="card-title mb-0" style="font-weight: 600;">
-						<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Users
-					</h3>
-				</div>
-				<span class="badge" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 700; padding: 8px 16px; font-size: 0.95rem;">{{ users|length }}
-					items</span>
-			</div>
-
-			<div class="px-3 py-3 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: #f8f9fb; border-bottom: 1px solid #e9ecef;">
-				<div class="beatpass-pillbar d-flex flex-wrap gap-2">
-					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
-						<i class="fas fa-user-crown me-1" style="opacity: 0.7;"></i>Admin:
-						{{ adminCount }}
-					</span>
-					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
-						<i class="fas fa-briefcase me-1" style="opacity: 0.7;"></i>Staff:
-						{{ staffCount }}
-					</span>
-					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
-						<i class="fas fa-user me-1" style="opacity: 0.7;"></i>Users:
-						{{ userCount }}
-					</span>
-				</div>
-				<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
-					<input class="form-check-input m-0" type="checkbox" id="toggleUsersActions" role="switch" aria-label="Show actions column">
-					<label class="form-check-label small text-muted fw-500" for="toggleUsersActions" style="user-select:none;">Show actions</label>
-				</div>
+			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+				<h3 class="card-title mb-0 d-flex align-items-center" style="font-weight: 600;">
+					<i class="fas fa-list me-2" style="color: #F9B233;"></i>
+					All Users
+					<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ users|length }}</span>
+				</h3>
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
@@ -68,7 +32,7 @@
 								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2">ROLE</th>
 								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2">EMAIL</th>
 								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2">DATE CREATED</th>
-								<th class="actions text-center text-nowrap small fw-bold text-uppercase py-1 px-2 d-none">ACTIONS</th>
+								<th class="text-center text-nowrap small fw-bold text-uppercase py-1 px-2">ACTIONS</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -79,19 +43,16 @@
 									</td>
 									<td class="align-middle py-1 px-2">
 										{% if 'ROLE_ADMIN' in user.roles %}
-											<span class="badge rounded-pill bg-primary bg-opacity-10 text-primary small fw-semibold px-3 py-2">Admin</span>
+											<div class="small text-muted fw-semibold">Admin</div>
 										{% elseif 'ROLE_STAFF' in user.roles %}
-											<span class="badge rounded-pill bg-warning bg-opacity-10 text-warning small fw-semibold px-3 py-2">Staff</span>
+											<div class="small text-muted fw-semibold">Staff</div>
 										{% else %}
-											<span class="badge rounded-pill bg-secondary bg-opacity-10 text-secondary small fw-semibold px-3 py-2">User</span>
-										{% endif %}
-										{% if not user.isActive %}
-											<span class="badge rounded-pill bg-danger bg-opacity-10 text-danger small fw-semibold px-3 py-2 ms-1">Disabled</span>
+											<div class="small text-muted fw-semibold">User</div>
 										{% endif %}
 									</td>
 									<td class="align-middle py-1 px-2 text-truncate" style="max-width:28ch">{{ user.email|default('—') }}</td>
 									<td class="align-middle py-1 px-2">{{ user.createdAt ? user.createdAt|date('Y-m-d H:i') : '—' }}</td>
-									<td class="actions text-center align-middle py-1 px-2 d-none">
+									<td class="text-center align-middle py-1 px-2">
 										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
 											<a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded" title="View" style="width:32px;height:32px;font-size:12px;">
 												<i class="fas fa-eye"></i>
@@ -99,15 +60,6 @@
 											<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-beatpass-edit p-1 d-inline-flex align-items-center justify-content-center rounded" title="Edit" style="width:32px;height:32px;font-size:12px;">
 												<i class="fas fa-edit"></i>
 											</a>
-											<!-- Disable/Enable Button (Staff Role Only) -->
-											{% if 'ROLE_STAFF' in user.roles %}
-												<form method="post" action="{{ path('app_user_toggle_status', {'id': user.id}) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to {{ user.isActive ? 'disable' : 'enable' }} this staff member?');">
-													<input type="hidden" name="_token" value="{{ csrf_token('toggle_status_' ~ user.id) }}">
-													<button type="submit" class="btn btn-sm {{ user.isActive ? 'btn-beatpass-disable' : 'btn-beatpass-enable' }} d-inline-flex align-items-center justify-content-center rounded" title="{{ user.isActive ? 'Disable Staff' : 'Enable Staff' }}" style="width:32px;height:32px;padding:0;border: none;">
-														<i class="fas {{ user.isActive ? 'fa-ban' : 'fa-check-circle' }}"></i>
-													</button>
-												</form>
-											{% endif %}
 											{% include 'user/_delete_form.html.twig' with {'user': user} %}
 										</div>
 									</td>
@@ -137,17 +89,10 @@
 	{{ parent() }}
 	<script>
 		(function ($) {
-var dtInstance = null;
-function initUsersTable() {
-if ($.fn.DataTable.isDataTable('#usersTable')) {
-dtInstance = $('#usersTable').DataTable();
-dtInstance.destroy();
-dtInstance = null;
-}
-
-var dt = $('#usersTable').DataTable({
+$(document).ready(function () {
+$('#usersTable').DataTable({
 responsive: true,
-dom: "<'row g-0'<'col-auto'l><'col-auto ms-auto'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row g-0 small'<'col-auto'i><'col-auto ms-auto'p>>",
+dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 pageLength: 10,
 lengthMenu: [
 [
@@ -171,66 +116,6 @@ targets: -1
 }
 ]
 });
-
-dtInstance = dt;
-
-function setActionsVisible(visible) {
-$('#usersTable thead th.actions').toggleClass('d-none', ! visible);
-$('#usersTable tbody td.actions').toggleClass('d-none', ! visible);
-try {
-localStorage.setItem('users.showActions', visible ? '1' : '0');
-} catch (e) {}
-}
-
-try {
-var stored = localStorage.getItem('users.showActions');
-var initialVisible = stored === '1';
-$('#toggleUsersActions').prop('checked', initialVisible);
-setActionsVisible(initialVisible);
-} catch (e) {
-$('#toggleUsersActions').prop('checked', false);
-setActionsVisible(false);
-}
-
-$('#toggleUsersActions').off('change').on('change', function () {
-setActionsVisible($(this).is(':checked'));
-});
-
-dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
-setActionsVisible($('#toggleUsersActions').is(':checked'));
-});
-}
-
-if (document.readyState === 'loading') {
-document.addEventListener('DOMContentLoaded', function () {
-if (window.jQuery) 
-initUsersTable();
-
-
-
-});
-} else {
-if (window.jQuery) 
-initUsersTable();
-
-
-
-}
-
-document.addEventListener('turbo:load', function (e) {
-if (window.jQuery) 
-initUsersTable();
-
-
-
-});
-
-document.addEventListener('turbo:frame-load', function (e) {
-if (window.jQuery) 
-initUsersTable();
-
-
-
 });
 })(jQuery);
 	</script>

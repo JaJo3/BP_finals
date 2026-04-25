@@ -1,0 +1,402 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}About - BeatPass
+{% endblock %}
+
+{% block body_class %}bg-light
+{% endblock %}
+
+{% block body_outer %}
+	{# HERO SECTION - MODERN DARK DESIGN #}
+	<section
+		class="about-hero position-relative overflow-hidden" style="background: var(--brand-primary); padding-top: 100px;">
+		{# Background Gradient #}
+		<div class="about-hero-bg">
+			<div class="about-hero-glow about-hero-glow-1"></div>
+			<div class="about-hero-glow about-hero-glow-2"></div>
+		</div>
+
+		<div class="container position-relative z-1 py-5">
+			<div
+				class="row align-items-center g-4">
+				{# LEFT COLUMN - CONTENT #}
+				<div class="col-lg-6">
+					<div
+						class="fade-up js-reveal">
+						{# BADGE #}
+						<div class="d-inline-flex align-items-center gap-2 mb-3">
+							<span class="badge rounded-pill px-3 py-2 bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50">
+								<i class="bi bi-info-circle-fill me-1"></i>
+								About Us
+							</span>
+						</div>
+
+						{# MAIN HEADING #}
+						<h1 class="fw-bold display-4 mb-3 text-white">About BeatPass</h1>
+
+						{# DESCRIPTION #}
+						<p class="mb-4 text-white-50 fs-5 lh-lg">Discover our story, values, and the team behind revolutionizing event ticketing. We're empowering fans and organizers to create unforgettable experiences together.</p>
+
+						{# FEATURE LIST - COMPACT GRID #}
+						<div
+							class="row g-3 mb-4">
+							{# Feature 1 #}
+							<div class="col-6 feature-animate">
+								<div class="d-flex align-items-start gap-2">
+									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: var(--brand-primary);">1</div>
+									<div>
+										<h6 class="fw-semibold mb-1 text-white fs-6">Seamless Ticketing</h6>
+										<p class="mb-0 text-white-50 small lh-sm">Real-time updates & secure payments</p>
+									</div>
+								</div>
+							</div>
+
+							{# Feature 2 #}
+							<div class="col-6 feature-animate">
+								<div class="d-flex align-items-start gap-2">
+									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: var(--brand-primary);">2</div>
+									<div>
+										<h6 class="fw-semibold mb-1 text-white fs-6">Trusted Platform</h6>
+										<p class="mb-0 text-white-50 small lh-sm">Industry-leading security</p>
+									</div>
+								</div>
+							</div>
+
+							{# Feature 3 #}
+							<div class="col-6 feature-animate">
+								<div class="d-flex align-items-start gap-2">
+									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: var(--brand-primary);">3</div>
+									<div>
+										<h6 class="fw-semibold mb-1 text-white fs-6">Community Focused</h6>
+										<p class="mb-0 text-white-50 small lh-sm">Building lasting connections</p>
+									</div>
+								</div>
+							</div>
+
+							{# Feature 4 #}
+							<div class="col-6 feature-animate">
+								<div class="d-flex align-items-start gap-2">
+									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: var(--brand-primary);">4</div>
+									<div>
+										<h6 class="fw-semibold mb-1 text-white fs-6">24/7 Support</h6>
+										<p class="mb-0 text-white-50 small lh-sm">Always here to help you</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						{# CTA BUTTON #}
+						<a href="#mission" class="btn px-4 py-2 fw-semibold bg-warning rounded-2" style="color: var(--brand-primary);">
+							Learn Our Mission
+							<i class="bi bi-arrow-down ms-2"></i>
+						</a>
+					</div>
+				</div>
+
+				{# RIGHT COLUMN - IMAGE GRID - 8 ARTISTS #}
+				<div class="col-lg-6">
+					<div
+						class="row g-3 fade-up js-reveal">
+						{# IMAGE 1 - Concert Event #}
+						<div class="col-6">
+							<div class="overflow-hidden rounded-3 shadow">
+								<img src="{{ asset('images/con.png') }}" alt="Concert crowd" class="img-fluid w-100 object-fit-cover" style="aspect-ratio: 4/3;"/>
+							</div>
+						</div>
+
+						{# IMAGE 2 - Live Event #}
+						<div class="col-6 mt-4">
+							<div class="overflow-hidden rounded-3 shadow">
+								<img src="{{ asset('images/live.png') }}" alt="Live event attendees" class="img-fluid w-100 object-fit-cover" style="aspect-ratio: 4/3;"/>
+							</div>
+						</div>
+
+						{# IMAGE 3 - Concert Stage #}
+						<div class="col-6 mt-n2">
+							<div class="overflow-hidden rounded-3 shadow">
+								<img src="{{ asset('images/concert.png') }}" alt="Concert stage" class="img-fluid w-100 object-fit-cover" style="aspect-ratio: 4/3;"/>
+							</div>
+						</div>
+
+						{# IMAGE 4 - Event Experience #}
+						<div class="col-6 mt-3">
+							<div class="overflow-hidden rounded-3 shadow">
+								<img src="{{ asset('images/tj-jz.jpg') }}" alt="Event experience" class="img-fluid w-100 object-fit-cover" style="aspect-ratio: 4/3;"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# MISSION SECTION #}
+	<section id="mission" class="py-5 bg-light">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 text-center">
+					<div class="fade-up js-reveal">
+						<span class="badge rounded-pill px-3 py-2 text-white mb-3" style="background: var(--brand-primary);">Our Mission</span>
+						<h2 class="display-5 fw-bold text-dark mb-3">Making every event accessible, one ticket at a time</h2>
+						<p class="fs-5 text-secondary lh-lg">We believe that live experiences bring people together and create lasting memories. Our platform bridges the gap between event organizers and attendees, ensuring smooth transactions, transparent pricing, and exceptional support every step of the way.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# STATS SECTION #}
+	<section class="py-4 bg-white">
+		<div class="container">
+			<div class="row g-4 fade-up js-reveal">
+				<div class="col-6 col-md-3">
+					<div class="text-center p-3 bg-light rounded-4">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: var(--brand-primary);">
+							<i class="bi bi-ticket-perforated"></i>
+						</div>
+						<div class="fs-2 fw-bold text-dark">50K+</div>
+						<div class="text-secondary">Tickets Sold</div>
+					</div>
+				</div>
+				<div class="col-6 col-md-3">
+					<div class="text-center p-3 bg-light rounded-4">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: var(--brand-primary);">
+							<i class="bi bi-calendar-event"></i>
+						</div>
+						<div class="fs-2 fw-bold text-dark">500+</div>
+						<div class="text-secondary">Events Hosted</div>
+					</div>
+				</div>
+				<div class="col-6 col-md-3">
+					<div class="text-center p-3 bg-light rounded-4">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: var(--brand-primary);">
+							<i class="bi bi-buildings"></i>
+						</div>
+						<div class="fs-2 fw-bold text-dark">200+</div>
+						<div class="text-secondary">Organizers</div>
+					</div>
+				</div>
+				<div class="col-6 col-md-3">
+					<div class="text-center p-3 bg-light rounded-4">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: var(--brand-primary);">
+							<i class="bi bi-star-fill"></i>
+						</div>
+						<div class="fs-2 fw-bold text-dark">4.9</div>
+						<div class="text-secondary">User Rating</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# CORE VALUES #}
+	<section class="py-5 bg-white">
+		<div class="container">
+			<div class="row justify-content-center mb-5">
+				<div class="col-lg-8 text-center">
+					<h2 class="display-5 fw-bold text-dark fade-up js-reveal">Our Core Values</h2>
+					<p class="fs-5 text-secondary mt-2 fade-up js-reveal">The principles that guide everything we do at BeatPass</p>
+				</div>
+			</div>
+			<div class="row g-4">
+				<div class="col-md-6 col-lg-4 fade-up js-reveal" data-delay="0ms">
+					<div class="card h-100 border-0 bg-light rounded-4 p-3">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mb-3" style="width: 44px; height: 44px; background: var(--brand-primary);">
+							<i class="bi bi-shield-check"></i>
+						</div>
+						<h4 class="h5 fw-semibold text-dark mb-2">Trust & Security</h4>
+						<p class="text-secondary small mb-0">We prioritize secure transactions and data protection, giving both organizers and attendees peace of mind.</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 fade-up js-reveal" data-delay="50ms">
+					<div class="card h-100 border-0 bg-light rounded-4 p-3">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mb-3" style="width: 44px; height: 44px; background: linear-gradient(135deg,#f59e0b 0%,#d97706 100%);">
+							<i class="bi bi-lightning-charge"></i>
+						</div>
+						<h4 class="h5 fw-semibold text-dark mb-2">Innovation</h4>
+						<p class="text-secondary small mb-0">We're constantly improving our platform with cutting-edge technology to deliver the best ticketing experience.</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 fade-up js-reveal" data-delay="100ms">
+					<div class="card h-100 border-0 bg-light rounded-4 p-3">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mb-3" style="width: 44px; height: 44px; background: linear-gradient(135deg,#ec4899 0%,#db2777 100%);">
+							<i class="bi bi-people"></i>
+						</div>
+						<h4 class="h5 fw-semibold text-dark mb-2">Community First</h4>
+						<p class="text-secondary small mb-0">We build relationships, not just transactions. Every feature is designed with our users in mind.</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 fade-up js-reveal" data-delay="150ms">
+					<div class="card h-100 border-0 bg-light rounded-4 p-3">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mb-3" style="width: 44px; height: 44px; background: linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);">
+							<i class="bi bi-eye"></i>
+						</div>
+						<h4 class="h5 fw-semibold text-dark mb-2">Transparency</h4>
+						<p class="text-secondary small mb-0">No hidden fees, no surprises. We believe in clear communication and honest pricing for all.</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 fade-up js-reveal" data-delay="200ms">
+					<div class="card h-100 border-0 bg-light rounded-4 p-3">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mb-3" style="width: 44px; height: 44px; background: linear-gradient(135deg,#06b6d4 0%,#0891b2 100%);">
+							<i class="bi bi-award"></i>
+						</div>
+						<h4 class="h5 fw-semibold text-dark mb-2">Excellence</h4>
+						<p class="text-secondary small mb-0">From customer support to platform reliability, we strive for excellence in every interaction.</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 fade-up js-reveal" data-delay="250ms">
+					<div class="card h-100 border-0 bg-light rounded-4 p-3">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mb-3" style="width: 44px; height: 44px; background: linear-gradient(135deg,#ef4444 0%,#dc2626 100%);">
+							<i class="bi bi-heart"></i>
+						</div>
+						<h4 class="h5 fw-semibold text-dark mb-2">Passion for Events</h4>
+						<p class="text-secondary small mb-0">We're music lovers, event-goers, and experience-seekers who understand the magic of live moments.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# FEATURES SECTION #}
+	<section class="py-5" style="background: linear-gradient(180deg,#f8fafc 0%,white 100%);">
+		<div class="container">
+			<div class="row align-items-center g-5">
+				<div class="col-lg-6">
+					<div class="fade-up js-reveal">
+						<span class="badge rounded-pill px-3 py-2 text-white mb-3" style="background: var(--brand-primary);">Why Choose BeatPass</span>
+						<h2 class="display-6 fw-bold text-dark mb-3">Everything you need for perfect events</h2>
+						<p class="fs-5 text-secondary mb-4">Powerful features designed for both event organizers and attendees</p>
+
+						<div class="vstack gap-3">
+							<div class="d-flex gap-3 align-items-start p-3 rounded-3 transition-all hover-shadow">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,var(--brand-accent) 0%,#ffc84d 100%); color: var(--brand-primary);">
+									<i class="bi bi-ticket-detailed"></i>
+								</div>
+								<div>
+									<h5 class="fw-semibold text-dark mb-1">Smart Ticketing</h5>
+									<p class="text-secondary mb-0">QR code tickets, seat selection, and instant delivery</p>
+								</div>
+							</div>
+							<div class="d-flex gap-3 align-items-start p-3 rounded-3 transition-all hover-shadow">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,var(--brand-accent) 0%,#ffc84d 100%); color: var(--brand-primary);">
+									<i class="bi bi-credit-card"></i>
+								</div>
+								<div>
+									<h5 class="fw-semibold text-dark mb-1">Secure Payments</h5>
+									<p class="text-secondary mb-0">Bank-level encryption with multiple payment options</p>
+								</div>
+							</div>
+							<div class="d-flex gap-3 align-items-start p-3 rounded-3 transition-all hover-shadow">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,var(--brand-accent) 0%,#ffc84d 100%); color: var(--brand-primary);">
+									<i class="bi bi-graph-up-arrow"></i>
+								</div>
+								<div>
+									<h5 class="fw-semibold text-dark mb-1">Real-time Analytics</h5>
+									<p class="text-secondary mb-0">Track sales, attendance, and revenue in real-time</p>
+								</div>
+							</div>
+							<div class="d-flex gap-3 align-items-start p-3 rounded-3 transition-all hover-shadow">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,var(--brand-accent) 0%,#ffc84d 100%); color: var(--brand-primary);">
+									<i class="bi bi-headset"></i>
+								</div>
+								<div>
+									<h5 class="fw-semibold text-dark mb-1">24/7 Support</h5>
+									<p class="text-secondary mb-0">Dedicated support team always ready to help</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div
+						class="position-relative fade-up js-reveal" data-delay="100ms" style="min-height: 500px; display: flex; align-items: center; justify-content: center;">
+						{# Sales Badge - Top Right #}
+						<div class="position-absolute" style="top: 80px; right: 20px; animation: float-gentle 4s ease-in-out infinite; z-index: 10;">
+							<div class="bg-white p-3 rounded-3 shadow-lg d-flex align-items-center gap-3" style="min-width: 160px;">
+								<div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width: 44px; height: 44px; background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%);">
+									<i class="bi bi-graph-up-arrow text-success fs-5"></i>
+								</div>
+								<div>
+									<div class="fw-bold text-dark">+128%</div>
+									<div class="text-muted small">sales growth</div>
+								</div>
+							</div>
+						</div>
+
+						{# Rating Badge - Top Left #}
+						<div class="position-absolute" style="top: 120px; left: 0; animation: float-gentle 4s ease-in-out infinite 1s; z-index: 10;">
+							<div class="bg-white p-3 rounded-3 shadow-lg d-flex align-items-center gap-3" style="min-width: 140px;">
+								<div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width: 44px; height: 44px; background: linear-gradient(135deg, rgba(249, 178, 51, 0.15) 0%, rgba(249, 178, 51, 0.05) 100%);">
+									<i class="bi bi-star-fill text-warning fs-5"></i>
+								</div>
+								<div>
+									<div class="fw-bold text-dark">4.9</div>
+									<div class="text-muted small">user rating</div>
+								</div>
+							</div>
+						</div>
+
+						{# Secure Badge - Bottom Right #}
+						<div class="position-absolute" style="bottom: 100px; right: 10px; animation: float-gentle 4s ease-in-out infinite 2s; z-index: 10;">
+							<div class="bg-white p-3 rounded-3 shadow-lg d-flex align-items-center gap-3" style="min-width: 150px;">
+								<div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width: 44px; height: 44px; background: linear-gradient(135deg, rgba(26, 61, 124, 0.15) 0%, rgba(26, 61, 124, 0.05) 100%);">
+									<i class="bi bi-shield-check fs-5" style="color: var(--brand-primary);"></i>
+								</div>
+								<div>
+									<div class="fw-bold text-dark">Secure</div>
+									<div class="text-muted small">256-bit SSL</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# MEET THE TEAM #}
+	<section id="team" class="py-5 bg-light">
+		<div class="container">
+			<div class="row justify-content-center mb-5">
+				<div class="col-lg-8 text-center">
+					<div class="mb-5 fade-up js-reveal">
+						<span class="badge rounded-pill px-3 py-2 bg-warning fw-semibold mb-3" style="color: var(--brand-primary);">Our Team</span>
+						<h2 class="display-6 fw-bold text-dark mb-3">Meet the people behind BeatPass</h2>
+						<p class="fs-5 text-secondary">A dedicated team of innovators, builders, and event enthusiasts working to transform the ticketing industry.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row g-4">
+				{% for member in team %}
+					<div class="col-sm-6 col-lg-3 fade-up js-reveal" data-delay="{{ (loop.index0 * 70) ~ 'ms' }}">
+						<div class="card h-100 border-0 rounded-4 overflow-hidden shadow-sm">
+							<div class="position-relative" style="height: 180px; overflow: hidden; background: #f3f4f6;">
+								{% if member.image %}
+									<img src="{{ asset(member.image) }}" alt="{{ member.name }}" loading="lazy" class="w-100 h-100 object-fit-cover">
+								{% else %}
+									<img src="https://ui-avatars.com/api/?name={{ member.name|url_encode }}&background=1A3D7C&color=fff&size=200" alt="{{ member.name }}" loading="lazy" class="w-100 h-100 object-fit-cover">
+								{% endif %}
+								<div class="position-absolute start-0 end-0 bottom-0 p-3 d-flex justify-content-center gap-2" style="background: linear-gradient(180deg,transparent 0%,rgba(26,61,124,.9) 100%); opacity: 0; transition: opacity 0.3s ease;">
+									<a href="#" class="d-flex align-items-center justify-content-center rounded-circle text-white text-decoration-none" style="width: 36px; height: 36px; background: rgba(255,255,255,0.2);" aria-label="LinkedIn">
+										<i class="bi bi-linkedin"></i>
+									</a>
+									<a href="#" class="d-flex align-items-center justify-content-center rounded-circle text-white text-decoration-none" style="width: 36px; height: 36px; background: rgba(255,255,255,0.2);" aria-label="Twitter">
+										<i class="bi bi-twitter-x"></i>
+									</a>
+									<a href="#" class="d-flex align-items-center justify-content-center rounded-circle text-white text-decoration-none" style="width: 36px; height: 36px; background: rgba(255,255,255,0.2);" aria-label="Email">
+										<i class="bi bi-envelope"></i>
+									</a>
+								</div>
+							</div>
+							<div class="p-3">
+								<h5 class="fw-semibold text-dark mb-1">{{ member.name }}</h5>
+								<div class="small fw-semibold mb-2" style="color: var(--brand-primary);">{{ member.role }}</div>
+								<p class="text-secondary small mb-0">{{ member.bio|default('Passionate about creating amazing event experiences and building products that people love.') }}</p>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+{% endblock %}

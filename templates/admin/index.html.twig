@@ -1,41 +1,202 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Admin Dashboard
+{% block title %}BEATPASS Admin Dashboard
 {% endblock %}
 
 {% block body %}
+	<style>
+		/* Dashboard-specific CSS (color vars removed to use global theme from app.css) */
 
-	<div class="row mb-4">
-		<div class="col-12">
-			<div class="mb-4">
-				{% set displayName = app.user.firstName|default(app.user.username) %}
-				{% set roleLabel = is_granted('ROLE_ADMIN') ? 'Admin' : (is_granted('ROLE_STAFF') ? 'Staff' : 'User') %}
+		.metric-card {
+			border-radius: 12px;
+			padding: 14px;
+			color: #fff;
+			box-shadow: 0 6px 18px rgba(21, 48, 90, 0.06);
+			position: relative;
+			overflow: hidden;
+			transition: transform 220ms ease, box-shadow 220ms ease;
+		}
+		.metric-card:hover {
+			transform: translateY(-6px);
+			box-shadow: 0 18px 40px rgba(21, 48, 90, 0.18);
+		}
 
-				<div class="d-flex flex-column gap-1">
-					<h3 class="mb-0 text-body fw-bold">Welcome back, {{ displayName }}.</h3>
-					<div class="text-body-secondary small">Signed in as {{ roleLabel }} · {{ "now"|date("F j, Y", "Asia/Manila") }}</div>
-				</div>
-			</div>
-		</div>
-	</div>
+		/* small decorative logo on metric cards (top-right) */
+		.metric-card::after {
+			content: '';
+			position: absolute;
+			right: 14px;
+			top: 14px;
+			width: 42px;
+			height: 42px;
+			border-radius: 10px;
+			background-image: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+			box-shadow: inset 0 -6px 18px rgba(0, 0, 0, 0.06);
+			opacity: 0.95;
+			display: block;
+			z-index: 1;
+			backdrop-filter: blur(2px);
+		}
 
-	<div class="container-fluid text-body">
+		/* colorful gradients (use main brand vars) */
+		.metric-pink {
+			background: linear-gradient(135deg, rgba(232,62,140,0.95), rgba(249,178,51,0.85));
+		}
+		.metric-orange {
+			background: linear-gradient(135deg, rgba(253,126,20,0.95), rgba(249,178,51,0.88));
+		}
+		.metric-purple {
+			background: linear-gradient(135deg, #6f42c1, rgba(111,66,193,0.85));
+		}
+		.metric-teal {
+			background: linear-gradient(135deg, #20C997, rgba(32,201,151,0.85));
+		}
+
+		.metric-body {
+			display: flex;
+			gap: 12px;
+			align-items: center;
+		}
+		.metric-number {
+			font-size: 1.25rem;
+			font-weight: 700;
+			color: #fff;
+		}
+		.metric-label {
+			font-size: 0.85rem;
+			color: rgba(255, 255, 255, 0.9);
+		}
+
+		.hero-card {
+			border-radius: 12px;
+			box-shadow: 0 10px 30px rgba(21, 48, 90, 0.06);
+		}
+		.hero-yellow {
+			background: linear-gradient(180deg, rgba(249,178,51,0.08), rgba(249,178,51,0.02));
+		}
+
+		.card-blue {
+			background: linear-gradient(180deg, rgba(21,48,90,0.05), rgba(21,48,90,0.02));
+			border-radius: 10px;
+		}
+
+		.sales-card-dark {
+			background: linear-gradient(180deg, rgba(21,48,90,0.06), rgba(21,48,90,0.02));
+			border-radius: 10px;
+		}
+
+		.revenue-title {
+			color: #ffffff;
+			font-weight: 700;
+		}
+		.revenue-number {
+			font-size: 1.5rem;
+			font-weight: 800;
+			color: #ffffff;
+			margin-top: 8px;
+		}
+
+		.list-group-item {
+			background: transparent;
+			border: none;
+			padding: 12px 0;
+		}
+		.amount-badge {
+			color: var(--beatpass-blue);
+			font-weight: 700;
+		}
+		.qty-pill {
+			font-size: 12px;
+			color: var(--muted);
+		}
+
+		.badge.bg-light.text-dark {
+			background: #fff !important;
+			color: var(--beatpass-blue) !important;
+			border-radius: 6px;
+			padding: 6px 10px;
+			font-weight: 700;
+		}
+		.avatar.bg-secondary {
+			background: linear-gradient(90deg,var(--beatpass-blue), var(--beatpass-yellow));
+		}
+
+		.chart-area {
+			height: 320px;
+		}
+		.chart-area canvas {
+			width: 100% !important;
+			height: 100% !important;
+			display: block;
+		}
+
+		/* align right column cards and ensure they fit without big gaps */
+		.col-lg-4 .card {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+		.col-lg-4 .card .chart-area {
+			height: 200px;
+		}
+		.chart-card {
+			min-height: 360px;
+		}
+		@media(max-width: 991px) {
+			/* collapse behavior for tablets */
+			.col-lg-4 .card {
+				margin-bottom: 12px;
+			}
+			.chart-card {
+				min-height: 300px;
+			}
+		}
+
+		/* optional cards (can be hidden via the Extras toggle) */
+		.optional-card {
+			transition: opacity 200ms ease, transform 220ms ease;
+		}
+		.optional-card.hidden {
+			opacity: 0;
+			transform: translateY(8px);
+			height: 0;
+			overflow: hidden;
+			pointer-events: none;
+			display: none;
+		}
+
+		/* small responsive tweaks */
+		@media(max-width: 768px) {
+			.metric-number {
+				font-size: 1rem;
+			}
+		}
+
+	</style>
+
+	<div class="container-fluid">
 		<div class="row mb-3">
 			<div class="col-12">
 				<div class="d-flex align-items-center justify-content-between admin-topbar">
 					<div class="dashboard-header">
-						<div class="title">Admin Dashboard</div>
-					</div>					
+						<div class="title">BEATPASS Admin Dashboard</div>
+						<div class="subtitle">Overview of sales, tickets and recent activity</div>
+					</div>
+					<div>
+						<a href="{{ path('app_dashboard') }}" class="btn btn-sm btn-beatpass-primary">Refresh</a>
+						<button id="toggleExtras" class="btn btn-sm btn-outline-light ms-2">Extras</button>
+					</div>
 				</div>
 			</div>
 		</div>
 
+		{# Top row: 4 metric cards (aligned to live data) #}
 		<div class="row g-3 mb-4 top-metrics-row">
 			<div class="col-6 col-md-3">
 				<div class="metric-card metric-pink h-100">
 					<div class="metric-body">
-						<div class="metric-left metric-icon-box d-flex align-items-center justify-content-center rounded-3 bg-white bg-opacity-10">
-							<i class="fas fa-users text-white fs-5"></i>
+						<div class="metric-left position-relative d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
+							<i class="fas fa-users" style="font-size: 1.3rem; color: #fff;"></i>
 						</div>
 						<div class="metric-right">
 							<div class="metric-number">{{ data.stats.totalUsers|default(0)|number_format(0, '.', ',') }}</div>
@@ -48,8 +209,8 @@
 			<div class="col-6 col-md-3">
 				<div class="metric-card metric-orange h-100">
 					<div class="metric-body">
-						<div class="metric-left metric-icon-box d-flex align-items-center justify-content-center rounded-3 bg-white bg-opacity-10">
-							<i class="fas fa-user-tie text-white fs-5"></i>
+						<div class="metric-left position-relative d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
+							<i class="fas fa-user-tie" style="font-size: 1.3rem; color: #fff;"></i>
 						</div>
 						<div class="metric-right">
 							<div class="metric-number">{{ data.stats.totalStaff|default(0)|number_format(0, '.', ',') }}</div>
@@ -62,8 +223,8 @@
 			<div class="col-6 col-md-3">
 				<div class="metric-card metric-purple h-100">
 					<div class="metric-body">
-						<div class="metric-left metric-icon-box d-flex align-items-center justify-content-center rounded-3 bg-white bg-opacity-10">
-							<i class="fas fa-database text-white fs-5"></i>
+						<div class="metric-left d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
+							<i class="fas fa-database" style="font-size: 1.3rem; color: #fff;"></i>
 						</div>
 						<div class="metric-right">
 							<div class="metric-number">{{ data.stats.totalRecords|default(0)|number_format(0, '.', ',') }}</div>
@@ -76,8 +237,8 @@
 			<div class="col-6 col-md-3">
 				<div class="metric-card metric-teal h-100">
 					<div class="metric-body">
-						<div class="metric-left metric-icon-box d-flex align-items-center justify-content-center rounded-3 bg-white bg-opacity-10">
-							<i class="fas fa-receipt text-white fs-5"></i>
+						<div class="metric-left d-flex align-items-center justify-content-center" style="width:48px; height:48px; background: rgba(255,255,255,0.12); border-radius:10px;">
+							<i class="fas fa-receipt" style="font-size: 1.3rem; color: #fff;"></i>
 						</div>
 						<div class="metric-right">
 							<div class="metric-number">{{ data.stats.totalTransactions|default(0)|number_format(0, '.', ',') }}</div>
@@ -89,15 +250,17 @@
 		</div>
 
 
+		{# small ticket/metrics cards removed from here and will be placed in the right column of the main charts row to avoid large empty gaps #}
+
 		{# Main content: 4-column grid layout #}
 		<div
 			class="row g-3 mb-4">
 			{# Sales Revenue - spans 2 columns #}
 			<div class="col-lg-6">
-				<div class="card p-4 admin-dashboard-card h-100 bg-body border border-secondary-subtle">
+				<div class="card p-4 admin-dashboard-card h-100">
 					<div class="d-flex justify-content-between align-items-center mb-2">
 						<div>
-							<div class="fw-semibold text-body">Sales Revenue</div>
+							<div style="color: #15305A; font-weight: 700;">Sales Revenue</div>
 							<div id="sales-filter-summary" class="sales-filter-summary">All events · This year</div>
 						</div>
 						<div class="d-flex align-items-center gap-2">
@@ -134,8 +297,8 @@
 
 			{# Ticket Distribution - spans 1 column #}
 			<div class="col-lg-3">
-				<div class="card p-4 admin-dashboard-card h-100 bg-body border border-secondary-subtle">
-					<div class="fw-semibold text-body mb-3 small">Ticket Distribution</div>
+				<div class="card p-4 admin-dashboard-card h-100">
+					<div style="color: #15305A; font-weight: 700; margin-bottom: 16px; font-size: 0.95rem;">Ticket Distribution</div>
 					<div class="chart-area admin-dashboard-chart">
 						<canvas id="pieChart"></canvas>
 					</div>
@@ -143,10 +306,9 @@
 			</div>
 
 			{# Quick Stats Column - spans 1 column #}
-			<div
-				class="col-lg-3 d-flex flex-column" style="gap: 12px;">
+			<div class="col-lg-3 d-flex flex-column" style="gap: 12px;">
 				{# This Week Stats #}
-				<div class="card p-3 quick-card-week flex-shrink-0 bg-body border border-secondary-subtle">
+				<div class="card p-3 quick-card-week flex-shrink-0">
 					<div class="quick-card-title">This Week</div>
 					<div class="d-flex align-items-baseline justify-content-between">
 						<div class="quick-card-value" style="color: #20C997;">45k pcs</div>
@@ -159,7 +321,7 @@
 				</div>
 
 				{# Increase Stats #}
-				<div class="card p-3 quick-card-conversion flex-shrink-0 bg-body border border-secondary-subtle">
+				<div class="card p-3 quick-card-conversion flex-shrink-0">
 					<div class="quick-card-title">Conversion</div>
 					<div class="d-flex align-items-baseline justify-content-between">
 						<div class="quick-card-value" style="color: #F9B233;">+25%</div>
@@ -172,8 +334,8 @@
 				</div>
 
 				{# Best Selling Stats #}
-				<div class="card p-3 quick-card-best-selling flex-grow-1 bg-body border border-secondary-subtle">
-					<div class="fw-semibold text-body mb-2 small">Best Selling</div>
+				<div class="card p-3 quick-card-best-selling flex-grow-1">
+					<div style="color: #15305A; font-weight: 700; margin-bottom: 12px; font-size: 0.85rem;">Best Selling</div>
 					<div class="chart-area admin-dashboard-chart-sm">
 						<canvas id="bestSellingChart"></canvas>
 					</div>
@@ -181,15 +343,14 @@
 			</div>
 		</div>
 
-		{# Second Row: Best Selling performance #}
-		<div
-			class="row g-3 mb-4">
+			{# Second Row: Best Selling performance #}
+			<div class="row g-3 mb-4">
 			{# Best Selling Performance - spans full width on large screens #}
 			<div class="col-12">
-				<div class="card p-4 best-selling-wrapper bg-body border border-secondary-subtle">
+				<div class="card p-4 best-selling-wrapper">
 					<div class="d-flex justify-content-between align-items-center mb-3">
 						<div>
-							<div class="fw-semibold text-body">Best Selling</div>
+							<div style="color: #15305A; font-weight: 700; font-size: 0.95rem;">Best Selling</div>
 							<div class="best-selling-subtitle">Top events & ticket types by sales and revenue</div>
 						</div>
 						<div class="btn-group btn-group-sm" role="group" aria-label="Best selling date range">
@@ -449,19 +610,14 @@ const yearFilterEl = document.getElementById('sales-year-filter');
 const dateFromEl = document.getElementById('sales-date-from');
 const dateToEl = document.getElementById('sales-date-to');
 
-const rootStyles = getComputedStyle(document.documentElement);
-const bodyStyles = getComputedStyle(document.body);
-const bodyColor = bodyStyles.getPropertyValue('color') || rootStyles.getPropertyValue('--bs-body-color') || '#15305A';
-const secondaryColor = rootStyles.getPropertyValue('--bs-secondary-color') || 'rgba(148,163,184,0.8)';
-
 // Golden gradient fill under the line
 const gradient = ctx.createLinearGradient(0, 0, 0, 340);
 gradient.addColorStop(0, 'rgba(249,178,51,0.28)');
 gradient.addColorStop(0.5, 'rgba(249,178,51,0.10)');
 gradient.addColorStop(1, 'rgba(249,178,51,0.00)');
 
-const lineColor = rootStyles.getPropertyValue('--beatpass-yellow').trim() || '#F9B233';
-const labelGray = secondaryColor.trim() || 'rgba(148,163,184,0.8)';
+const lineColor = getComputedStyle(document.documentElement).getPropertyValue('--beatpass-yellow').trim() || '#F9B233';
+const labelGray = 'rgba(255,255,255,0.65)';
 
 const labels = [
 'Jan',
@@ -531,20 +687,19 @@ if (! xScale || ! yScale)
 return;
 
 
-
 const targetIndex = 9; // October
 const x = xScale.getPixelForValue(labels[targetIndex]);
 const y = yScale.getPixelForValue(currentYearValues[targetIndex]);
 ctx.save();
 // faint vertical marker for October
 ctx.beginPath();
-ctx.strokeStyle = secondaryColor.replace('0.8', '0.10') || 'rgba(148,163,184,0.10)';
+ctx.strokeStyle = 'rgba(255,255,255,0.10)';
 ctx.lineWidth = 1;
 ctx.moveTo(x, yScale.top);
 ctx.lineTo(x, yScale.bottom);
 ctx.stroke();
 // outer white dot and inner gold dot
-ctx.fillStyle = bodyColor;
+ctx.fillStyle = '#ffffff';
 ctx.beginPath();
 ctx.arc(x, y, 5, 0, Math.PI * 2);
 ctx.fill();
@@ -553,7 +708,7 @@ ctx.beginPath();
 ctx.arc(x, y, 3, 0, Math.PI * 2);
 ctx.fill();
 // draw the month label more prominently at the bottom
-ctx.fillStyle = bodyColor;
+ctx.fillStyle = '#ffffff';
 ctx.font = '600 12px sans-serif';
 ctx.textAlign = 'center';
 const labelY = chart.height - 8;
@@ -571,7 +726,6 @@ if (! active || ! active.length)
 return;
 
 
-
 const {ctx, scales} = chart;
 const xScale = scales.x;
 const yScale = scales.y;
@@ -582,19 +736,18 @@ if (! el)
 return;
 
 
-
 const x = el.x;
 const y = el.y;
 ctx.save();
 // vertical line
 ctx.beginPath();
-ctx.strokeStyle = secondaryColor.replace('0.8', '0.12') || 'rgba(148,163,184,0.12)';
+ctx.strokeStyle = 'rgba(255,255,255,0.12)';
 ctx.lineWidth = 1;
 ctx.moveTo(x, yScale.top);
 ctx.lineTo(x, yScale.bottom);
 ctx.stroke();
 // outer white circle
-ctx.fillStyle = bodyColor;
+ctx.fillStyle = '#ffffff';
 ctx.beginPath();
 ctx.arc(x, y, 6, 0, Math.PI * 2);
 ctx.fill();
@@ -621,14 +774,13 @@ pointRadius: 0,
 pointHoverRadius: 6,
 pointHoverBackgroundColor: '#ffffff',
 borderWidth: 3
-}, {
+},
+{
 label: 'Last year',
 data: lastYearValues,
 borderColor: 'rgba(21,48,90,0.45)',
 backgroundColor: 'transparent',
-borderDash: [
-6, 4
-],
+borderDash: [6, 4],
 tension: 0.35,
 fill: false,
 pointRadius: 0,
@@ -648,13 +800,13 @@ glowPlugin, indicatorPlugin, hoverLinePlugin
 options: {
 plugins: {
 legend: {
-display: true,
-position: 'bottom',
-labels: {
-usePointStyle: true,
-padding: 16,
-color: labelGray
-}
+ display: true,
+ position: 'bottom',
+ labels: {
+  usePointStyle: true,
+  padding: 16,
+  color: labelGray
+ }
 },
 glowLinePlugin: {
 blur: 16
@@ -663,17 +815,13 @@ tooltip: {
 enabled: true,
 intersect: false,
 callbacks: {
-label: function (ctx) {
+ label: function (ctx) {
 const v = ctx.parsed && ctx.parsed.y ? ctx.parsed.y : ctx.raw;
 const datasetLabel = ctx.dataset && ctx.dataset.label ? ctx.dataset.label + ': ' : '';
 return datasetLabel + '$' + Number(v).toLocaleString();
 },
-title: function (items) {
-if (! items || ! items.length) 
-return '';
-
-
-
+ title: function (items) {
+if (!items || !items.length) return '';
 const item = items[0];
 return labels[item.dataIndex] + ' · Revenue';
 }
@@ -685,7 +833,7 @@ y: {
 min: 200000,
 max: 1000000,
 grid: {
-color: secondaryColor.replace('0.8', '0.06') || 'rgba(148,163,184,0.06)',
+color: 'rgba(255,255,255,0.06)',
 drawBorder: false,
 drawOnChartArea: true
 },
@@ -734,11 +882,7 @@ window.salesChart = salesChart;
 
 // simple summary updater for UI (no backend binding yet)
 function updateSummary() {
-if (! summaryEl) 
-return;
-
-
-
+if (!summaryEl) return;
 const eventLabel = eventFilterEl && eventFilterEl.options[eventFilterEl.selectedIndex] ? eventFilterEl.options[eventFilterEl.selectedIndex].text : 'All events';
 const yearLabel = yearFilterEl && yearFilterEl.value ? yearFilterEl.value : 'This year';
 let rangeLabel = 'This year';
@@ -746,12 +890,10 @@ if (dateFromEl && dateToEl && dateFromEl.value && dateToEl.value) {
 rangeLabel = dateFromEl.value + ' to ' + dateToEl.value;
 }
 summaryEl.textContent = eventLabel + ' · ' + rangeLabel;
-}[eventFilterEl, yearFilterEl, dateFromEl, dateToEl].forEach(function (el) {
-if (! el) 
-return;
+}
 
-
-
+[eventFilterEl, yearFilterEl, dateFromEl, dateToEl].forEach(function (el) {
+if (!el) return;
 el.addEventListener('change', updateSummary);
 });
 updateSummary();
@@ -772,7 +914,7 @@ datasets: [
 data: [
 55, 30, 15
 ],
-backgroundColor: [bodyColor, lineColor, rootStyles.getPropertyValue('--bs-border-color') || '#e9ecef']
+backgroundColor: ['#15305A', '#F9B233', '#e9ecef']
 }
 ]
 },
@@ -782,7 +924,7 @@ plugins: {
 legend: {
 position: 'bottom',
 labels: {
-color: bodyColor,
+color: '#15305A',
 font: {
 weight: '600'
 },
@@ -809,7 +951,7 @@ datasets: [
 data: [
 120, 90, 75, 60
 ],
-backgroundColor: bodyColor,
+backgroundColor: '#15305A',
 borderRadius: 8,
 borderSkipped: false
 }
@@ -825,18 +967,18 @@ display: false
 scales: {
 x: {
 ticks: {
-color: bodyColor,
+color: '#15305A',
 font: {
 weight: '600'
 }
 },
 grid: {
-color: secondaryColor.replace('0.8', '0.1') || 'rgba(148,163,184,0.1)'
+color: 'rgba(21,48,90,0.1)'
 }
 },
 y: {
 ticks: {
-color: bodyColor,
+color: '#15305A',
 font: {
 weight: '600'
 }
@@ -883,7 +1025,6 @@ const miniLine = document.getElementById('miniLineChart');
 if (miniLine) {
 if (! miniLine.height) 
 miniLine.height = 48;
-
 
 
 const ctx = miniLine.getContext('2d');
@@ -940,7 +1081,6 @@ const miniArea = document.getElementById('miniAreaChart');
 if (miniArea) {
 if (! miniArea.height) 
 miniArea.height = 48;
-
 
 
 const ctxA = miniArea.getContext('2d');
@@ -1002,13 +1142,11 @@ if (! data)
 return;
 
 
-
 // update simple keyed values
 document.querySelectorAll('[data-dash-key]').forEach(function (el) {
 const key = el.getAttribute('data-dash-key');
 if (! key) 
 return;
-
 
 
 // look under data.totals first
@@ -1042,7 +1180,6 @@ if (! res.ok)
 throw new Error('bad status');
 
 
-
 const json = await res.json();
 applyRealtimeData(json);
 } catch (err) {
@@ -1073,7 +1210,6 @@ if (toggle)
 toggle.textContent = visible ? 'Extras' : 'Extras';
 
 
-
 }
 
 // initialize from localStorage (default: visible)
@@ -1099,48 +1235,44 @@ setExtrasVisible(false);
 })();
 // Best Selling range toggle (Today / Weekly / Monthly)
 (function () {
-const rangeButtons = document.querySelectorAll('[data-best-range]');
-if (! rangeButtons.length) {
-return;
-}
+	const rangeButtons = document.querySelectorAll('[data-best-range]');
+	if (!rangeButtons.length) {
+		return;
+	}
 
-function setRange(range) {
-rangeButtons.forEach(function (btn) {
-if (btn.getAttribute('data-best-range') === range) {
-btn.classList.add('active');
-} else {
-btn.classList.remove('active');
-}
-});
+	function setRange(range) {
+		rangeButtons.forEach(function (btn) {
+			if (btn.getAttribute('data-best-range') === range) {
+				btn.classList.add('active');
+			} else {
+				btn.classList.remove('active');
+			}
+		});
 
-['today', 'week', 'month'].forEach(function (key) {
-const show = key === range;
-const eventsBody = document.getElementById('best-events-' + key);
-const ticketsBody = document.getElementById('best-tickets-' + key);
-[eventsBody, ticketsBody].forEach(function (tbody) {
-if (! tbody) 
-return;
+		['today', 'week', 'month'].forEach(function (key) {
+			const show = key === range;
+			const eventsBody = document.getElementById('best-events-' + key);
+			const ticketsBody = document.getElementById('best-tickets-' + key);
+			[eventsBody, ticketsBody].forEach(function (tbody) {
+				if (!tbody) return;
+				if (show) {
+					tbody.classList.remove('d-none');
+				} else {
+					tbody.classList.add('d-none');
+				}
+			});
+		});
+	}
 
+	rangeButtons.forEach(function (btn) {
+		btn.addEventListener('click', function () {
+			const range = btn.getAttribute('data-best-range') || 'today';
+			setRange(range);
+		});
+	});
 
-
-if (show) {
-tbody.classList.remove('d-none');
-} else {
-tbody.classList.add('d-none');
-}
-});
-});
-}
-
-rangeButtons.forEach(function (btn) {
-btn.addEventListener('click', function () {
-const range = btn.getAttribute('data-best-range') || 'today';
-setRange(range);
-});
-});
-
-// default
-setRange('today');
+	// default
+	setRange('today');
 })();
 		</script>
 	{% endblock %}

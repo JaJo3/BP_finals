@@ -4,24 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	{% set paidCount = 0 %}
-	{% set pendingCount = 0 %}
-	{% set refundedCount = 0 %}
-	{% set failedCount = 0 %}
-	{% for txc in transactions|default([]) %}
-		{% set st = txc.paymentStatus|default('') %}
-		{% if st == 'paid' %}
-			{% set paidCount = paidCount + 1 %}
-		{% elseif st == 'pending' %}
-			{% set pendingCount = pendingCount + 1 %}
-		{% elseif st == 'refunded' %}
-			{% set refundedCount = refundedCount + 1 %}
-		{% else %}
-			{% set failedCount = failedCount + 1 %}
-		{% endif %}
-	{% endfor %}
-
-	<div class="content-wrapper content-wrapper--tight">
+	<div class="content-wrapper">
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<h1 class="h3 mb-0 d-flex align-items-center" style="color: #1A3D7C; font-weight: 700; gap: 12px;">
 				<i class="fas fa-exchange-alt me-2;" style="color: #F9B233;"></i>
@@ -30,46 +13,18 @@
 
 			<div class="d-flex gap-2">
 				<a href="{{ path('transaction_new') }}" class="btn btn-sm" style="background-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
-					<i class="fas fa-plus-circle me-2"></i>New Transaction
+					<i class="fas fa-plus-circle me-2"></i>Create
 				</a>
 			</div>
 		</div>
 
 
 		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
-			<div class="card-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
-				<div class="d-flex align-items-center">
-					<h3 class="card-title mb-0" style="font-weight: 600;">
-						<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Transactions
-					</h3>
-				</div>
-				<span class="badge" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 700; padding: 8px 16px; font-size: 0.95rem;">{{ transactions|default([])|length }}
-					items</span>
-			</div>
-
-			<div class="px-3 py-3 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: #f8f9fb; border-bottom: 1px solid #e9ecef;">
-				<div class="beatpass-pillbar d-flex flex-wrap gap-2">
-					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
-						<i class="fas fa-check-circle me-1" style="opacity: 0.7;"></i>Paid:
-						{{ paidCount }}
-					</span>
-					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
-						<i class="fas fa-clock me-1" style="opacity: 0.7;"></i>Pending:
-						{{ pendingCount }}
-					</span>
-					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
-						<i class="fas fa-undo me-1" style="opacity: 0.7;"></i>Refunded:
-						{{ refundedCount }}
-					</span>
-					<span class="beatpass-pill" style="background: rgba(26,61,124,0.10); color: #1A3D7C; border-color: rgba(26,61,124,0.12); font-weight: 500;">
-						<i class="fas fa-exclamation-circle me-1" style="opacity: 0.7;"></i>Other:
-						{{ failedCount }}
-					</span>
-				</div>
-				<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
-					<input class="form-check-input m-0" type="checkbox" id="toggleTransactionsActions" role="switch" aria-label="Show actions column">
-					<label class="form-check-label small text-muted fw-500" for="toggleTransactionsActions" style="user-select:none;">Show actions</label>
-				</div>
+			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+				<h3 class="card-title mb-0" style="font-weight: 600;">
+					<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Transactions
+					<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ transactions|default([])|length }}</span>
+				</h3>
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
@@ -83,7 +38,7 @@
 								<th class="col-status text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:10%">Status</th>
 								<th class="col-method text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:10%">Method</th>
 								<th class="col-created text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:14%">Created</th>
-								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center d-none" style="width:10%">Actions</th>
+								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center" style="width:10%">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -98,19 +53,18 @@
 									<td class="col-amount text-end align-middle text-truncate py-1 px-2" data-order="{{ tx.totalAmount }}" style="text-align: right; width:10%">₱{{ tx.totalAmount|number_format(2, '.', ',') }}</td>
 									<td class="col-status align-middle text-center py-1 px-2">
 										{% set status = tx.paymentStatus %}
-										{% if status == 'paid' %}
-											<span class="badge rounded-pill bg-success bg-opacity-10 text-success small fw-semibold px-3 py-2">PAID</span>
-										{% elseif status == 'pending' %}
-											<span class="badge rounded-pill bg-warning bg-opacity-10 text-warning small fw-semibold px-3 py-2">PENDING</span>
-										{% elseif status == 'refunded' %}
-											<span class="badge rounded-pill bg-secondary bg-opacity-10 text-secondary small fw-semibold px-3 py-2">REFUNDED</span>
-										{% else %}
-											<span class="badge rounded-pill bg-danger bg-opacity-10 text-danger small fw-semibold px-3 py-2">{{ status ? status|upper : '—' }}</span>
-										{% endif %}
+										<span class="small fw-semibold
+											{% if status == 'paid' %} text-success
+											{% elseif status == 'pending' %} text-warning
+											{% elseif status == 'refunded' %} text-secondary
+											{% else %} text-danger
+											{% endif %}">
+											{{ status|upper }}
+										</span>
 									</td>
 									<td class="col-method align-middle text-truncate py-1 px-2">{{ tx.paymentMethod ?? '—' }}</td>
 									<td class="col-created text-end align-middle text-truncate py-1 px-2" data-order="{{ tx.createdAt ? tx.createdAt.format('Y-m-d H:i') : '' }}" style="text-align: right">{{ tx.createdAt ? tx.createdAt.format('Y-m-d H:i') : '—' }}</td>
-									<td class="actions text-center align-middle d-none">
+									<td class="actions text-center align-middle">
 										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
 											<button class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded view-transaction-btn" data-id="{{ tx.id }}" data-csrf="{{ csrf_token('transaction_action_' ~ tx.id) }}" title="View details" style="width:32px;height:32px;font-size:12px;">
 												<i class="fas fa-eye"></i>
@@ -179,23 +133,15 @@
 {% block javascripts %}
 	{{ parent() }}
 	<script>
-		(function ($) {
-var dtInstance = null;
-
-function initTransactionsTable() {
+		(function () { // init DataTable
+$(document).ready(function () { // Only initialize DataTable when there are real data rows (not the empty colspan fallback row)
 var tableBody = $('#transactionTable tbody');
 var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
 
 if (hasDataRows) {
-if ($.fn.DataTable.isDataTable('#transactionTable')) {
-dtInstance = $('#transactionTable').DataTable();
-dtInstance.destroy();
-dtInstance = null;
-}
-
-var dt = $('#transactionTable').DataTable({
+$('#transactionTable').DataTable({
 responsive: true,
-dom: "<'row g-0'<'col-auto'l><'col-auto ms-auto'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row g-0 small'<'col-auto'i><'col-auto ms-auto'p>>",
+dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 pageLength: 10,
 lengthMenu: [
 [
@@ -228,41 +174,10 @@ order: [
 [6, 'desc']
 ]
 });
-
-dtInstance = dt;
-
-function setActionsVisible(visible) {
-$('#transactionTable thead th.actions').toggleClass('d-none', ! visible);
-$('#transactionTable tbody td.actions').toggleClass('d-none', ! visible);
-try {
-localStorage.setItem('transactions.showActions', visible ? '1' : '0');
-} catch (e) {}
 }
 
-try {
-var stored = localStorage.getItem('transactions.showActions');
-var initialVisible = stored === '1';
-$('#toggleTransactionsActions').prop('checked', initialVisible);
-setActionsVisible(initialVisible);
-} catch (e) {
-$('#toggleTransactionsActions').prop('checked', false);
-setActionsVisible(false);
-}
-
-$('#toggleTransactionsActions').off('change').on('change', function () {
-setActionsVisible($(this).is(':checked'));
-});
-
-dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
-setActionsVisible($('#toggleTransactionsActions').is(':checked'));
-});
-}
-}
-
-// Setup event handlers for view and delete buttons
-function setupTransactionHandlers() {
-$(document).off('click', '.view-transaction-btn').on('click', '.view-transaction-btn', function (e) {
-e.preventDefault();
+// click handler for details (delegated on document to survive DataTables DOM changes)
+$(document).on('click', '.view-transaction-btn', function (e) {
 var id = $(this).data('id');
 var csrf = $(this).data('csrf');
 var modal = $('#transactionDetailsModal');
@@ -273,7 +188,7 @@ $.ajax({
 url: '/admin/transaction/' + id + '/details',
 method: 'GET',
 dataType: 'json'
-}).done(function (resp) {
+}).done(function (resp) { // build markup
 var html = '';
 html += '<div class="row">';
 html += '<div class="col-md-6">';
@@ -312,6 +227,7 @@ t.code || ''
 html += '</tbody></table></div>';
 html += '</div>';
 
+// QR Codes section
 if (resp.ticketPurchases && resp.ticketPurchases.length > 0) {
 html += '<div class="col-12 mt-3">';
 html += '<h5><i class="fas fa-qrcode me-2"></i>E-Tickets & QR Codes</h5>';
@@ -340,6 +256,7 @@ html += '</div>';
 
 $('#transactionDetailsBody').html(html);
 
+// actions (add data attributes so delegated handlers can pick them up)
 var actions = '';
 if (resp.payment.status !== 'paid') {
 actions += '<button id="btnMarkPaid" class="btn btn-success me-2" data-id="' + id + '" data-csrf="' + csrf + '">Mark as Paid</button>';
@@ -356,24 +273,29 @@ if (jqXHR.status === 401 || jqXHR.status === 403) {
 $('#transactionDetailsBody').html('<div class="text-center py-5 text-danger">Access denied. Please ensure you are logged in as an admin.</div>');
 } else {
 $('#transactionDetailsBody').html('<div class="text-center py-5 text-danger">Failed to load details (Error: ' + jqXHR.status + ')</div>');
-} $('#transactionActionsArea').html('');
+}
+$('#transactionActionsArea').html('');
 });
 });
 
-$(document).off('click', '.delete-transaction-btn').on('click', '.delete-transaction-btn', function (e) {
+// click handler for delete - open modal and set form action/token
+$(document).on('click', '.delete-transaction-btn', function (e) {
 e.preventDefault();
 var btn = $(this);
 var url = btn.data('url');
 var token = btn.data('token');
+// set form action and token
 $('#transactionDeleteForm').attr('action', url);
 $('#transactionDeleteToken').val(token);
+// show modal
 var modal = $('#transactionDeleteModal');
 if (modal.length) {
 modal.modal('show');
 }
 });
-
-$(document).off('click', '#btnMarkPaid').on('click', '#btnMarkPaid', function () {
+});
+// delegated handlers for modal action buttons so they work even when modal content is re-rendered
+$(document).on('click', '#btnMarkPaid', function () {
 var btn = $(this);
 var id = btn.data('id');
 var csrf = btn.data('csrf');
@@ -390,7 +312,7 @@ alert('Request failed');
 });
 });
 
-$(document).off('click', '#btnRefund').on('click', '#btnRefund', function () {
+$(document).on('click', '#btnRefund', function () {
 var btn = $(this);
 var id = btn.data('id');
 var csrf = btn.data('csrf');
@@ -408,35 +330,7 @@ alert(data.message || 'Error');
 alert('Request failed');
 });
 });
-}
 
-if (document.readyState === 'loading') {
-document.addEventListener('DOMContentLoaded', function () {
-if (window.jQuery) {
-initTransactionsTable();
-setupTransactionHandlers();
-}
-});
-} else {
-if (window.jQuery) {
-initTransactionsTable();
-setupTransactionHandlers();
-}
-}
-
-document.addEventListener('turbo:load', function (e) {
-if (window.jQuery) {
-initTransactionsTable();
-setupTransactionHandlers();
-}
-});
-
-document.addEventListener('turbo:frame-load', function (e) {
-if (window.jQuery) {
-initTransactionsTable();
-setupTransactionHandlers();
-}
-});
-})(jQuery);
+})();
 	</script>
 {% endblock %}

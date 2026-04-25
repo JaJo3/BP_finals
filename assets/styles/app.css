@@ -45,51 +45,35 @@ body.admin .sidebar {
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     position: fixed;
     height: 100vh;
-    overflow-y: hidden;
+    overflow-y: auto;
     z-index: 1000;
+}
+
+/* subtle separator between sidebar and main content */
+body.admin .sidebar {
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 body.admin .sidebar .brand {
     color: #ffffff;
     font-size: 1.75rem;
     font-weight: bold;
+    padding: 1.5rem;
+    text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     letter-spacing: 1px;
-    background-color: var(--beatpass-blue);
-    display: block;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    min-height: 120px;
-    overflow: hidden;
-}
-/* Logo in admin  */
-body.admin .sidebar .brand {
-    position: relative;
-    z-index: 100;
-    cursor: grab;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-body.admin .sidebar .brand:active {
-    cursor: grabbing;
+    background: linear-gradient(45deg, var(--beatpass-blue), #2a4d8c);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
 }
 
 body.admin .sidebar .brand .logo-img {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
+    max-width: 80%;
+    height: 48px;
     object-fit: contain;
-    transition: transform 0.2s ease;
-    padding: 16px 8px;
-    box-sizing: border-box;
-}
-
-body.admin .sidebar .brand .logo-img:hover {
-    transform: scale(1.05);
 }
 
 body.admin .main-content {
@@ -109,47 +93,10 @@ body.admin .main-content {
     max-width: 100%;
 }
 
-/* Events page: tighten top spacing so "All Events" sits higher */
-.content-wrapper--events {
-    padding-top: 0.50rem;
-}
-
-/* Admin list pages: slightly tighter top padding */
-.content-wrapper--tight {
-    padding-top: 0.50rem;
-}
-
-.beatpass-pillbar {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-.beatpass-pill {
-    border-radius: 999px;
-    padding: 0.35rem 0.6rem;
-    font-weight: 700;
-    font-size: 0.75rem;
-    letter-spacing: 0.2px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.12);
-    color: #fff;
-    white-space: nowrap;
-}
-
 @media (max-width: 992px) {
     .content-wrapper {
         padding: 1rem;
         max-width: 100%;
-    }
-
-    .content-wrapper--events {
-        padding-top: 0.75rem;
-    }
-
-    .content-wrapper--tight {
-        padding-top: 0.75rem;
     }
 }
 
@@ -185,6 +132,7 @@ body.admin .main-content {
 
     body.admin .sidebar .brand {
         font-size: 1.2rem;
+        padding: 1rem 0.5rem;
     }
 
     body.admin .sidebar .nav-link span {
@@ -293,69 +241,39 @@ body.admin {
 }
 
 .btn-beatpass-primary {
-    background-color: rgba(26, 61, 124, 0.08);
-    color: var(--beatpass-blue);
+    background-color: var(--beatpass-blue);
+    color: white;
     border-radius: 0.5rem;
     padding: 0.5rem 1.25rem;
     border: none;
-    transition: all 0.15s ease;
 }
 
 .btn-beatpass-primary:hover {
-    background-color: rgba(26, 61, 124, 0.15);
-    color: var(--beatpass-blue);
+    background-color: #234b94;
+    color: white;
     box-shadow: 0 4px 8px rgba(26, 61, 124, 0.2);
 }
 
 .btn-beatpass-edit {
-    background-color: rgba(249, 178, 51, 0.08);
-    color: var(--beatpass-yellow);
+    background-color: var(--beatpass-yellow);
+    color: var(--beatpass-blue);
     border: none;
-    transition: all 0.15s ease;
 }
 
 .btn-beatpass-edit:hover {
-    background-color: rgba(249, 178, 51, 0.15);
-    color: var(--beatpass-yellow);
+    background-color: #fac265;
+    color: var(--beatpass-blue);
     box-shadow: 0 4px 8px rgba(249, 178, 51, 0.3);
 }
 
 .btn-beatpass-delete {
-    background-color: rgba(220, 53, 69, 0.08);
-    color: var(--beatpass-red);
+    background-color: var(--beatpass-red);
+    color: white;
     border: none;
-    transition: all 0.15s ease;
 }
 
 .btn-beatpass-delete:hover {
-    background-color: rgba(220, 53, 69, 0.15);
-    color: var(--beatpass-red);
-    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
-}
-
-.btn-beatpass-enable {
-    background-color: rgba(40, 167, 69, 0.08);
-    color: #28a745;
-    border: none;
-    transition: all 0.15s ease;
-}
-
-.btn-beatpass-enable:hover {
-    background-color: rgba(40, 167, 69, 0.15);
-    color: #28a745;
-    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
-}
-
-.btn-beatpass-disable {
-    background-color: rgba(220, 53, 69, 0.08);
-    color: var(--beatpass-red);
-    border: none;
-    transition: all 0.15s ease;
-}
-
-.btn-beatpass-disable:hover {
-    background-color: rgba(220, 53, 69, 0.15);
-    color: var(--beatpass-red);
+    background-color: #ff6b6b;
     box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
 }
 
@@ -373,25 +291,25 @@ body.admin {
 body.admin .nav-link {
     color: #ffffff !important;
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    padding: 1rem 1.5rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
     transition: all 0.3s ease;
     border-left: 4px solid transparent;
-    border-radius: 0.375rem;
-    margin-bottom: 0.5rem;
 }
 
 body.admin .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: var(--beatpass-yellow);
+    border-left: 4px solid var(--beatpass-yellow);
+    color: var(--beatpass-blue) !important;
 }
 
 body.admin .nav-link.active {
-    background-color: rgba(249, 178, 51, 0.15);
-    color: #F9B233 !important;
-    border-left-color: #F9B233;
+    background: linear-gradient(90deg, var(--beatpass-yellow), #fac265);
+    color: var(--beatpass-blue) !important;
     font-weight: 600;
+    border-left: 4px solid #fff;
 }
 
 body.admin .nav-link i {
@@ -407,6 +325,7 @@ body.admin .nav-link i {
 
     .admin .sidebar .brand {
         font-size: 1.2rem;
+        padding: 1rem 0.5rem;
     }
 
     .admin .nav-link span {
@@ -420,24 +339,21 @@ body.admin .nav-link i {
 
 /* End of app styles */
 
+/* DataTables Search Box */
+/* ===== BeatPass DataTables - consolidated and themed ===== */
+
 /* Wrapper alignment: keep length and filter aligned horizontally */
 .dataTables_wrapper {
     width: 100%;
-    padding: 0.25rem 0.5rem 0.5rem 0.5rem;
+    padding: 0.5rem 1rem 1rem 1rem;
 }
 
 .dataTables_wrapper .dataTables_length,
 .dataTables_wrapper .dataTables_filter {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin: 0.25rem 0;
-    font-size: 0.85rem;
-}
-
-.dataTables_wrapper .dataTables_filter input {
-    max-width: 200px;
-    width: 100%;
+    gap: 0.75rem;
+    margin: 0.5rem 0;
 }
 
 /* Ensure the length and filter appear on the same row on wide screens */
@@ -479,26 +395,8 @@ table.beatpass-table tbody td {
     padding: 12px 16px !important;
     vertical-align: middle;
     border-top: 1px solid #eef3f8;
-    color: var(--bs-body-color);
-    font-size: 0.875rem;
-    font-weight: 600;
-    /* similar to Bootstrap fw-semibold */
-}
-
-/* Events table: more compact so it fits in one screen */
-#eventsTable_wrapper.dataTables_wrapper {
-    padding: 0.25rem 0.75rem 0.5rem 0.75rem;
-}
-
-#eventsTable.beatpass-table thead th {
-    padding: 6px 10px !important;
-    font-size: 0.75rem;
-    letter-spacing: 0.4px;
-}
-
-#eventsTable.beatpass-table tbody td {
-    padding: 6px 10px !important;
-    font-size: 0.82rem;
+    color: #243b57;
+    font-size: 0.96rem;
 }
 
 /* Alternating row backgrounds */
@@ -510,6 +408,8 @@ table.beatpass-table tbody tr:nth-child(even) td {
 table.beatpass-table tbody tr:hover td {
     background: rgba(26, 61, 124, 0.04);
 }
+
+/* Compact variant removed — using Bootstrap utilities for compact tables in templates */
 
 /* Status badge styling */
 .beatpass-badge {
@@ -523,41 +423,38 @@ table.beatpass-table tbody tr:hover td {
 /* Search/input styling */
 .dataTables_wrapper .dataTables_filter input {
     border: 1px solid rgba(26, 61, 124, 0.12);
-    border-radius: 6px;
-    padding: 5px 28px 5px 8px;
-    height: 32px;
-    font-size: 0.85rem;
+    border-radius: 8px;
+    padding: 8px 36px 8px 12px;
+    height: 38px;
     background: #fff;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23343a40' d='M21.53 20.47l-4.82-4.82A7.51 7.51 0 1 0 19 15.01l4.53 4.53a.75.75 0 0 0 1.06-1.06zM5.5 11a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 8px center;
-    background-size: 16px 16px;
+    background-position: right 10px center;
+    background-size: 18px 18px;
 }
 
 .dataTables_wrapper .dataTables_length select {
-    border-radius: 6px;
+    border-radius: 8px;
     border: 1px solid rgba(26, 61, 124, 0.12);
-    padding: 4px 8px;
-    height: 32px;
-    font-size: 0.85rem;
+    padding: 6px 10px;
+    height: 38px;
     background-color: #fff;
 }
 
 /* Pagination styling aligned to theme */
 .dataTables_wrapper .dataTables_paginate {
     display: flex;
-    gap: 4px;
+    gap: 8px;
     justify-content: flex-end;
     align-items: center;
-    padding-top: 0.4rem;
+    padding-top: 0.75rem;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     border: none;
-    border-radius: 6px;
-    padding: 4px 8px;
-    margin: 0 2px;
-    font-size: 0.8rem;
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin: 0 3px;
     background: #f5f7fa;
     color: var(--beatpass-blue) !important;
     font-weight: 600;
@@ -1055,6 +952,7 @@ footer.public-footer {
 
     body.admin .sidebar .brand {
         font-size: 1.2rem;
+        padding: 1rem 0.5rem;
     }
 
     body.admin .nav-link span {
@@ -1172,15 +1070,13 @@ footer.public-footer {
 }
 
 .btn-beatpass-primary {
-    background-color: rgba(26, 61, 124, 0.08);
-    color: var(--beatpass-blue);
+    background: var(--beatpass-blue);
+    color: #fff;
     border: none;
-    transition: all 0.15s ease;
 }
 
 .btn-beatpass-primary:hover {
-    background-color: rgba(26, 61, 124, 0.15);
-    color: var(--beatpass-blue);
+    background: #16325a;
 }
 
 /* scrollable dropdowns (small helper) */
@@ -1203,6 +1099,9 @@ footer.public-footer {
     }
 }
 
+/* End helpers */
+
+/* ===== Light (white) Dashboard Theme using BeatPass colors ===== */
 body.admin .main-content {
     background: #ffffff;
     /* white admin background */
@@ -1369,7 +1268,17 @@ body.admin .main-content {
 }
 
 
+/* Adjust text colors */
+.stat-label,
+.small,
+.text-muted {
+    color: rgba(36, 59, 87, 0.55) !important;
+}
 
+.stat-value,
+.fw-bold {
+    color: #10243f !important;
+}
 
 /* Progress bar: use gradient of brand colors */
 .progress {
@@ -1397,6 +1306,142 @@ body.admin .main-content {
 .dropdown-menu {
     background: #fff;
     color: #243b57;
+}
+
+/* End light dashboard theme */
+
+/* ===== Dark mode overrides for admin ===== */
+body.admin.dark-mode {
+    background-color: #0b1220;
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .main-content {
+    background: radial-gradient(circle at top, #111827 0%, #020617 55%, #000 100%);
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .sidebar {
+    background: linear-gradient(180deg, #020617 0%, #020617 40%, #111827 100%);
+    border-right-color: rgba(148, 163, 184, 0.25);
+}
+
+body.admin.dark-mode .sidebar .brand {
+    background: linear-gradient(135deg, #1d283a, #020617);
+    border-bottom-color: rgba(148, 163, 184, 0.3);
+}
+
+body.admin.dark-mode .sidebar .nav-link {
+    color: #e5e7eb !important;
+}
+
+body.admin.dark-mode .sidebar .nav-link:hover {
+    background-color: rgba(148, 163, 184, 0.1);
+}
+
+body.admin.dark-mode .sidebar .nav-link.active {
+    background: linear-gradient(90deg, var(--beatpass-yellow), #facc6b);
+    color: #111827 !important;
+}
+
+body.admin.dark-mode .admin-topbar {
+    background: rgba(15, 23, 42, 0.96);
+    border-bottom-color: rgba(30, 64, 175, 0.5);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.65);
+}
+
+body.admin.dark-mode .header-icon {
+    background-color: rgba(15, 23, 42, 0.9) !important;
+    color: #e5e7eb !important;
+}
+
+body.admin.dark-mode .header-username {
+    color: #e5e7eb !important;
+}
+
+body.admin.dark-mode .card,
+body.admin.dark-mode .hero-card,
+body.admin.dark-mode .chart-card,
+body.admin.dark-mode .small-widget,
+body.admin.dark-mode .mini-graph-card,
+body.admin.dark-mode .best-selling-card,
+body.admin.dark-mode .latest-sales-card {
+    background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.45), rgba(15, 23, 42, 1));
+    border-color: rgba(15, 23, 42, 0.8);
+    color: #e5e7eb;
+    box-shadow: 0 18px 55px rgba(15, 23, 42, 0.9);
+}
+
+body.admin.dark-mode .table {
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .table thead th {
+    background-color: #020617 !important;
+    border-bottom-color: rgba(55, 65, 81, 0.9);
+}
+
+body.admin.dark-mode table.beatpass-table tbody tr:nth-child(even) td {
+    background: rgba(15, 23, 42, 0.9);
+}
+
+body.admin.dark-mode table.beatpass-table tbody tr:hover td {
+    background: rgba(30, 64, 175, 0.45);
+}
+
+body.admin.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
+    background: rgba(15, 23, 42, 0.9);
+    color: #e5e7eb !important;
+}
+
+body.admin.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--beatpass-yellow) !important;
+    color: #111827 !important;
+}
+
+body.admin.dark-mode .dropdown-menu {
+    background: #020617;
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .dropdown-item {
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .dropdown-item:hover {
+    background: rgba(37, 99, 235, 0.45);
+}
+
+body.admin.dark-mode .btn-beatpass-primary {
+    background-color: var(--beatpass-yellow);
+    color: #111827;
+}
+
+body.admin.dark-mode .metric-card {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(15, 23, 42, 0.95));
+    border-color: rgba(15, 23, 42, 0.9);
+}
+
+body.admin.dark-mode .metric-number {
+    color: #f9fafb;
+}
+
+body.admin.dark-mode .metric-label {
+    color: rgba(209, 213, 219, 0.85);
+}
+
+body.admin.dark-mode .revenue-number {
+    color: var(--beatpass-yellow);
+}
+
+body.admin.dark-mode .list-group-item {
+    background-color: transparent;
+    color: #e5e7eb;
+}
+
+body.admin.dark-mode .alert {
+    background-color: rgba(15, 23, 42, 0.95);
+    color: #e5e7eb;
 }
 
 /* ===== Card accent colors and icon styles ===== */
@@ -1454,6 +1499,7 @@ body.admin .main-content {
     background: linear-gradient(135deg, rgba(220, 53, 69, 0.12), rgba(220, 53, 69, 0.04));
 }
 
+/* small widget icon */
 .widget-icon {
     width: 36px;
     height: 36px;
@@ -1468,6 +1514,7 @@ body.admin .main-content {
     height: 18px;
 }
 
+/* make sure icon contrast is good on light background */
 .stat-icon .fill-primary {
     fill: var(--beatpass-blue);
 }
@@ -1480,7 +1527,9 @@ body.admin .main-content {
     fill: var(--beatpass-red);
 }
 
+/* End card accent/Icon styles */
 
+/* ===== Visual polish: richer colors, subtle gradients, spacing, badges ===== */
 .hero-card {
     padding: 1.25rem;
     border-radius: 12px;
@@ -1494,6 +1543,7 @@ body.admin .main-content {
     margin-bottom: .75rem;
 }
 
+/* make small widgets slightly elevated and lighter */
 .small-widget,
 .mini-graph-card,
 .best-selling-card,
@@ -1721,14 +1771,14 @@ body.admin .main-content {
 }
 
 .sales-filter-summary {
-    color: var(--bs-secondary-color);
+    color: #6c757d;
     font-size: 0.8rem;
 }
 
 .sales-filter-select {
-    background: var(--bs-body-bg);
-    color: var(--bs-body-color);
-    border: 1px solid var(--bs-border-color);
+    background: #f8f9fa;
+    color: #15305A;
+    border: 1px solid #e9ecef;
     border-radius: 6px;
     font-size: 0.85rem;
 }
@@ -1742,7 +1792,7 @@ body.admin .main-content {
 }
 
 .sales-filter-toolbar {
-    border-bottom: 1px solid var(--bs-border-color);
+    border-bottom: 1px solid #e9ecef;
     padding-bottom: 10px;
 }
 
@@ -1753,13 +1803,13 @@ body.admin .main-content {
 
 .sales-filter-date-label {
     font-size: 0.8rem;
-    color: var(--bs-secondary-color);
+    color: #6c757d;
 }
 
 .revenue-number-main {
     font-size: 1.25rem;
     font-weight: 800;
-    color: var(--bs-body-color);
+    color: #15305A;
     margin-bottom: 16px;
 }
 
@@ -1784,7 +1834,7 @@ body.admin .main-content {
 }
 
 .quick-card-title {
-    color: var(--bs-body-color);
+    color: #15305A;
     font-weight: 700;
     margin-bottom: 4px;
     font-size: 0.85rem;
@@ -1796,7 +1846,7 @@ body.admin .main-content {
 }
 
 .quick-card-caption {
-    color: var(--bs-secondary-color);
+    color: #6c757d;
     font-size: 0.8rem;
     margin-top: 2px;
 }
@@ -1807,200 +1857,11 @@ body.admin .main-content {
 }
 
 .best-selling-subtitle {
-    color: var(--bs-secondary-color);
+    color: #6c757d;
     font-size: 0.8rem;
-}
-
-/* Utility: consistent metric icon sizing */
-.metric-icon-box {
-    width: 48px;
-    height: 48px;
 }
 
 .best-selling-table-wrapper {
     max-height: 380px;
     overflow-y: auto;
-}
-
-/* ===== Moved from templates/admin/index.html.twig ===== */
-.metric-card {
-    border-radius: 12px;
-    padding: 14px;
-    color: #fff;
-    box-shadow: 0 6px 18px rgba(21, 48, 90, 0.06);
-    position: relative;
-    overflow: hidden;
-    transition: transform 220ms ease, box-shadow 220ms ease;
-}
-
-.metric-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 18px 40px rgba(21, 48, 90, 0.18);
-}
-
-.metric-card::after {
-    content: '';
-    position: absolute;
-    right: 14px;
-    top: 14px;
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-    box-shadow: inset 0 -6px 18px rgba(0, 0, 0, 0.06);
-    opacity: 0.95;
-    display: block;
-    z-index: 1;
-    backdrop-filter: blur(2px);
-}
-
-/* colorful gradients (use main brand vars) */
-.metric-pink {
-    background: linear-gradient(135deg, rgba(232, 62, 140, 0.95), rgba(249, 178, 51, 0.85));
-}
-
-.metric-orange {
-    background: linear-gradient(135deg, rgba(253, 126, 20, 0.95), rgba(249, 178, 51, 0.88));
-}
-
-.metric-purple {
-    background: linear-gradient(135deg, #6f42c1, rgba(111, 66, 193, 0.85));
-}
-
-.metric-teal {
-    background: linear-gradient(135deg, #20C997, rgba(32, 201, 151, 0.85));
-}
-
-.metric-body {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.metric-number {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #fff;
-}
-
-.metric-label {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.hero-card {
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(21, 48, 90, 0.06);
-}
-
-.hero-yellow {
-    background: linear-gradient(180deg, rgba(249, 178, 51, 0.08), rgba(249, 178, 51, 0.02));
-}
-
-.card-blue {
-    background: linear-gradient(180deg, rgba(21, 48, 90, 0.05), rgba(21, 48, 90, 0.02));
-    border-radius: 10px;
-}
-
-.sales-card-dark {
-    background: linear-gradient(180deg, rgba(21, 48, 90, 0.06), rgba(21, 48, 90, 0.02));
-    border-radius: 10px;
-}
-
-.revenue-title {
-    color: #ffffff;
-    font-weight: 700;
-}
-
-.revenue-number {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #ffffff;
-    margin-top: 8px;
-}
-
-.list-group-item {
-    background: transparent;
-    border: none;
-    padding: 12px 0;
-}
-
-.amount-badge {
-    color: var(--beatpass-blue);
-    font-weight: 700;
-}
-
-.qty-pill {
-    font-size: 12px;
-    color: var(--muted);
-}
-
-.badge.bg-light.text-dark {
-    background: #fff !important;
-    color: var(--beatpass-blue) !important;
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-weight: 700;
-}
-
-.avatar.bg-secondary {
-    background: linear-gradient(90deg, var(--beatpass-blue), var(--beatpass-yellow));
-}
-
-.chart-area {
-    height: 320px;
-}
-
-.chart-area canvas {
-    width: 100% !important;
-    height: 100% !important;
-    display: block;
-}
-
-/* align right column cards and ensure they fit without big gaps */
-.col-lg-4 .card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.col-lg-4 .card .chart-area {
-    height: 200px;
-}
-
-.chart-card {
-    min-height: 360px;
-}
-
-@media(max-width: 991px) {
-
-    /* collapse behavior for tablets */
-    .col-lg-4 .card {
-        margin-bottom: 12px;
-    }
-
-    .chart-card {
-        min-height: 300px;
-    }
-}
-
-/* optional cards (can be hidden via the Extras toggle) */
-.optional-card {
-    transition: opacity 200ms ease, transform 220ms ease;
-}
-
-.optional-card.hidden {
-    opacity: 0;
-    transform: translateY(8px);
-    height: 0;
-    overflow: hidden;
-    pointer-events: none;
-    display: none;
-}
-
-/* small responsive tweaks */
-@media(max-width: 768px) {
-    .metric-number {
-        font-size: 1rem;
-    }
 }

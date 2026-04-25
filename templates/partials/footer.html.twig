@@ -1,0 +1,135 @@
+{# Global Footer - Shared across all landing pages #}
+<footer class="bg-brand text-white pt-5 pb-5">
+	<div class="container position-relative">
+		<div
+			class="row g-4 align-items-start">
+			{# About BeatPass Column with Logo #}
+			<div
+				class="col-lg-3 col-md-6 d-flex flex-column align-items-start px-3">
+				{# Logo above About heading #}
+				<div class="mb-0" style="margin-top: -35px;">
+					<img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass Logo" style="width: 120px; height: auto; margin-bottom: -25px;" class="d-block">
+				</div>
+
+				<h5 class="fw-semibold mb-3" style="margin-top: -25px;">About BeatPass</h5>
+				<p class="text-white mb-3 lh-sm small" style="margin-top: -23px;">
+					Your modern concert ticketing platform connecting artists, organizers, and music fans in one seamless experience.
+				</p>
+				<div class="d-flex gap-2" style="margin-top: -15px;">
+					<a href="#" class="btn btn-sm rounded-circle p-2 border d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #1A3D7C; border-color: rgba(255,255,255,0.4);" title="Facebook">
+						<i class="bi bi-facebook fs-6" style="color: #ffffff;"></i>
+					</a>
+					<a href="#" class="btn btn-sm rounded-circle p-2 border d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #1A3D7C; border-color: rgba(255,255,255,0.4);" title="Twitter">
+						<i class="bi bi-twitter fs-6" style="color: #ffffff;"></i>
+					</a>
+					<a href="#" class="btn btn-sm rounded-circle p-2 border d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #1A3D7C; border-color: rgba(255,255,255,0.4);" title="Instagram">
+						<i class="bi bi-instagram fs-6" style="color: #ffffff;"></i>
+					</a>
+					<a href="#" class="btn btn-sm rounded-circle p-2 border d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #1A3D7C; border-color: rgba(255,255,255,0.4);" title="LinkedIn">
+						<i class="bi bi-linkedin fs-6" style="color: #ffffff;"></i>
+					</a>
+				</div>
+			</div>
+
+			{# Quick Links Column #}
+			<div class="col-lg-3 col-md-6 px-3">
+				<h5 class="fw-semibold mb-3">Quick Links</h5>
+				<ul class="list-unstyled d-flex flex-column gap-2">
+					<li>
+						<a href="{{ path('app_landing') }}#home" class="text-white-50 text-decoration-none hover-text-warning small">
+							<i class="bi bi-chevron-right me-1 small"></i>Home
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_events') }}" class="text-white-50 text-decoration-none hover-text-warning small">
+							<i class="bi bi-chevron-right me-1 small"></i>Browse Events
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_about') }}" class="text-white-50 text-decoration-none hover-text-warning small">
+							<i class="bi bi-chevron-right me-1 small"></i>About Us
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_contact') }}" class="text-white-50 text-decoration-none hover-text-warning small">
+							<i class="bi bi-chevron-right me-1 small"></i>Contact
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			{# Support Column #}
+			<div class="col-lg-3 col-md-6 px-3">
+				<h5 class="fw-semibold mb-3">Support</h5>
+				<ul class="list-unstyled d-flex flex-column gap-2">
+					<li>
+						<a href="#" class="text-white-50 text-decoration-none hover-text-warning small">
+							<i class="bi bi-chevron-right me-1 small"></i>Help Center
+						</a>
+					</li>
+					<li>
+						<a href="#" class="text-white-50 text-decoration-none hover-text-warning small">
+							<i class="bi bi-chevron-right me-1 small"></i>FAQs
+						</a>
+					</li>
+					<li>
+						<a href="#" class="text-white-50 text-decoration-none hover-text-warning small">
+							<i class="bi bi-chevron-right me-1 small"></i>Report Issue
+						</a>
+					</li>
+					<li>
+						<a href="#" class="text-white-50 text-decoration-none hover-text-warning small">
+							<i class="bi bi-chevron-right me-1 small"></i>Terms of Service
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			{# Contact Column #}
+			<div class="col-lg-3 col-md-6 px-3">
+				<h5 class="fw-semibold mb-3">Get in Touch</h5>
+				<ul class="list-unstyled small text-white-50">
+					<li class="mb-2 d-flex align-items-start gap-2">
+						<i class="bi bi-geo-alt flex-shrink-0 mt-1" style="color: #F9B233;"></i>
+						<span>3rd Floor, Tempo Building, Perdices Street, Dumaguete City, Negros Oriental</span>
+					</li>
+					<li class="mb-2 d-flex align-items-center gap-2">
+						<i class="bi bi-telephone flex-shrink-0" style="color: #F9B233;"></i>
+						<span>+63 917 654 3210</span>
+					</li>
+					<li class="mb-2 d-flex align-items-center gap-2">
+						<i class="bi bi-envelope flex-shrink-0" style="color: #F9B233;"></i>
+						<span>beatpass.ph@gmail.com</span>
+					</li>
+					<li class="mb-2 d-flex align-items-center gap-2">
+						<i class="bi bi-clock flex-shrink-0" style="color: #F9B233;"></i>
+						<span>Mon-Fri: 9AM - 6PM PHT</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		{# Divider between main footer and bottom bar #}
+		<div class="border-top mt-4 pt-3">
+			<div class="row align-items-center">
+				<div class="col-md-6">
+					<p class="text-white small mb-0">
+						&copy;
+						{{ "now"|date("Y") }}
+						BeatPass. All rights reserved.
+					</p>
+				</div>
+				<div class="col-md-6 text-md-end">
+					<ul class="list-unstyled d-flex flex-wrap gap-3 justify-content-md-end small mb-0">
+						<li>
+							<a href="#" class="text-white-50 text-decoration-none hover-text-warning">Privacy Policy</a>
+						</li>
+						<li>
+							<a href="#" class="text-white-50 text-decoration-none hover-text-warning">Terms</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>

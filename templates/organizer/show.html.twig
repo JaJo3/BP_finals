@@ -1,148 +1,123 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Organizer
-{% endblock %}
+{% block title %}Organizer{% endblock %}
 
 {% block body %}
-	<div class="content-wrapper">
-		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h1 class="h3 mb-0" style="color: #1A3D7C">
-				<i class="fas fa-user me-2" style="color:#F9B233"></i>Organizer Details</h1>
-		</div>
-	</div>
-	<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden;">
-		<div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
-			<h3 class="card-title mb-0">
-				<i class="fas fa-id-card me-2"></i>Profile</h3>
-		</div>
-		<div class="card-body">
-			<div class="mb-4">
-				{% if organizer.logoFilename %}
-					<img src="{{ asset('uploads/organizers/' ~ organizer.logoFilename) }}" alt="Logo" width="150" height="150" style="border-radius: 12px; object-fit: cover; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-				{% endif %}
-			</div>
-			<div class="row g-4">
-				<div class="col-md-6">
-					<table class="table table-borderless mb-0">
-						<tbody>
-							<tr>
-								<th class="text-muted" style="width:200px;">Name</th>
-								<td>{{ organizer.orgName }}</td>
-							</tr>
-							<tr>
-								<th class="text-muted">Contact</th>
-								<td>{{ organizer.contact }}</td>
-							</tr>
-							<tr>
-								<th class="text-muted">Email</th>
-								<td>{{ organizer.email }}</td>
-							</tr>
-							<tr>
-								<th class="text-muted">Contact Person</th>
-								<td>{{ organizer.contactPerson }}</td>
-							</tr>
-							<tr>
-								<th class="text-muted">Events Count</th>
-								<td>
-									<span class="badge" style="background: linear-gradient(135deg, #F9B233 0%, #e6a02a 100%); color: #1A3D7C; font-weight: 600;">
-										{{ organizer.events|length }}
-										Event{{ organizer.events|length != 1 ? 's' : '' }}
-									</span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="col-md-6">
-					<table class="table table-borderless mb-0">
-						<tbody>
-							<tr>
-								<th class="text-muted" style="width:200px;">Description</th>
-								<td>{{ organizer.description }}</td>
-							</tr>
-							<tr>
-								<th class="text-muted">Date Created</th>
-								<td>{{ organizer.dateCreated ? organizer.dateCreated|date('M d, Y g:i A') : '—' }}</td>
-							</tr>
-							<tr>
-								<th class="text-muted">Logo</th>
-								<td>{{ organizer.logoFilename ?: '—' }}</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-
-			<!-- Events Section -->
-			{% if organizer.events|length > 0 %}
-				<div class="mt-4">
-					<h5 style="color: #1A3D7C; font-weight: 600; border-bottom: 2px solid #F9B233; padding-bottom: 8px;">
-						<i class="fas fa-calendar-alt me-2" style="color: #F9B233;"></i>Recent Events
-					</h5>
-					<div class="row">
-						{% for event in organizer.events|slice(0, 3) %}
-							<div class="col-md-4 mb-3">
-								<div class="card h-100" style="border: 2px solid #e9ecef; border-radius: 12px; transition: all 0.3s ease;" onmouseover="if(this) { this.style.borderColor='#F9B233'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(249, 178, 51, 0.2)'; }" onmouseout="if(this) { this.style.borderColor='#e9ecef'; this.style.transform='translateY(0)'; this.style.boxShadow='none'; }">
-									<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 10px 10px 0 0;">
-										<h6 class="mb-0" style="font-weight: 600;">
-											<i class="fas fa-calendar me-2" style="color: #F9B233;"></i>
-											{{ event.eventName }}
-										</h6>
-									</div>
-									<div class="card-body">
-										<div class="mb-2">
-											<small class="text-muted">
-												<i class="fas fa-map-marker-alt me-1"></i>
-												{{ event.venue }}
-											</small>
-										</div>
-										<div class="mb-2">
-											<small class="text-muted">
-												<i class="fas fa-clock me-1"></i>
-												{{ event.date ? event.date|date('M d, Y') : 'TBA' }}
-											</small>
-										</div>
-										<div class="mb-3">
-											<span class="badge" style="background: linear-gradient(135deg, {{ event.status == 'Active' ? '#28a745 0%, #20c997 100%' : '#6c757d 0%, #495057 100%' }}); color: white; font-size: 0.8em;">
-												{{ event.status }}
-											</span>
-										</div>
-									</div>
-									<div class="card-footer" style="background: transparent; border: none; padding: 10px 15px;">
-										<div class="d-flex justify-content-between">
-											<a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-sm" style="background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%); color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 0.8em;">
-												<i class="fas fa-eye me-1"></i>View
-											</a>
-											<a href="{{ path('app_event_tickets', {'eventId': event.id}) }}" class="btn btn-sm" style="background: linear-gradient(135deg, #F9B233 0%, #e6a02a 100%); color: #1A3D7C; border: none; border-radius: 6px; padding: 6px 12px; font-size: 0.8em; font-weight: 600;">
-												<i class="fas fa-ticket-alt me-1"></i>Tickets
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						{% endfor %}
-					</div>
-					{% if organizer.events|length > 3 %}
-						<div class="text-center mt-3">
-							<a href="{{ path('app_event_by_organizer', {'organizerId': organizer.id}) }}" class="btn" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 25px; padding: 10px 20px; font-weight: 600;">
-								<i class="fas fa-calendar-alt me-2"></i>View All
-								{{ organizer.events|length }}
-								Events
-							</a>
-						</div>
-					{% endif %}
-				</div>
-			{% else %}
-				<div class="mt-4">
-					<div class="alert alert-info text-center" style="border-radius: 8px; border: none; background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);">
-						<i class="fas fa-info-circle me-2" style="color: #1A3D7C;"></i>
-						<strong>No events found for this organizer.</strong><br>
-						<a href="{{ path('app_event_new', {'organizer': organizer.id}) }}" class="btn btn-sm mt-2" style="background: linear-gradient(135deg, #F9B233 0%, #e6a02a 100%); color: #1A3D7C; border: none; border-radius: 20px; padding: 8px 16px; font-weight: 600;">
-							<i class="fas fa-plus-circle me-1"></i>Create First Event
-						</a>
-					</div>
-				</div>
-			{% endif %}
-		</div>
-	</div>
-</div>{% endblock %}
+    <div class="content-wrapper">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0" style="color: #1A3D7C"><i class="fas fa-user me-2" style="color:#F9B233"></i>Organizer Details</h1>
+            </div>
+        </div>
+        <div class="card shadow-sm" style="border-radius: 12px; overflow: hidden;">
+            <div class="card-header" style="background-color: #1A3D7C; color: white; border: none;">
+                <h3 class="card-title mb-0"><i class="fas fa-id-card me-2"></i>Profile</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    {% if organizer.logoFilename %}
+                        <img src="{{ asset('uploads/organizers/' ~ organizer.logoFilename) }}" alt="Logo" width="150" height="150" style="border-radius: 12px; object-fit: cover; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                    {% endif %}
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <table class="table table-borderless mb-0">
+                            <tbody>
+                                <tr><th class="text-muted" style="width:200px;">Name</th><td>{{ organizer.orgName }}</td></tr>
+                                <tr><th class="text-muted">Contact</th><td>{{ organizer.contact }}</td></tr>
+                                <tr><th class="text-muted">Email</th><td>{{ organizer.email }}</td></tr>
+                                <tr><th class="text-muted">Contact Person</th><td>{{ organizer.contactPerson }}</td></tr>
+                                <tr><th class="text-muted">Events Count</th><td>
+                                    <span class="badge" style="background: linear-gradient(135deg, #F9B233 0%, #e6a02a 100%); color: #1A3D7C; font-weight: 600;">
+                                        {{ organizer.events|length }} Event{{ organizer.events|length != 1 ? 's' : '' }}
+                                    </span>
+                                </td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-borderless mb-0">
+                            <tbody>
+                                <tr><th class="text-muted" style="width:200px;">Description</th><td>{{ organizer.description }}</td></tr>
+                                <tr><th class="text-muted">Date Created</th><td>{{ organizer.dateCreated ? organizer.dateCreated|date('M d, Y g:i A') : '—' }}</td></tr>
+                                <tr>
+                                    <th class="text-muted">Logo</th>
+                                    <td>{{ organizer.logoFilename ?: '—' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Events Section -->
+                {% if organizer.events|length > 0 %}
+                <div class="mt-4">
+                    <h5 style="color: #1A3D7C; font-weight: 600; border-bottom: 2px solid #F9B233; padding-bottom: 8px;">
+                        <i class="fas fa-calendar-alt me-2" style="color: #F9B233;"></i>Recent Events
+                    </h5>
+                    <div class="row">
+                        {% for event in organizer.events|slice(0, 3) %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100" style="border: 2px solid #e9ecef; border-radius: 12px; transition: all 0.3s ease;" onmouseover="this.style.borderColor='#F9B233'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(249, 178, 51, 0.2)'" onmouseout="this.style.borderColor='#e9ecef'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 10px 10px 0 0;">
+                                    <h6 class="mb-0" style="font-weight: 600;">
+                                        <i class="fas fa-calendar me-2" style="color: #F9B233;"></i>{{ event.eventName }}
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-map-marker-alt me-1"></i>{{ event.venue }}
+                                        </small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock me-1"></i>{{ event.date ? event.date|date('M d, Y') : 'TBA' }}
+                                        </small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="badge" style="background: linear-gradient(135deg, {{ event.status == 'Active' ? '#28a745 0%, #20c997 100%' : '#6c757d 0%, #495057 100%' }}); color: white; font-size: 0.8em;">
+                                            {{ event.status }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-footer" style="background: transparent; border: none; padding: 10px 15px;">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{{ path('app_event_show', {'id': event.id}) }}" 
+                                           class="btn btn-sm" 
+                                           style="background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%); color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 0.8em;">
+                                            <i class="fas fa-eye me-1"></i>View
+                                        </a>
+                                        <a href="{{ path('app_event_tickets', {'eventId': event.id}) }}" 
+                                           class="btn btn-sm" 
+                                           style="background: linear-gradient(135deg, #F9B233 0%, #e6a02a 100%); color: #1A3D7C; border: none; border-radius: 6px; padding: 6px 12px; font-size: 0.8em; font-weight: 600;">
+                                            <i class="fas fa-ticket-alt me-1"></i>Tickets
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% if organizer.events|length > 3 %}
+                    <div class="text-center mt-3">
+                        <a href="{{ path('app_event_by_organizer', {'organizerId': organizer.id}) }}" class="btn" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 25px; padding: 10px 20px; font-weight: 600;">
+                            <i class="fas fa-calendar-alt me-2"></i>View All {{ organizer.events|length }} Events
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="mt-4">
+                    <div class="alert alert-info text-center" style="border-radius: 8px; border: none; background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);">
+                        <i class="fas fa-info-circle me-2" style="color: #1A3D7C;"></i>
+                        <strong>No events found for this organizer.</strong><br>
+                        <a href="{{ path('app_event_new', {'organizer': organizer.id}) }}" class="btn btn-sm mt-2" style="background: linear-gradient(135deg, #F9B233 0%, #e6a02a 100%); color: #1A3D7C; border: none; border-radius: 20px; padding: 8px 16px; font-weight: 600;">
+                            <i class="fas fa-plus-circle me-1"></i>Create First Event
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>            
+        </div>
+    </div>
+{% endblock %}

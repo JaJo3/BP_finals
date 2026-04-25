@@ -1,0 +1,100 @@
+{# Modern navbar with transparent background by default, dark blue on scroll #}
+
+<nav id="mainNavbar" class="navbar navbar-expand-lg fixed-top">
+
+	<div class="container">
+		<a class="navbar-brand d-flex align-items-center text-white" href="{{ path('app_landing') }}#home" style="gap: 0;">
+			<img src="{{ asset('images/beatpass.png') }}" alt="BeatPass" class="rounded flex-shrink-0" style="height: 130px; width: 130px; margin: -80px 0 -90px 0;">
+			<span class="fw-bold" style="margin-left: -45px; font-size: 1.7rem;">BeatPass</span>
+		</a>
+
+		<button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse justify-content-end" id="mainNav">
+			<ul class="navbar-nav align-items-lg-center gap-lg-3 text-center text-lg-start">
+				<li class="nav-item">
+					<a class="nav-link text-white fw-semibold nav-link-golden{% if app.request.get('_route') == 'app_landing' %} active{% endif %}" href="{{ path('app_landing') }}#home">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link text-white fw-semibold nav-link-golden{% if app.request.get('_route') == 'app_events' %} active{% endif %}" href="{{ path('app_events') }}">Events</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link text-white fw-semibold nav-link-golden{% if app.request.get('_route') == 'app_about' %} active{% endif %}" href="{{ path('app_about') }}">About</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link text-white fw-semibold nav-link-golden{% if app.request.get('_route') == 'app_contact' %} active{% endif %}" href="{{ path('app_contact') }}">Contact</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<style>
+	#mainNavbar {
+		border-bottom: none !important;
+	}
+	#mainNavbar .nav-link:hover,
+	#mainNavbar .nav-link.active {
+		color: #F9B233 !important;
+	}
+</style>
+
+<script>
+
+	document.addEventListener('DOMContentLoaded', function () {
+
+const navbar = document.getElementById('mainNavbar');
+
+if (! navbar) {
+
+console.error('Navbar element not found!');
+
+return;
+
+}
+
+
+const scrollThreshold = 50;
+
+
+function updateNavbar() {
+
+const scrollY = window.scrollY || window.pageYOffset;
+
+console.log('Scroll position:', scrollY, 'Threshold:', scrollThreshold);
+
+
+if (scrollY > scrollThreshold) {
+
+navbar.classList.add('scrolled');
+
+navbar.style.background = '#1A3D7C';
+
+navbar.style.backgroundColor = '#1A3D7C';
+
+} else {
+
+navbar.classList.remove('scrolled');
+
+navbar.style.background = 'transparent';
+
+navbar.style.backgroundColor = 'transparent';
+
+}
+
+}
+
+
+// Initial check
+
+updateNavbar();
+
+
+// Scroll listener
+
+window.addEventListener('scroll', updateNavbar, {passive: true});
+
+});
+</script>

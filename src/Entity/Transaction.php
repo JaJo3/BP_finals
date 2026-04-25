@@ -9,9 +9,7 @@ use App\Entity\User;
 use App\Entity\Event as EventEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Metadata\ApiResource;
 
-#[ApiResource]
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 #[ORM\Table(name: 'transactions')]
 class Transaction
@@ -31,15 +29,15 @@ class Transaction
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Event::class)]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Event $event = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $createdBy = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
@@ -254,4 +252,5 @@ class Transaction
         $this->refundedAt = new \DateTime();
         return $this;
     }
+
 }

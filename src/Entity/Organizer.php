@@ -7,9 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
-use ApiPlatform\Metadata\ApiResource;
 
-#[ApiResource]
 #[ORM\Entity(repositoryClass: OrganizerRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Organizer
@@ -41,7 +39,7 @@ class Organizer
     private ?string $logoFilename = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $createdBy = null;
 
     #[ORM\OneToMany(mappedBy: 'organizer', targetEntity: Event::class, cascade: ['persist', 'remove'])]

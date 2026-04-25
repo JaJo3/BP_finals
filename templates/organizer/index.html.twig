@@ -1,213 +1,196 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Organizer Management
-{% endblock %}
+{% block title %}Organizer Management{% endblock %}
 
 {% block body %}
-	<div class="content-wrapper">
-		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h1 class="h3 mb-0" style="color: #1A3D7C; font-weight: 700; font-size: 1.5rem; letter-spacing: 0.4px;">
-				<i class="fas fa-users me-2" style="color: #F9B233;"></i>Organizer Management
-			</h1>
-			<div class="d-flex gap-2 align-items-center">
-				<a href="{{ path('app_organizer_new') }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
-					<i class="fas fa-plus-circle me-2"></i>New Organizer
-				</a>
-			</div>
-		</div>
+<div class="content-wrapper">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0" style="color: #1A3D7C; font-weight: 700;">
+            <i class="fas fa-users me-2" style="color: #F9B233;"></i>Organizer Management
+        </h1>
+        <div class="d-flex gap-2 align-items-center">
+            <a href="{{ path('app_organizer_new') }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
+                <i class="fas fa-plus-circle me-2"></i>New Organizer
+            </a>
+        </div>
+    </div>
 
-		<div class="card shadow-sm mb-4" style="border-radius: 12px; border: 1px solid #e9ecef;">
-			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 12px 12px 0 0;">
-				<h5 class="mb-0" style="font-weight: 600; font-size: 1rem; letter-spacing: 0.3px;">
-					<i class="fas fa-search me-2" style="color: #F9B233;"></i>Search Organizers
-				</h5>
-			</div>
-			<div class="card-body" style="background-color: #f8f9fa;">
-				<form method="GET">
-					<div class="d-flex flex-wrap align-items-center">
-						<div class="flex-grow-1 me-3" style="min-width: 80px;">
-							<div class="input-group">
-								<span class="input-group-text bg-white" style="border-right:0; border-radius: 8px 0 0 8px;">
-									<i class="fas fa-search" style="color: #1A3D7C;"></i>
-								</span>
-								<input type="text" class="form-control" name="q" value="{{ q }}" placeholder="Search by name, email, or contact" style="width: 80px; border-left:0; border-radius: 0; box-shadow: none; font-weight: 500; color: #495057;">
-							</div>
-						</div>
+    <div class="card shadow-sm mb-4" style="border-radius: 12px; border: 1px solid #e9ecef;">
+        <div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 12px 12px 0 0;">
+            <h5 class="mb-0" style="font-weight: 600;">
+                <i class="fas fa-search me-2" style="color: #F9B233;"></i>Search Organizers
+            </h5>
+        </div>
+        <div class="card-body" style="background-color: #f8f9fa;">
+            <form method="GET">
+                <div class="d-flex flex-wrap align-items-center">
+                    <div class="flex-grow-1 me-3" style="min-width: 80px;">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white" style="border-right:0; border-radius: 8px 0 0 8px;">
+                                <i class="fas fa-search" style="color: #1A3D7C;"></i>
+                            </span>
+                            <input type="text"
+                                   class="form-control"
+                                   name="q"
+                                   value="{{ q }}"
+                                   placeholder="Search by name, email, or contact"
+                                   style="width: 80px; border-left:0; border-radius: 0; box-shadow: none;">
+                        </div>
+                    </div>
 
-						<div class="d-flex gap-2">
-							<button type="submit" class="btn btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; border-radius: 8px; padding: 8px 18px; font-weight: 600; font-size: 0.9rem;">
-								<i class="fas fa-search me-2"></i>Apply
-							</button>
-							<a href="{{ path('app_organizer_index') }}" class="btn btn-outline-secondary" style="border-radius: 8px; padding: 8px 16px; font-weight: 500; font-size: 0.9rem;">
-								<i class="fas fa-redo me-2"></i>Clear
-							</a>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
+                    <div class="d-flex gap-2">
+                        <button type="submit"
+                                class="btn btn-primary"
+                                style="background-color: #1A3D7C; border-color: #1A3D7C; border-radius: 8px; padding: 8px 18px; font-weight: 500;">
+                            Apply
+                        </button>
+                        <a href="{{ path('app_organizer_index') }}"
+                           class="btn btn-outline-secondary"
+                           style="border-radius: 8px; padding: 8px 16px;">
+                            Clear
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
-			<div class="card-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
-				<div class="d-flex align-items-center">
-					<h3 class="card-title mb-0" style="font-weight: 600; font-size: 1.1rem; letter-spacing: 0.3px;">
-						<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Organizers
-					</h3>
-				</div>
-				<span class="badge" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 700; padding: 8px 16px; font-size: 0.95rem;">{{ total }}
-					items</span>
-			</div>
+    <div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
+        <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+            <div>
+                <h3 class="card-title mb-0" style="font-weight: 600;">
+                    <i class="fas fa-list me-2" style="color: #F9B233;"></i>All Organizers
+                    <span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ total }}</span>
+                </h3>
+            </div>
+            <div class="d-flex align-items-center">
+            </div>
+        </div>
+        
+        <div class="card-body p-4">
+            {% if organizers|length > 0 %}
+                <div class="row g-4">
+                    {% for organizer in organizers %}
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card h-100" style="border-radius: 12px; border: none; box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: all 0.18s ease; position: relative;">
+                                <!-- Profile Section -->
+                                <div class="text-center pt-3">
+                                    {% if organizer.logoFilename %}
+                                        <img src="{{ asset('uploads/organizers/' ~ organizer.logoFilename) }}" 
+                                             alt="{{ organizer.orgName }}" 
+                                             class="rounded-circle mb-2"
+                                             style="width: 90px; height: 90px; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+                                    {% else %}
+                                        <div class="mx-auto mb-2" style="width: 90px; height: 90px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+                                            <i class="fas fa-user fa-2x" style="color: #1A3D7C; opacity: 0.6;"></i>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    <h5 style="color: #1A3D7C; font-weight: 600; margin-bottom: 0.25rem;">{{ organizer.orgName }}</h5>
+                                    <p class="text-muted mb-3" style="font-size: 0.85rem;">Organizer #{{ organizer.id }}</p>
+                                    
+                                    <!-- Stats Row -->
+                                    <div class="d-flex justify-content-center gap-3 mb-3">
+                                        <div class="text-center">
+                                            <h6 class="mb-1" style="color: #1A3D7C; font-weight: 600; font-size: 0.95rem;">{{ organizer.events|length }}</h6>
+                                            <small class="text-muted" style="font-size:0.85rem">Events</small>
+                                        </div>
+                                        <div class="text-center">
+                                            {% set totalTickets = 0 %}
+                                            {% for event in organizer.events %}
+                                                {% set totalTickets = totalTickets + event.tickets|length %}
+                                            {% endfor %}
+                                            <h6 class="mb-1" style="color: #F9B233; font-weight: 600; font-size: 0.95rem;">{{ totalTickets }}</h6>
+                                            <small class="text-muted" style="font-size:0.85rem">Tickets</small>
+                                        </div>
+                                    </div>
 
-			<div class="px-3 py-3 d-flex flex-wrap align-items-center justify-content-end gap-3" style="background: #f8f9fb; border-bottom: 1px solid #e9ecef;">
-				<div class="form-check form-switch m-0 d-flex align-items-center gap-2">
-					<input class="form-check-input m-0" type="checkbox" id="toggleOrganizerActions" role="switch" aria-label="Show actions column">
-					<label class="form-check-label small text-muted fw-500" for="toggleOrganizerActions" style="user-select:none;">Show actions</label>
-				</div>
-			</div>
+                                    <!-- Contact Information -->
+                                    <div class="px-3 mb-3">
+                                        <div class="d-flex align-items-center justify-content-center mb-2">
+                                            <i class="fas fa-envelope me-2" style="color: #1A3D7C; width: 20px;"></i>
+                                            <span style="color: #2c3e50;">{{ organizer.email }}</span>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center mb-2">
+                                            <i class="fas fa-phone me-2" style="color: #1A3D7C; width: 20px;"></i>
+                                            <span style="color: #2c3e50;">{{ organizer.contact }}</span>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <i class="fas fa-user me-2" style="color: #1A3D7C; width: 20px;"></i>
+                                            <span style="color: #2c3e50;">{{ organizer.contactPerson }}</span>
+                                        </div>
+                                    </div>
 
-			<div class="card-body p-4">
-				{% if organizers|length > 0 %}
-					<div class="row g-4">
-						{% for organizer in organizers %}
-							<div class="col-12 col-md-6 col-lg-4">
-								<div
-									class="card h-100" style="border-radius: 12px; border: none; box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: all 0.18s ease; position: relative;">
-									<!-- Profile Section -->
-									<div class="text-center p-3">
-										{% if organizer.logoFilename %}
-											<img src="{{ asset('uploads/organizers/' ~ organizer.logoFilename) }}" alt="{{ organizer.orgName }}" class="rounded-circle mb-2" style="width: 85px; height: 85px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(26, 61, 124, 0.15);">
-										{% else %}
-											<div class="mx-auto mb-2" style="width: 85px; height: 85px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(26, 61, 124, 0.15);">
-												<i class="fas fa-user fa-2x" style="color: #1A3D7C; opacity: 0.5;"></i>
-											</div>
-										{% endif %}
+                                    <!-- Action Buttons -->
+                                    <div class="d-flex justify-content-center gap-2 pb-3">
+                                        <a href="{{ path('app_organizer_show', {'id': organizer.id}) }}"
+                                           class="btn btn-sm d-flex align-items-center justify-content-center"
+                                           style="width: 36px; height: 36px; padding: 0; background-color: #1A3D7C; color: white; border: none;"
+                                           aria-label="View organizer">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        {% if isAdmin or (currentUserId and organizer.createdBy and organizer.createdBy.id == currentUserId) %}
+                                            <a href="{{ path('app_organizer_edit', {'id': organizer.id}) }}"
+                                               class="btn btn-sm btn-primary d-flex align-items-center justify-content-center"
+                                               style="width: 36px; height: 36px; padding: 0; background-color: #1A3D7C; border-color: #1A3D7C;"
+                                               aria-label="Edit organizer">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        {% endif %}
+                                        <a href="{{ path('app_event_by_organizer', {'organizerId': organizer.id}) }}"
+                                           class="btn btn-sm d-flex align-items-center justify-content-center"
+                                           style="width: 36px; height: 36px; padding: 0; background-color: #F9B233; color: #1A3D7C; border: none;"
+                                           aria-label="Organizer events">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </a>
+                                        {% if isAdmin or (currentUserId and organizer.createdBy and organizer.createdBy.id == currentUserId) %}
+                                            {% include 'organizer/_delete_form.html.twig' with {'organizer': organizer} %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-12">
+                            <div class="text-center py-5" style="background-color: #ffffff;">
+                                <div class="text-muted py-5">
+                                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                        <i class="fas fa-users fa-3x" style="color: #1A3D7C; opacity: 0.6;"></i>
+                                    </div>
+                                    <h5 style="color: #1A3D7C; font-weight: 600; margin-bottom: 12px;">No organizers found</h5>
+                                    <p style="color: #6c757d; font-size: 1.05em; margin-bottom: 24px;">Try adjusting your search or create a new organizer.</p>
+                                                            <a href="{{ path('app_organizer_new') }}" class="btn btn-sm" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
+                                                            <i class="fas fa-plus me-2"></i>Create First Organizer
+                                                        </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
 
-										<h5 style="color: #1A3D7C; font-weight: 700; margin-bottom: 0.2rem; font-size: 1.05rem; letter-spacing: 0.3px;">{{ organizer.orgName }}</h5>
-										<p class="text-muted mb-2" style="font-size: 0.75rem; font-weight: 500; color: #6c757d !important;">ID #{{ organizer.id }}</p>
+        {% if pages > 1 %}
+            <div class="card-footer bg-light d-flex justify-content-between align-items-center" style="border-top: 1px solid #e9ecef;">
+                <div class="text-muted small">Page
+                    {{ page }}
+                    of
+                    {{ pages }}
+                    •
+                    {{ total }}
+                    total</div>
+                <nav>
+                    <ul class="pagination mb-0">
+                        {% for p in 1..pages %}
+                            <li class="page-item {{ p == page ? 'active' : '' }}">
+                                <a class="page-link" href="{{ path('app_organizer_index', { q: q, page: p, limit: limit }) }}">{{ p }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </div>
+        {% endif %}
+    </div>
+</div>
 
-										<!-- Stats Row -->
-										<div class="d-flex justify-content-center gap-4 mb-3">
-											<div class="text-center">
-												<h6 class="mb-0" style="color: #1A3D7C; font-weight: 700; font-size: 1.1rem;">{{ organizer.events|length }}</h6>
-												<small style="font-size:0.75rem; font-weight: 500; color: #6c757d;">Events</small>
-											</div>
-											<div class="text-center">
-												{% set totalTickets = 0 %}
-												{% for event in organizer.events %}
-													{% set totalTickets = totalTickets + event.tickets|length %}
-												{% endfor %}
-												<h6 class="mb-0" style="color: #F9B233; font-weight: 700; font-size: 1.1rem;">{{ totalTickets }}</h6>
-												<small style="font-size:0.75rem; font-weight: 500; color: #6c757d;">Tickets</small>
-											</div>
-										</div>
-
-										<!-- Contact Information -->
-										<div class="px-2 mb-3" style="border-top: 1px solid #e9ecef; border-bottom: 1px solid #e9ecef; padding-top: 0.75rem; padding-bottom: 0.75rem;">
-											<div class="d-flex align-items-center justify-content-center gap-2 mb-1" style="font-size: 0.85rem;">
-												<i class="fas fa-envelope" style="color: #1A3D7C; width: 16px; flex-shrink: 0;"></i>
-												<span style="color: #495057; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ organizer.email }}</span>
-											</div>
-											<div class="d-flex align-items-center justify-content-center gap-2 mb-1" style="font-size: 0.85rem;">
-												<i class="fas fa-phone" style="color: #1A3D7C; width: 16px; flex-shrink: 0;"></i>
-												<span style="color: #495057; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ organizer.contact }}</span>
-											</div>
-											<div class="d-flex align-items-center justify-content-center gap-2" style="font-size: 0.85rem;">
-												<i class="fas fa-user" style="color: #1A3D7C; width: 16px; flex-shrink: 0;"></i>
-												<span style="color: #495057; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ organizer.contactPerson }}</span>
-											</div>
-										</div>
-
-										<!-- Action Buttons -->
-										<div class="organizer-actions d-flex justify-content-center gap-2 pt-2 pb-2 d-none">
-											<a href="{{ path('app_organizer_show', {'id': organizer.id}) }}" class="btn btn-sm btn-beatpass-primary d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; padding: 0; border: none;" title="View organizer" aria-label="View organizer">
-												<i class="fas fa-eye"></i>
-											</a>
-											{% if isAdmin or (currentUserId and organizer.createdBy and organizer.createdBy.id == currentUserId) %}
-												<a href="{{ path('app_organizer_edit', {'id': organizer.id}) }}" class="btn btn-sm btn-beatpass-primary d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; padding: 0; border: none;" title="Edit organizer" aria-label="Edit organizer">
-													<i class="fas fa-edit"></i>
-												</a>
-											{% endif %}
-											<a href="{{ path('app_event_by_organizer', {'organizerId': organizer.id}) }}" class="btn btn-sm btn-beatpass-edit d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; padding: 0; border: none;" title="View events" aria-label="Organizer events">
-												<i class="fas fa-calendar-alt"></i>
-											</a>
-											{% if isAdmin or (currentUserId and organizer.createdBy and organizer.createdBy.id == currentUserId) %}
-												{% include 'organizer/_delete_form.html.twig' with {'organizer': organizer} %}
-											{% endif %}
-										</div>
-									</div>
-								</div>
-							</div>
-						{% else %}
-							<div class="col-12">
-								<div class="text-center py-5" style="background-color: #ffffff;">
-									<div class="text-muted py-5">
-										<div style="width: 120px; height: 120px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-											<i class="fas fa-users fa-3x" style="color: #1A3D7C; opacity: 0.6;"></i>
-										</div>
-										<h5 style="color: #1A3D7C; font-weight: 700; margin-bottom: 12px; font-size: 1.1rem; letter-spacing: 0.2px;">No organizers found</h5>
-										<p style="color: #6c757d; font-size: 1.05em; margin-bottom: 24px; font-weight: 500;">Try adjusting your search or create a new organizer.</p>
-										<a href="{{ path('app_organizer_new') }}" class="btn btn-sm" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
-											<i class="fas fa-plus me-2"></i>Create First Organizer
-										</a>
-									</div>
-								</div>
-							</div>
-						{% endfor %}
-					</div>
-				{% endif %}
-			</div>
-
-			{% if pages > 1 %}
-				<div class="card-footer bg-light d-flex justify-content-between align-items-center" style="border-top: 1px solid #e9ecef;">
-					<dir class="text-muted small">Page
-						{{ page }}
-						of
-						{{ pages }}
-						•
-						{{ total }}
-						total</div>
-					<nav>
-						<ul class="pagination mb-0">
-							{% for p in 1..pages %}
-								<li class="page-item {{ p == page ? 'active' : '' }}">
-									<a class="page-link" href="{{ path('app_organizer_index', { q: q, page: p, limit: limit }) }}">{{ p }}</a>
-								</li>
-							{% endfor %}
-						</ul>
-					</nav>
-				</div>
-			{% endif %}
-		</div>
-	</div>
-
-{% endblock %}
-
-{% block javascripts %}
-	{{ parent() }}
-	<script>
-		(function () {
-const toggle = document.getElementById('toggleOrganizerActions');
-const actionContainers = document.querySelectorAll('.organizer-actions');
-
-// Load saved preference
-const showActionsPref = localStorage.getItem('organizers.showActions');
-if (showActionsPref === 'true') {
-toggle.checked = true;
-actionContainers.forEach(el => el.classList.remove('d-none'));
-}
-
-// Handle toggle
-toggle.addEventListener('change', function () {
-const showActions = this.checked;
-localStorage.setItem('organizers.showActions', showActions);
-actionContainers.forEach(el => {
-if (showActions) {
-el.classList.remove('d-none');
-} else {
-el.classList.add('d-none');
-}
-});
-});
-})();
-	</script>
 {% endblock %}

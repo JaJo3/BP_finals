@@ -6,9 +6,7 @@ use App\Repository\TicketRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\User;
-use ApiPlatform\Metadata\ApiResource;
 
-#[ApiResource]
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Ticket
@@ -44,11 +42,11 @@ class Ticket
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Event $event = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $createdBy = null;
 
     #[ORM\Column(length: 20)]
@@ -66,9 +64,9 @@ class Ticket
     public function isAvailable(): bool
     {
         // Check both status and quantity
-        return $this->status === self::STATUS_ACTIVE
-            && $this->quantity > 0
-            && $this->event
+        return $this->status === self::STATUS_ACTIVE 
+            && $this->quantity > 0 
+            && $this->event 
             && $this->event->getStatus() !== Event::STATUS_CANCELLED
             && $this->event->getStatus() !== Event::STATUS_COMPLETED;
     }
@@ -119,7 +117,7 @@ class Ticket
     public function setQuantity(int $quantity): static
     {
         $this->quantity = $quantity;
-
+        
         // Update status if quantity becomes 0
         if ($quantity <= 0) {
             $this->status = self::STATUS_SOLD_OUT;
@@ -169,7 +167,7 @@ class Ticket
         ])) {
             throw new \InvalidArgumentException('Invalid status');
         }
-
+        
         $this->status = $status;
         return $this;
     }

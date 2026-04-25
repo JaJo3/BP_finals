@@ -1,0 +1,344 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact - BeatPass
+{% endblock %}
+
+{% block body_class %}bg-light
+{% endblock %}
+
+{% block body_outer %}
+	{# MODERN HERO #}
+	<section class="contact-hero position-relative overflow-hidden" style="background: var(--brand-primary); padding-top: 100px;">
+		<div class="contact-hero-bg">
+			<div class="contact-hero-glow contact-hero-glow-1"></div>
+		</div>
+		<div class="container position-relative z-1">
+			<div class="row justify-content-center text-center">
+				<div class="col-lg-8">
+					<div class="fade-up js-reveal">
+						<div class="contact-hero-badge d-inline-flex align-items-center gap-2 mb-4">
+							<i class="bi bi-chat-dots-fill text-warning"></i>
+							<span class="text-white">Get In Touch</span>
+						</div>
+						<h1 class="contact-hero-title mb-4 text-white fw-bold display-4">We'd love to hear<br><span class="text-gradient">from you</span>
+						</h1>
+						<p class="contact-hero-subtitle text-white-50 fs-5 mx-auto" style="max-width: 500px;">Have questions about events, tickets, or partnerships? Our team is here to help you with anything you need.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# CONTACT SECTION #}
+	<section class="py-5">
+		<div class="container py-3">
+			<div
+				class="row g-4">
+				{# LEFT: Contact Info #}
+				<div class="col-lg-5">
+					<div class="card border-0 rounded-4 shadow-sm h-100 p-4 fade-up js-reveal">
+						<h2 class="h4 fw-bold text-dark mb-2">Contact Information</h2>
+						<p class="text-secondary mb-4">Reach out to us through any of these channels. We typically respond within 24 hours.</p>
+
+						{# Contact Cards #}
+						<div
+							class="vstack gap-3 mb-4">
+							{# Email Card #}
+							<div class="d-flex gap-3 p-3 bg-light rounded-4">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 text-white" style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--brand-primary) 0%, #2d5aa8 100%);">
+									<i class="bi bi-envelope-fill fs-5"></i>
+								</div>
+								<div class="flex-grow-1">
+									<h4 class="h6 fw-semibold text-dark mb-1">Email Us</h4>
+									<p class="text-secondary small mb-1">beatpass.ph@gmail.com</p>
+									<a href="mailto:beatpass.ph@gmail.com" class="text-decoration-none fw-medium d-inline-flex align-items-center gap-1" style="color: var(--brand-primary);">
+										Send email<i class="bi bi-arrow-up-right small"></i>
+									</a>
+								</div>
+							</div>
+
+							{# Phone Card #}
+							<div class="d-flex gap-3 p-3 bg-light rounded-4">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 text-white" style="width: 48px; height: 48px; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">
+									<i class="bi bi-telephone-fill fs-5"></i>
+								</div>
+								<div class="flex-grow-1">
+									<h4 class="h6 fw-semibold text-dark mb-1">Call Us</h4>
+									<p class="text-secondary small mb-1">+63 930 234 9377</p>
+									<span class="text-muted" style="font-size: 0.75rem;">Mon-Fri, 9AM-6PM</span>
+								</div>
+							</div>
+
+							{# Location Card #}
+							<div class="d-flex gap-3 p-3 bg-light rounded-4">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 text-white" style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+									<i class="bi bi-geo-alt-fill fs-5"></i>
+								</div>
+								<div class="flex-grow-1">
+									<h4 class="h6 fw-semibold text-dark mb-1">Visit Us</h4>
+									<p class="text-secondary small mb-1">3rd Floor, Tempo Building<br>Perdices Street, Dumaguete City</p>
+									<span class="text-muted" style="font-size: 0.75rem;">Negros Oriental, Philippines</span>
+								</div>
+							</div>
+						</div>
+
+						{# Social Links #}
+						<div>
+							<h5 class="h6 fw-semibold text-secondary mb-3">Follow Us</h5>
+							<div class="d-flex gap-2">
+								<a href="#" class="d-flex align-items-center justify-content-center rounded-3 text-secondary text-decoration-none bg-light" style="width: 44px; height: 44px;" aria-label="Facebook">
+									<i class="bi bi-facebook fs-5"></i>
+								</a>
+								<a href="#" class="d-flex align-items-center justify-content-center rounded-3 text-secondary text-decoration-none bg-light" style="width: 44px; height: 44px;" aria-label="Instagram">
+									<i class="bi bi-instagram fs-5"></i>
+								</a>
+								<a href="#" class="d-flex align-items-center justify-content-center rounded-3 text-secondary text-decoration-none bg-light" style="width: 44px; height: 44px;" aria-label="Twitter">
+									<i class="bi bi-twitter-x fs-5"></i>
+								</a>
+								<a href="#" class="d-flex align-items-center justify-content-center rounded-3 text-secondary text-decoration-none bg-light" style="width: 44px; height: 44px;" aria-label="LinkedIn">
+									<i class="bi bi-linkedin fs-5"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{# RIGHT: Contact Form #}
+				<div class="col-lg-7">
+					<div class="card border-0 rounded-4 shadow-sm p-4 fade-up js-reveal" data-delay="100ms" style="background: white; box-shadow: 0 2px 4px rgba(26, 61, 124, 0.02), 0 8px 24px rgba(26, 61, 124, 0.08) !important;">
+						<div class="mb-4 pb-3" style="border-bottom: 1px solid rgba(26, 61, 124, 0.08);">
+							<div class="d-flex align-items-center gap-2 mb-2">
+								<div style="width: 4px; height: 20px; background: linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-accent) 100%); border-radius: 2px;"></div>
+								<h2 class="h4 fw-bold text-dark mb-0">Send a Message</h2>
+							</div>
+							<p class="text-secondary mb-0">Fill out the form below and we'll get back to you as soon as possible.</p>
+						</div>
+
+						{# Native Contact Form #}
+						{{ form_start(form, {'attr': {'class': 'vstack gap-4', 'novalidate': 'novalidate'}}) }}
+						<div>
+							{{ form_label(form.fullName, null, {'label_attr': {'class': 'form-label fw-semibold small text-dark'}}) }}
+							<div class="position-relative">
+								<i class="bi bi-person position-absolute top-50 translate-middle-y text-muted" style="left: 1rem; font-size: 1.125rem; z-index: 10;"></i>
+								{{ form_widget(form.fullName, {'attr': {'class': 'form-control form-control-lg ps-5' ~ (form.fullName.vars.errors|length > 0 ? ' is-invalid' : ''), 'style': 'border-radius: 12px; border: 1.5px solid #e5e7eb; background: #fafbfc;'}}) }}
+							</div>
+							{% if form.fullName.vars.errors|length > 0 %}
+								<div class="d-flex align-items-center gap-1 mt-1 text-danger small">
+									<i class="bi bi-exclamation-circle"></i>
+									{{ form_errors(form.fullName) }}
+								</div>
+							{% endif %}
+						</div>
+
+						<div>
+							{{ form_label(form.email, null, {'label_attr': {'class': 'form-label fw-semibold small text-dark'}}) }}
+							<div class="position-relative">
+								<i class="bi bi-envelope position-absolute top-50 translate-middle-y text-muted" style="left: 1rem; font-size: 1.125rem; z-index: 10;"></i>
+								{{ form_widget(form.email, {'attr': {'class': 'form-control form-control-lg ps-5' ~ (form.email.vars.errors|length > 0 ? ' is-invalid' : ''), 'style': 'border-radius: 12px; border: 1.5px solid #e5e7eb; background: #fafbfc;'}}) }}
+							</div>
+							{% if form.email.vars.errors|length > 0 %}
+								<div class="d-flex align-items-center gap-1 mt-1 text-danger small">
+									<i class="bi bi-exclamation-circle"></i>
+									{{ form_errors(form.email) }}
+								</div>
+							{% endif %}
+						</div>
+
+						<div>
+							{{ form_label(form.subject, null, {'label_attr': {'class': 'form-label fw-semibold small text-dark'}}) }}
+							<div class="position-relative">
+								<i class="bi bi-chat-left-text position-absolute top-50 translate-middle-y text-muted" style="left: 1rem; font-size: 1.125rem; z-index: 10;"></i>
+								{{ form_widget(form.subject, {'attr': {'class': 'form-control form-control-lg ps-5' ~ (form.subject.vars.errors|length > 0 ? ' is-invalid' : ''), 'style': 'border-radius: 12px; border: 1.5px solid #e5e7eb; background: #fafbfc;'}}) }}
+							</div>
+							{% if form.subject.vars.errors|length > 0 %}
+								<div class="d-flex align-items-center gap-1 mt-1 text-danger small">
+									<i class="bi bi-exclamation-circle"></i>
+									{{ form_errors(form.subject) }}
+								</div>
+							{% endif %}
+						</div>
+
+						<div>
+							{{ form_label(form.message, null, {'label_attr': {'class': 'form-label fw-semibold small text-dark'}}) }}
+							{{ form_widget(form.message, {'attr': {'class': 'form-control' ~ (form.message.vars.errors|length > 0 ? ' is-invalid' : ''), 'style': 'border-radius: 12px; border: 1.5px solid #e5e7eb; background: #fafbfc; min-height: 140px; resize: vertical;'}}) }}
+							{% if form.message.vars.errors|length > 0 %}
+								<div class="d-flex align-items-center gap-1 mt-1 text-danger small">
+									<i class="bi bi-exclamation-circle"></i>
+									{{ form_errors(form.message) }}
+								</div>
+							{% endif %}
+						</div>
+
+						<button type="submit" class="btn btn-primary btn-lg d-inline-flex align-items-center justify-content-center gap-2 px-4 py-3 fw-semibold" style="background: linear-gradient(135deg, var(--brand-primary) 0%, #234b94 100%); border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(26, 61, 124, 0.25);">
+							<span>Send Message</span>
+							<i class="bi bi-send-fill"></i>
+						</button>
+
+						{{ form_end(form) }}
+
+						<div class="d-flex align-items-center gap-2 mt-4 p-3 rounded-3" style="background: linear-gradient(135deg, rgba(26, 61, 124, 0.04) 0%, rgba(26, 61, 124, 0.02) 100%); border: 1px solid rgba(26, 61, 124, 0.06);">
+							<i class="bi bi-shield-check text-primary fs-5"></i>
+							<span class="small text-secondary">Your information is secure. We never share your data with third parties.</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# FAQ SECTION #}
+	<section class="py-5 bg-white">
+		<div class="container py-5">
+			<div class="row justify-content-center mb-5">
+				<div class="col-lg-8 text-center">
+					<h2 class="display-5 fw-bold text-uppercase ls-1 fade-up js-reveal" style="color: var(--brand-primary);">FAQ</h2>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-lg-8">
+					<div
+						class="vstack gap-1" id="faqAccordion">
+						{# FAQ Item 1 #}
+						<div class="fade-up js-reveal border-bottom">
+							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">
+								<span class="me-3">Are VIP experiences available during pre-sale?</span>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+							</button>
+							<div id="faq1" class="collapse" data-bs-parent="#faqAccordion">
+								<div class="p-4 text-secondary bg-light">
+									VIP experiences may be available during select pre-sales. Check the specific event's VIP page for availability and pre-sale dates.
+								</div>
+							</div>
+						</div>
+
+						{# FAQ Item 2 #}
+						<div class="fade-up js-reveal border-bottom">
+							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+								<span class="me-3">How do I purchase a VIP experience?</span>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+							</button>
+							<div id="faq2" class="collapse" data-bs-parent="#faqAccordion">
+								<div class="p-4 text-secondary bg-light">
+									Browse our events, select the VIP package that suits you, and complete checkout. You'll receive confirmation and details via email.
+								</div>
+							</div>
+						</div>
+
+						{# FAQ Item 3 #}
+						<div class="fade-up js-reveal border-bottom">
+							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+								<span class="me-3">Are tickets always included in the VIP experiences?</span>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+							</button>
+							<div id="faq3" class="collapse" data-bs-parent="#faqAccordion">
+								<div class="p-4 text-secondary bg-light">
+									Most VIP packages include event tickets, but some may require separate ticket purchase. Check package details for specific inclusions.
+								</div>
+							</div>
+						</div>
+
+						{# FAQ Item 4 #}
+						<div class="fade-up js-reveal border-bottom">
+							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+								<span class="me-3">How do I receive my inclusions/gifts?</span>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+							</button>
+							<div id="faq4" class="collapse" data-bs-parent="#faqAccordion">
+								<div class="p-4 text-secondary bg-light">
+									VIP gifts and inclusions are typically distributed at the venue on the event day. Some packages may include shipping for select items.
+								</div>
+							</div>
+						</div>
+
+						{# FAQ Item 5 #}
+						<div class="fade-up js-reveal border-bottom">
+							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
+								<span class="me-3">What will happen if I am late?</span>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+							</button>
+							<div id="faq5" class="collapse" data-bs-parent="#faqAccordion">
+								<div class="p-4 text-secondary bg-light">
+									Late arrivals may miss certain VIP benefits. Please arrive at the designated check-in time to enjoy the full experience.
+								</div>
+							</div>
+						</div>
+
+						{# FAQ Item 6 #}
+						<div class="fade-up js-reveal border-bottom">
+							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq6" aria-expanded="false" aria-controls="faq6">
+								<span class="me-3">Why does the same VIP experience have a different price in different cities?</span>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+							</button>
+							<div id="faq6" class="collapse" data-bs-parent="#faqAccordion">
+								<div class="p-4 text-secondary bg-light">
+									Pricing varies by venue, local costs, and demand. Each event is priced individually based on these factors.
+								</div>
+							</div>
+						</div>
+
+						{# FAQ Item 7 #}
+						<div class="fade-up js-reveal border-bottom">
+							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq7" aria-expanded="false" aria-controls="faq7">
+								<span class="me-3">Does the commemorative laminate get me backstage?</span>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+							</button>
+							<div id="faq7" class="collapse" data-bs-parent="#faqAccordion">
+								<div class="p-4 text-secondary bg-light">
+									Commemorative laminates are souvenirs only and do not grant backstage access unless specifically stated in your package.
+								</div>
+							</div>
+						</div>
+
+						{# FAQ Item 8 #}
+						<div class="fade-up js-reveal border-bottom">
+							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq8" aria-expanded="false" aria-controls="faq8">
+								<span class="me-3">Are children and teens allowed to purchase early entry tickets?</span>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+							</button>
+							<div id="faq8" class="collapse" data-bs-parent="#faqAccordion">
+								<div class="p-4 text-secondary bg-light">
+									Age restrictions vary by event. Minors may need adult accompaniment. Check specific event policies for details.
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# MAP SECTION - Hidden #}
+	<section class="d-none">
+		<div class="w-100 h-100">
+			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3933.0!2d123.3!3d9.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33ab1904b0000001%3A0x0!2zOSsxOCdS!5e0!3m2!1sen!2sph!4v1" width="100%" height="100%" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+		</div>
+	</section>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+const faqAccordion = document.getElementById('faqAccordion');
+if (! faqAccordion) 
+return;
+
+
+faqAccordion.querySelectorAll('.collapse').forEach(collapseEl => {
+const button = document.querySelector (`[data-bs-target="#${
+collapseEl.id
+}"]`);
+const icon = button ?. querySelector('i.bi-plus, i.bi-dash');
+
+if (icon) {
+collapseEl.addEventListener('show.bs.collapse', () => {
+icon.classList.remove('bi-plus');
+icon.classList.add('bi-dash');
+});
+
+collapseEl.addEventListener('hide.bs.collapse', () => {
+icon.classList.remove('bi-dash');
+icon.classList.add('bi-plus');
+});
+}
+});
+});
+	</script>
+{% endblock %}
