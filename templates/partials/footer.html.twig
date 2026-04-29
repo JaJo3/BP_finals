@@ -1,5 +1,17 @@
 {# Global Footer - Shared across all landing pages #}
-<footer class="bg-brand text-white pt-5 pb-5">
+<footer class="pt-5 pb-5" style="background-color: #1A3D7C;">
+	<style>
+		.footer-navlink {
+			color: #8CA0B5 !important;
+			transition: color 0.3s ease;
+		}
+		.footer-navlink:hover {
+			color: #FFD700 !important;
+		}
+		.footer-icon {
+			color: white !important;
+		}
+	</style>
 	<div class="container position-relative">
 		<div
 			class="row g-4 align-items-start">
@@ -11,48 +23,48 @@
 					<img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass Logo" style="width: 120px; height: auto; margin-bottom: -25px;" class="d-block">
 				</div>
 
-				<h5 class="fw-semibold mb-3" style="margin-top: -25px;">About BeatPass</h5>
-				<p class="text-white mb-3 lh-sm small" style="margin-top: -23px;">
+				<h5 class="fw-semibold mb-3 text-white" style="margin-top: -20px;">About BeatPass</h5>
+				<p class="mb-3 lh-sm small text-white opacity-75" style="margin-top: -10px;">
 					Your modern concert ticketing platform connecting artists, organizers, and music fans in one seamless experience.
 				</p>
-				<div class="d-flex gap-2" style="margin-top: -15px;">
-					<a href="#" class="btn btn-sm rounded-circle p-2 border d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #1A3D7C; border-color: rgba(255,255,255,0.4);" title="Facebook">
-						<i class="bi bi-facebook fs-6" style="color: #ffffff;"></i>
+				<div class="d-flex gap-2" style="margin-top: -10px;">
+					<a href="#" class="btn btn-sm rounded-circle p-2 d-inline-flex align-items-center justify-content-center border-0 transition-all" style="width: 36px; height: 36px; background-color: #1A3D7C;" title="Facebook" onmouseover="this.style.backgroundColor='#143063';" onmouseout="this.style.backgroundColor='#1A3D7C';">
+						<i class="bi bi-facebook fs-6 footer-icon"></i>
 					</a>
-					<a href="#" class="btn btn-sm rounded-circle p-2 border d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #1A3D7C; border-color: rgba(255,255,255,0.4);" title="Twitter">
-						<i class="bi bi-twitter fs-6" style="color: #ffffff;"></i>
+					<a href="#" class="btn btn-sm rounded-circle p-2 d-inline-flex align-items-center justify-content-center border-0 transition-all" style="width: 36px; height: 36px; background-color: #1A3D7C;" title="Twitter" onmouseover="this.style.backgroundColor='#143063';" onmouseout="this.style.backgroundColor='#1A3D7C';">
+						<i class="bi bi-twitter fs-6 footer-icon"></i>
 					</a>
-					<a href="#" class="btn btn-sm rounded-circle p-2 border d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #1A3D7C; border-color: rgba(255,255,255,0.4);" title="Instagram">
-						<i class="bi bi-instagram fs-6" style="color: #ffffff;"></i>
+					<a href="#" class="btn btn-sm rounded-circle p-2 d-inline-flex align-items-center justify-content-center border-0 transition-all" style="width: 36px; height: 36px; background-color: #1A3D7C;" title="Instagram" onmouseover="this.style.backgroundColor='#143063';" onmouseout="this.style.backgroundColor='#1A3D7C';">
+						<i class="bi bi-instagram fs-6 footer-icon"></i>
 					</a>
-					<a href="#" class="btn btn-sm rounded-circle p-2 border d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #1A3D7C; border-color: rgba(255,255,255,0.4);" title="LinkedIn">
-						<i class="bi bi-linkedin fs-6" style="color: #ffffff;"></i>
+					<a href="#" class="btn btn-sm rounded-circle p-2 d-inline-flex align-items-center justify-content-center border-0 transition-all" style="width: 36px; height: 36px; background-color: #1A3D7C;" title="LinkedIn" onmouseover="this.style.backgroundColor='#143063';" onmouseout="this.style.backgroundColor='#1A3D7C';">
+						<i class="bi bi-linkedin fs-6 footer-icon"></i>
 					</a>
 				</div>
 			</div>
 
 			{# Quick Links Column #}
 			<div class="col-lg-3 col-md-6 px-3">
-				<h5 class="fw-semibold mb-3">Quick Links</h5>
+				<h5 class="fw-semibold mb-3 text-white">Quick Links</h5>
 				<ul class="list-unstyled d-flex flex-column gap-2">
 					<li>
-						<a href="{{ path('app_landing') }}#home" class="text-white-50 text-decoration-none hover-text-warning small">
-							<i class="bi bi-chevron-right me-1 small"></i>Home
+						<a href="{{ path('app_landing') }}#home" class="text-decoration-none small footer-navlink">
+							<i class="bi bi-chevron-right me-1 small footer-icon"></i>Home
 						</a>
 					</li>
 					<li>
-						<a href="{{ path('app_events') }}" class="text-white-50 text-decoration-none hover-text-warning small">
-							<i class="bi bi-chevron-right me-1 small"></i>Browse Events
+						<a href="{{ path('app_events') }}" class="text-decoration-none small footer-navlink">
+							<i class="bi bi-chevron-right me-1 small footer-icon"></i>Browse Events
 						</a>
 					</li>
 					<li>
-						<a href="{{ path('app_about') }}" class="text-white-50 text-decoration-none hover-text-warning small">
-							<i class="bi bi-chevron-right me-1 small"></i>About Us
+						<a href="{{ path('app_about') }}" class="text-decoration-none small footer-navlink">
+							<i class="bi bi-chevron-right me-1 small footer-icon"></i>About Us
 						</a>
 					</li>
 					<li>
-						<a href="{{ path('app_contact') }}" class="text-white-50 text-decoration-none hover-text-warning small">
-							<i class="bi bi-chevron-right me-1 small"></i>Contact
+						<a href="{{ path('app_contact') }}" class="text-decoration-none small footer-navlink">
+							<i class="bi bi-chevron-right me-1 small footer-icon"></i>Contact
 						</a>
 					</li>
 				</ul>
@@ -60,26 +72,26 @@
 
 			{# Support Column #}
 			<div class="col-lg-3 col-md-6 px-3">
-				<h5 class="fw-semibold mb-3">Support</h5>
+				<h5 class="fw-semibold mb-3 text-white">Support</h5>
 				<ul class="list-unstyled d-flex flex-column gap-2">
 					<li>
-						<a href="#" class="text-white-50 text-decoration-none hover-text-warning small">
-							<i class="bi bi-chevron-right me-1 small"></i>Help Center
+						<a href="#" class="text-decoration-none small footer-navlink">
+							<i class="bi bi-chevron-right me-1 small footer-icon"></i>Help Center
 						</a>
 					</li>
 					<li>
-						<a href="#" class="text-white-50 text-decoration-none hover-text-warning small">
-							<i class="bi bi-chevron-right me-1 small"></i>FAQs
+						<a href="#" class="text-decoration-none small footer-navlink">
+							<i class="bi bi-chevron-right me-1 small footer-icon"></i>FAQs
 						</a>
 					</li>
 					<li>
-						<a href="#" class="text-white-50 text-decoration-none hover-text-warning small">
-							<i class="bi bi-chevron-right me-1 small"></i>Report Issue
+						<a href="#" class="text-decoration-none small footer-navlink">
+							<i class="bi bi-chevron-right me-1 small footer-icon"></i>Report Issue
 						</a>
 					</li>
 					<li>
-						<a href="#" class="text-white-50 text-decoration-none hover-text-warning small">
-							<i class="bi bi-chevron-right me-1 small"></i>Terms of Service
+						<a href="#" class="text-decoration-none small footer-navlink">
+							<i class="bi bi-chevron-right me-1 small footer-icon"></i>Terms of Service
 						</a>
 					</li>
 				</ul>
@@ -87,23 +99,23 @@
 
 			{# Contact Column #}
 			<div class="col-lg-3 col-md-6 px-3">
-				<h5 class="fw-semibold mb-3">Get in Touch</h5>
-				<ul class="list-unstyled small text-white-50">
+				<h5 class="fw-semibold mb-3 text-white">Get in Touch</h5>
+				<ul class="list-unstyled small text-white">
 					<li class="mb-2 d-flex align-items-start gap-2">
-						<i class="bi bi-geo-alt flex-shrink-0 mt-1" style="color: #F9B233;"></i>
-						<span>3rd Floor, Tempo Building, Perdices Street, Dumaguete City, Negros Oriental</span>
+						<i class="bi bi-geo-alt flex-shrink-0 mt-1 footer-icon"></i>
+						<span class="text-white opacity-75">3rd Floor, Tempo Building, Perdices Street, Dumaguete City, Negros Oriental</span>
 					</li>
 					<li class="mb-2 d-flex align-items-center gap-2">
-						<i class="bi bi-telephone flex-shrink-0" style="color: #F9B233;"></i>
-						<span>+63 917 654 3210</span>
+						<i class="bi bi-telephone flex-shrink-0 footer-icon"></i>
+						<span class="text-white">+63 917 654 3210</span>
 					</li>
 					<li class="mb-2 d-flex align-items-center gap-2">
-						<i class="bi bi-envelope flex-shrink-0" style="color: #F9B233;"></i>
-						<span>beatpass.ph@gmail.com</span>
+						<i class="bi bi-envelope flex-shrink-0 footer-icon"></i>
+						<span class="text-white">beatpass.ph@gmail.com</span>
 					</li>
 					<li class="mb-2 d-flex align-items-center gap-2">
-						<i class="bi bi-clock flex-shrink-0" style="color: #F9B233;"></i>
-						<span>Mon-Fri: 9AM - 6PM PHT</span>
+						<i class="bi bi-clock flex-shrink-0 footer-icon"></i>
+						<span class="text-white">Mon-Fri: 9AM - 6PM PHT</span>
 					</li>
 				</ul>
 			</div>
@@ -122,10 +134,10 @@
 				<div class="col-md-6 text-md-end">
 					<ul class="list-unstyled d-flex flex-wrap gap-3 justify-content-md-end small mb-0">
 						<li>
-							<a href="#" class="text-white-50 text-decoration-none hover-text-warning">Privacy Policy</a>
+							<a href="#" class="text-decoration-none text-white link-warning">Privacy Policy</a>
 						</li>
 						<li>
-							<a href="#" class="text-white-50 text-decoration-none hover-text-warning">Terms</a>
+							<a href="#" class="text-decoration-none text-white link-warning">Terms</a>
 						</li>
 					</ul>
 				</div>

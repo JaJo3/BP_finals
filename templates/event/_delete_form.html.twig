@@ -1,39 +1,29 @@
-<!-- Delete Button -->
-<button type="button" class="btn btn-sm btn-beatpass-delete p-1 d-inline-flex align-items-center justify-content-center rounded" style="width:32px;height:32px;font-size:12px;" data-bs-toggle="modal" data-bs-target="#deleteModal{{ event.id }}" aria-label="Delete">
-    <i class="fas fa-trash"></i>
+<button type="button" class="btn p-0 d-flex align-items-center justify-content-center rounded-3" style="width:32px;height:32px;background-color:rgba(220,53,69,0.1);color:#dc3545;" data-bs-toggle="modal" data-bs-target="#deleteModal{{ event.id }}" title="Delete" aria-label="Delete">
+	<i class="fas fa-trash fa-sm"></i>
 </button>
 
-<!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal{{ event.id }}" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
-            <div class="modal-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; padding: 20px 24px;">
-                <h5 class="modal-title" style="font-weight: 600;">
-                    <i class="fas fa-exclamation-triangle me-2" style="color: #F9B233;"></i>
-                    Confirm Delete
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="filter: brightness(0) invert(1);"></button>
-            </div>
-            <div class="modal-body text-center p-4" style="background-color: #ffffff;">
-                <div class="mb-4">
-                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);">
-                        <i class="fas fa-trash-alt fa-2x text-white"></i>
-                    </div>
-                </div>
-                <h5 class="mb-3" style="color: #1A3D7C; font-weight: 600;">Delete Event</h5>
-                <p class="text-muted mb-4" style="font-size: 1.05em;">Are you sure you want to delete the event <strong>{{ event.eventName }}</strong>? This action cannot be undone.</p>
-            </div>
-            <div class="modal-footer justify-content-center" style="border: none; padding: 24px; background-color: #f8f9fa;">
-                <button type="button" class="btn btn-outline-secondary me-3" data-bs-dismiss="modal" style="border-radius: 8px; padding: 10px 20px; font-weight: 500; border-color: #6c757d; color: #6c757d; transition: all 0.3s ease;">
-                    <i class="fas fa-times me-2"></i>Cancel
-                </button>
-                <form method="post" action="{{ path('app_event_delete', {'id': event.id}) }}" class="d-inline">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event.id) }}">
-                    <button type="submit" class="btn" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease;">
-                        <i class="fas fa-trash me-2"></i>Yes, Delete
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog modal-dialog-centered modal-sm">
+		<div class="modal-content">
+			<div class="modal-header bg-danger text-white py-2">
+				<h6 class="modal-title fw-semibold">
+					<i class="fas fa-exclamation-triangle me-2"></i>Delete Event
+				</h6>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-center py-3">
+				<p class="small mb-2">Delete
+					<strong>{{ event.eventName }}</strong>?</p>
+				<p class="text-danger small mb-0">
+					<i class="fas fa-info-circle me-1"></i>Cannot be undone.</p>
+			</div>
+			<div class="modal-footer justify-content-center py-2">
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+				<form method="post" action="{{ path('app_event_delete', {'id': event.id}) }}" class="d-inline">
+					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event.id) }}">
+					<button type="submit" class="btn btn-sm btn-danger">Delete</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>

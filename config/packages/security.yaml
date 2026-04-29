@@ -14,13 +14,30 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        api_login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                check_path: /api/login
+                username_path: username
+                password_path: password
+                # success_handler: lexik_jwt_authentication.handler.authentication_success
+                success_handler: App\Security\JWTAuthenticationSuccessHandler
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            jwt: ~
 
         main:
             lazy: true
             provider: app_user_provider
             user_checker: App\Security\UserChecker
             entry_point: form_login
-            custom_authenticator: App\Security\LoginAuthenticator
+            custom_authenticators:
+                - App\Security\LoginAuthenticator
+                - App\Security\GoogleAuthenticator
             form_login:
                 login_path: app_login
                 check_path: app_login
@@ -30,7 +47,7 @@ security:
                 # target: app_any_route
 
             remember_me:
-                secret: '%kernel.secret%'
+                secret: "%kernel.secret%"
                 lifetime: 604800
                 path: /
                 # by default, the feature is enabled by checking a checkbox in the
@@ -49,14 +66,14 @@ security:
         # IMPORTANT: Order matters! Specific rules must come BEFORE the catch-all.
         # Rules are evaluated top-to-bottom; the first match is used.
         # This prevents staff from matching the /admin catch-all which would require ROLE_ADMIN.
-        
+
         # STAFF-allowed routes (must be BEFORE ^/admin catch-all)
         - { path: ^/admin/event, roles: [ROLE_ADMIN, ROLE_STAFF] }
         - { path: ^/admin/ticket, roles: [ROLE_ADMIN, ROLE_STAFF] }
         - { path: ^/organizer, roles: [ROLE_ADMIN, ROLE_STAFF] }
         - { path: ^/admin/transaction, roles: [ROLE_ADMIN, ROLE_STAFF] }
         - { path: ^/admin/transactions, roles: [ROLE_ADMIN, ROLE_STAFF] }
-        
+
         # Allow any fully-authenticated user to access their own admin profile page
         # (placed BEFORE the admin catch-all so staff aren't blocked)
         - { path: ^/admin/profile, roles: IS_AUTHENTICATED_FULLY }
@@ -65,20 +82,26 @@ security:
         - { path: ^/user, roles: ROLE_ADMIN }
         - { path: ^/admin/logs, roles: ROLE_ADMIN }
         - { path: ^/activity, roles: ROLE_ADMIN }
-        
+
         # Admin dashboard root - ADMIN only
         - { path: ^/admin/?$, roles: ROLE_ADMIN }
-        
+
         # Catch-all for remaining /admin/* paths - requires ROLE_ADMIN
         - { path: ^/admin, roles: ROLE_ADMIN }
-        
+
         # Dashboard - authenticated users only (role check in controller)
         - { path: ^/dashboard, roles: IS_AUTHENTICATED }
-        
+
         # Public routes - no role required
+        - { path: ^/$, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/home, roles: PUBLIC_ACCESS }
-       
+        - { path: ^/api/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+
+        # email verification
+        - { path: ^/verify-email, roles: PUBLIC_ACCESS }
 
 when@test:
     security:

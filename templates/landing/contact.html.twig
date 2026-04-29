@@ -3,12 +3,12 @@
 {% block title %}Contact - BeatPass
 {% endblock %}
 
-{% block body_class %}bg-light
-{% endblock %}
+{% block body %}
+	{# HEADER #}
+	{% include 'partials/header.html.twig' %}
 
-{% block body_outer %}
 	{# MODERN HERO #}
-	<section class="contact-hero position-relative overflow-hidden" style="background: var(--brand-primary); padding-top: 100px;">
+	<section class="contact-hero position-relative overflow-hidden" style="background: #1A3D7C; padding-top: 100px;">
 		<div class="contact-hero-bg">
 			<div class="contact-hero-glow contact-hero-glow-1"></div>
 		</div>
@@ -45,13 +45,13 @@
 							class="vstack gap-3 mb-4">
 							{# Email Card #}
 							<div class="d-flex gap-3 p-3 bg-light rounded-4">
-								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 text-white" style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--brand-primary) 0%, #2d5aa8 100%);">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 text-white" style="width: 48px; height: 48px; background: linear-gradient(135deg, #1A3D7C 0%, #2d5aa8 100%);">
 									<i class="bi bi-envelope-fill fs-5"></i>
 								</div>
 								<div class="flex-grow-1">
 									<h4 class="h6 fw-semibold text-dark mb-1">Email Us</h4>
 									<p class="text-secondary small mb-1">beatpass.ph@gmail.com</p>
-									<a href="mailto:beatpass.ph@gmail.com" class="text-decoration-none fw-medium d-inline-flex align-items-center gap-1" style="color: var(--brand-primary);">
+									<a href="mailto:beatpass.ph@gmail.com" class="text-decoration-none fw-medium d-inline-flex align-items-center gap-1" style="color: #1A3D7C;">
 										Send email<i class="bi bi-arrow-up-right small"></i>
 									</a>
 								</div>
@@ -108,7 +108,7 @@
 					<div class="card border-0 rounded-4 shadow-sm p-4 fade-up js-reveal" data-delay="100ms" style="background: white; box-shadow: 0 2px 4px rgba(26, 61, 124, 0.02), 0 8px 24px rgba(26, 61, 124, 0.08) !important;">
 						<div class="mb-4 pb-3" style="border-bottom: 1px solid rgba(26, 61, 124, 0.08);">
 							<div class="d-flex align-items-center gap-2 mb-2">
-								<div style="width: 4px; height: 20px; background: linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-accent) 100%); border-radius: 2px;"></div>
+								<div style="width: 4px; height: 20px; background: linear-gradient(180deg, #1A3D7C 0%, #F9B233 100%); border-radius: 2px;"></div>
 								<h2 class="h4 fw-bold text-dark mb-0">Send a Message</h2>
 							</div>
 							<p class="text-secondary mb-0">Fill out the form below and we'll get back to you as soon as possible.</p>
@@ -169,7 +169,7 @@
 							{% endif %}
 						</div>
 
-						<button type="submit" class="btn btn-primary btn-lg d-inline-flex align-items-center justify-content-center gap-2 px-4 py-3 fw-semibold" style="background: linear-gradient(135deg, var(--brand-primary) 0%, #234b94 100%); border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(26, 61, 124, 0.25);">
+						<button type="submit" class="btn btn-primary btn-lg d-inline-flex align-items-center justify-content-center gap-2 px-4 py-3 fw-semibold" style="background: linear-gradient(135deg, #1A3D7C 0%, #234b94 100%); border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(26, 61, 124, 0.25);">
 							<span>Send Message</span>
 							<i class="bi bi-send-fill"></i>
 						</button>
@@ -184,14 +184,11 @@
 				</div>
 			</div>
 		</div>
-	</section>
-
-	{# FAQ SECTION #}
-	<section class="py-5 bg-white">
+	</section>{# FAQ SECTION #}<section class="py-5 bg-white">
 		<div class="container py-5">
 			<div class="row justify-content-center mb-5">
 				<div class="col-lg-8 text-center">
-					<h2 class="display-5 fw-bold text-uppercase ls-1 fade-up js-reveal" style="color: var(--brand-primary);">FAQ</h2>
+					<h2 class="display-5 fw-bold text-uppercase ls-1 fade-up js-reveal" style="color: #1A3D7C;">FAQ</h2>
 				</div>
 			</div>
 			<div class="row justify-content-center">
@@ -202,7 +199,7 @@
 						<div class="fade-up js-reveal border-bottom">
 							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">
 								<span class="me-3">Are VIP experiences available during pre-sale?</span>
-								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: #1A3D7C;"></i>
 							</button>
 							<div id="faq1" class="collapse" data-bs-parent="#faqAccordion">
 								<div class="p-4 text-secondary bg-light">
@@ -215,7 +212,7 @@
 						<div class="fade-up js-reveal border-bottom">
 							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
 								<span class="me-3">How do I purchase a VIP experience?</span>
-								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: #1A3D7C;"></i>
 							</button>
 							<div id="faq2" class="collapse" data-bs-parent="#faqAccordion">
 								<div class="p-4 text-secondary bg-light">
@@ -228,7 +225,7 @@
 						<div class="fade-up js-reveal border-bottom">
 							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
 								<span class="me-3">Are tickets always included in the VIP experiences?</span>
-								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: #1A3D7C;"></i>
 							</button>
 							<div id="faq3" class="collapse" data-bs-parent="#faqAccordion">
 								<div class="p-4 text-secondary bg-light">
@@ -241,7 +238,7 @@
 						<div class="fade-up js-reveal border-bottom">
 							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
 								<span class="me-3">How do I receive my inclusions/gifts?</span>
-								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: #1A3D7C;"></i>
 							</button>
 							<div id="faq4" class="collapse" data-bs-parent="#faqAccordion">
 								<div class="p-4 text-secondary bg-light">
@@ -254,7 +251,7 @@
 						<div class="fade-up js-reveal border-bottom">
 							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
 								<span class="me-3">What will happen if I am late?</span>
-								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: #1A3D7C;"></i>
 							</button>
 							<div id="faq5" class="collapse" data-bs-parent="#faqAccordion">
 								<div class="p-4 text-secondary bg-light">
@@ -267,7 +264,7 @@
 						<div class="fade-up js-reveal border-bottom">
 							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq6" aria-expanded="false" aria-controls="faq6">
 								<span class="me-3">Why does the same VIP experience have a different price in different cities?</span>
-								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: #1A3D7C;"></i>
 							</button>
 							<div id="faq6" class="collapse" data-bs-parent="#faqAccordion">
 								<div class="p-4 text-secondary bg-light">
@@ -280,7 +277,7 @@
 						<div class="fade-up js-reveal border-bottom">
 							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq7" aria-expanded="false" aria-controls="faq7">
 								<span class="me-3">Does the commemorative laminate get me backstage?</span>
-								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: #1A3D7C;"></i>
 							</button>
 							<div id="faq7" class="collapse" data-bs-parent="#faqAccordion">
 								<div class="p-4 text-secondary bg-light">
@@ -293,7 +290,7 @@
 						<div class="fade-up js-reveal border-bottom">
 							<button class="btn btn-link text-decoration-none text-start text-dark w-100 d-flex align-items-center justify-content-between p-4 text-uppercase small fw-semibold ls-1 bg-transparent" style="letter-spacing: 0.02em;" type="button" data-bs-toggle="collapse" data-bs-target="#faq8" aria-expanded="false" aria-controls="faq8">
 								<span class="me-3">Are children and teens allowed to purchase early entry tickets?</span>
-								<i class="bi bi-plus fs-3 transition-rotate" style="color: var(--brand-primary);"></i>
+								<i class="bi bi-plus fs-3 transition-rotate" style="color: #1A3D7C;"></i>
 							</button>
 							<div id="faq8" class="collapse" data-bs-parent="#faqAccordion">
 								<div class="p-4 text-secondary bg-light">
@@ -305,15 +302,11 @@
 				</div>
 			</div>
 		</div>
-	</section>
-
-	{# MAP SECTION - Hidden #}
-	<section class="d-none">
+	</section>{# MAP SECTION - Hidden #}<section class="d-none">
 		<div class="w-100 h-100">
 			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3933.0!2d123.3!3d9.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33ab1904b0000001%3A0x0!2zOSsxOCdS!5e0!3m2!1sen!2sph!4v1" width="100%" height="100%" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 		</div>
 	</section>
-
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
 const faqAccordion = document.getElementById('faqAccordion');
@@ -321,18 +314,17 @@ if (! faqAccordion)
 return;
 
 
+
 faqAccordion.querySelectorAll('.collapse').forEach(collapseEl => {
 const button = document.querySelector (`[data-bs-target="#${
 collapseEl.id
 }"]`);
 const icon = button ?. querySelector('i.bi-plus, i.bi-dash');
-
 if (icon) {
 collapseEl.addEventListener('show.bs.collapse', () => {
 icon.classList.remove('bi-plus');
 icon.classList.add('bi-dash');
 });
-
 collapseEl.addEventListener('hide.bs.collapse', () => {
 icon.classList.remove('bi-dash');
 icon.classList.add('bi-plus');
@@ -341,4 +333,7 @@ icon.classList.add('bi-plus');
 });
 });
 	</script>
+
+	{# FOOTER #}
+	{% include 'partials/footer.html.twig' %}
 {% endblock %}

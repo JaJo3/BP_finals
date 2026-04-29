@@ -7,7 +7,7 @@
 	{# Ensure role/user flags are available even if not passed explicitly #}
 	{% set isAdmin = isAdmin is defined ? isAdmin : is_granted('ROLE_ADMIN') %}
 	{% set currentUserId = currentUserId is defined ? currentUserId : (app.user ? app.user.id : null) %}
-	<div class="content-wrapper">
+	<div class="content-wrapper content-wrapper--events pt-0">
 		{% if organizer is defined %}
 			<!-- Breadcrumb Navigation -->
 			<nav aria-label="breadcrumb" class="mb-3">
@@ -29,9 +29,9 @@
 			</nav>
 		{% endif %}
 
-		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h1 class="h3 mb-0" style="color: #1A3D7C; font-weight: 700;">
-				<i class="fas fa-calendar-alt me-2" style="color: #F9B233;"></i>
+		<div class="d-flex justify-content-between align-items-center mb-2">
+			<h1 class="h5 mb-0" style="color: #1A3D7C;">
+				<i class="fas fa-calendar-alt me-2 text-warning"></i>
 				{% if organizer is defined %}
 					Events by
 					{{ organizer.orgName }}
@@ -39,31 +39,39 @@
 					Event Management
 				{% endif %}
 			</h1>
-			<a href="{{ path('app_event_new', organizer is defined ? {'organizer': organizer.id} : {}) }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.15s ease;" onmouseover="this.style.backgroundColor='#15305A'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(26, 61, 124, 0.3)'" onmouseout="this.style.backgroundColor='#1A3D7C'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(26, 61, 124, 0.2)'">
-				<i class="fas fa-plus-circle me-2"></i>New Event
+			<a href="{{ path('app_event_new', organizer is defined ? {'organizer': organizer.id} : {}) }}" class="btn btn-sm btn-primary">
+				<i class="fas fa-plus-circle me-1"></i>New Event
 			</a>
 		</div>
 
 		<!-- Events Table -->
-		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
-			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
-				<h3 class="card-title mb-0" style="font-weight: 600;">
-					<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Events
-					<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ events|length }}</span>
-				</h3>
+		<div class="card shadow-sm border-0">
+			<div class="card-header bg-primary text-white d-flex align-items-center justify-content-between py-2">
+				<div class="d-flex align-items-center">
+					<h6 class="card-title mb-0 fw-semibold">
+						<i class="fas fa-list me-2 text-warning"></i>All Events
+					</h6>
+				</div>
+				<span class="badge bg-warning text-dark fw-bold">{{ events|length }}
+					items</span>
+			</div>
+			<div class="px-3 py-2 d-flex flex-wrap align-items-center gap-2 bg-light border-bottom">
+				<div class="form-check form-switch m-0 d-flex align-items-center gap-2 ms-auto">
+					<input class="form-check-input m-0" type="checkbox" id="toggleEventsActions" role="switch" aria-label="Show actions column">
+					<label class="form-check-label small text-muted" for="toggleEventsActions" style="user-select:none;">Show actions</label>
+				</div>
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
-					<table id="eventsTable" class="table table-sm small table-hover beatpass-table mb-0 display responsive nowrap" style="width:100%; table-layout: fixed;">
-						<thead style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+					<table id="eventsTable" class="table table-sm table-hover beatpass-table mb-0">
+						<thead class="table-light">
 							<tr>
-								{# <th class="col-poster text-nowrap small fw-bold text-uppercase py-1 px-2">Poster</th> #}
-								<th class="col-name text-nowrap small fw-bold text-uppercase py-1 px-2">Name</th>
-								<th class="col-organizer text-nowrap small fw-bold text-uppercase py-1 px-2">Organizer</th>
-								<th class="col-date text-nowrap small fw-bold text-uppercase py-1 px-2">Date</th>
-								<th class="col-venue text-nowrap small fw-bold text-uppercase py-1 px-2">Venue</th>
-								<th class="col-status text-nowrap small fw-bold text-uppercase py-1 px-2">Status</th>
-								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center">Actions</th>
+								<th class="col-name text-nowrap small fw-semibold text-uppercase py-1 px-2">Name</th>
+								<th class="col-organizer text-nowrap small fw-semibold text-uppercase py-1 px-2">Organizer</th>
+								<th class="col-date text-nowrap small fw-semibold text-uppercase py-1 px-2">Date</th>
+								<th class="col-venue text-nowrap small fw-semibold text-uppercase py-1 px-2">Venue</th>
+								<th class="col-status text-nowrap small fw-semibold text-uppercase py-1 px-2">Status</th>
+								<th class="actions text-nowrap small fw-semibold text-uppercase py-1 px-2 text-center d-none">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -80,40 +88,39 @@
 									{% endif %}
 								{% endif %}
 								<tr>
-									{# <td class="col-poster align-middle">
-																		{% if event.poster %}
-																			<img src="{{ event.poster }}" alt="Poster" style="width:32px;height:32px;object-fit:cover;border-radius:6px;" class="me-2">
-																		{% else %}
-																			<div style="width:32px;height:32px;background:#e9ecef;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;color:#6c757d;"><i class="fas fa-image"></i></div>
-																			{% endif %}
-																		</td> #}
-									<td class="col-name align-middle text-truncate py-1 px-2" style="max-width: 28ch;">
-										<strong class="text-nowrap" style="color: #1A3D7C;">{{ event.eventName }}</strong>
+									<td class="col-name align-middle text-truncate py-1 px-2">
+										<span class="fw-semibold small">{{ event.eventName }}</span>
 									</td>
 									<td class="col-organizer align-middle text-truncate py-1 px-2">
-										{{ event.organizer ? event.organizer.orgName : '—' }}
+										<span class="small">{{ event.organizer ? event.organizer.orgName : '—' }}</span>
 									</td>
 									<td class="col-date align-middle text-truncate py-1 px-2">
-										{{ event.date ? event.date|date('M d, Y g:i A') : 'TBA' }}
+										<span class="small">{{ event.date ? event.date|date('M d, Y g:i A') : 'TBA' }}</span>
 									</td>
 									<td class="col-venue align-middle text-truncate py-1 px-2">
-										{{ event.venue }}
+										<span class="small">{{ event.venue }}</span>
 									</td>
 									<td class="col-status align-middle text-center py-1 px-2">
-										<span class="small fw-semibold {% if event.status == 'Active' %}text-success{% else %}text-muted{% endif %}">{{ event.status }}</span>
+										{% set statusBadgeClass = 'bg-secondary' %}
+										{% if event.status == 'Active' %}
+											{% set statusBadgeClass = 'bg-success' %}
+										{% elseif event.status == 'Cancelled' %}
+											{% set statusBadgeClass = 'bg-danger' %}
+										{% endif %}
+										<span class="badge {{ statusBadgeClass }} small">{{ event.status }}</span>
 									</td>
-									<td class="actions text-center align-middle py-1 px-2">
-										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
-											<a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded" style="width:32px;height:32px;font-size:12px;" title="View" aria-label="View">
-												<i class="fas fa-eye"></i>
+									<td class="actions text-center align-middle py-1 px-2 d-none">
+										<div class="d-inline-flex align-items-center gap-2">
+											<a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn p-0 d-flex align-items-center justify-content-center rounded-3" style="width:32px;height:32px;background-color:rgba(26,61,124,0.1);color:#1A3D7C;" title="View">
+												<i class="fas fa-eye fa-sm"></i>
 											</a>
 											{% if isAdmin or (currentUserId and event.createdBy and event.createdBy.id == currentUserId) %}
-												<a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-sm btn-beatpass-edit p-1 d-inline-flex align-items-center justify-content-center rounded" style="width:32px;height:32px;font-size:12px;" title="Edit" aria-label="Edit">
-													<i class="fas fa-edit"></i>
+												<a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn p-0 d-flex align-items-center justify-content-center rounded-3" style="width:32px;height:32px;background-color:rgba(249,178,51,0.15);color:#F9B233;" title="Edit">
+													<i class="fas fa-edit fa-sm"></i>
 												</a>
 											{% endif %}
-											<a href="{{ path('app_event_tickets', {'eventId': event.id}) }}" class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded" style="width:32px;height:32px;font-size:12px;" title="Tickets" aria-label="Tickets">
-												<i class="fas fa-ticket-alt"></i>
+											<a href="{{ path('app_event_tickets', {'eventId': event.id}) }}" class="btn p-0 d-flex align-items-center justify-content-center rounded-3" style="width:32px;height:32px;background-color:rgba(13,202,240,0.1);color:#0dcaf0;" title="Tickets">
+												<i class="fas fa-ticket-alt fa-sm"></i>
 											</a>
 											{% if isAdmin or (currentUserId and event.createdBy and event.createdBy.id == currentUserId) %}
 												{% include 'event/_delete_form.html.twig' with {'event': event} %}
@@ -123,15 +130,15 @@
 								</tr>
 							{% else %}
 								<tr>
-									<td colspan="7" class="text-center py-5" style="background-color: #ffffff;">
-										<div class="text-muted py-5">
-											<div style="width: 120px; height: 120px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-												<i class="fas fa-calendar-alt fa-3x" style="color: #1A3D7C; opacity: 0.6;"></i>
+									<td colspan="6" class="text-center py-4">
+										<div class="text-muted">
+											<div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 64px; height: 64px;">
+												<i class="fas fa-calendar-alt fa-2x text-primary opacity-50"></i>
 											</div>
-											<h5 style="color: #1A3D7C; font-weight: 600; margin-bottom: 12px;">No events found</h5>
-											<p style="color: #6c757d; font-size: 1.05em; margin-bottom: 24px;">Try adjusting your filters or create a new event.</p>
-											<a href="{{ path('app_event_new', organizer is defined ? {'organizer': organizer.id} : {}) }}" class="btn btn-sm" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
-												<i class="fas fa-plus me-2"></i>Create First Event
+											<h6 class="text-primary fw-semibold mb-1">No events found</h6>
+											<p class="text-muted small mb-2">Try adjusting your filters or create a new event.</p>
+											<a href="{{ path('app_event_new', organizer is defined ? {'organizer': organizer.id} : {}) }}" class="btn btn-sm btn-primary">
+												<i class="fas fa-plus me-1"></i>Create First Event
 											</a>
 										</div>
 									</td>
@@ -153,14 +160,21 @@
 	{{ parent() }}
 	<script>
 		(function ($) {
-$(document).ready(function () { // Only initialize DataTable if there are actual data rows (not empty state)
+function initEventsTable() {
 var tableBody = $('#eventsTable tbody');
 var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
+if (! hasDataRows) 
+return;
 
-if (hasDataRows) {
-$('#eventsTable').DataTable({
+
+
+if ($.fn.DataTable.isDataTable('#eventsTable')) {
+$('#eventsTable').DataTable().destroy();
+}
+
+var dt = $('#eventsTable').DataTable({
 responsive: true,
-dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+dom: "<'row g-0'<'col-auto'l><'col-auto ms-auto'f>><'row'<'col-sm-12'tr>><'row g-0 small'<'col-auto'i><'col-auto ms-auto'p>>",
 pageLength: 10,
 lengthMenu: [
 [
@@ -179,14 +193,67 @@ scrollX: false,
 columnDefs: [
 {
 orderable: false,
-targets: -1
-}, {
 searchable: false,
 targets: -1
 }
 ]
 });
+
+function setActionsVisible(visible) {
+$('#eventsTable thead th.actions, #eventsTable tbody td.actions').toggleClass('d-none', ! visible);
+try {
+localStorage.setItem('events.showActions', visible ? '1' : '0');
+} catch (e) {}
 }
+
+try {
+var stored = localStorage.getItem('events.showActions');
+var initialVisible = stored === '1';
+$('#toggleEventsActions').prop('checked', initialVisible);
+setActionsVisible(initialVisible);
+} catch (e) {
+setActionsVisible(false);
+}
+
+$('#toggleEventsActions').off('change').on('change', function () {
+setActionsVisible($(this).is(':checked'));
+});
+
+dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
+setActionsVisible($('#toggleEventsActions').is(':checked'));
+});
+}
+
+// Flag to prevent multiple initializations
+var eventsTableInitialized = false;
+
+function safeInitEventsTable() {
+if (eventsTableInitialized) 
+return;
+
+
+eventsTableInitialized = true;
+setTimeout(function () {
+initEventsTable();
+}, 0);
+}
+
+$(document).ready(safeInitEventsTable);
+
+document.addEventListener('turbo:load', function () {
+eventsTableInitialized = false;
+if (window.jQuery) 
+safeInitEventsTable();
+
+
+});
+
+// Clean up before Turbo caches the page
+document.addEventListener('turbo:before-cache', function () {
+if ($.fn.DataTable.isDataTable('#eventsTable')) {
+$('#eventsTable').DataTable().destroy();
+}
+eventsTableInitialized = false;
 });
 })(jQuery);
 	</script>

@@ -4,42 +4,49 @@
 {% endblock %}
 
 {% block body %}
-	<div class="content-wrapper">
-		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h1 class="h3 mb-0" style="color: #1A3D7C; font-weight: 700;">
-				<i class="fas fa-user me-2" style="color: #F9B233;"></i>
-				User Management
+	<div class="content-wrapper content-wrapper--users pt-0">
+		<div class="d-flex justify-content-between align-items-center mb-2">
+			<h1 class="h5 mb-0" style="color: #1A3D7C;">
+				<i class="fas fa-user me-2 text-warning"></i>User Management
 			</h1>
-			<a href="{{ path('app_user_new') }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
+			<a href="{{ path('app_user_new') }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C;">
 				<i class="fas fa-plus-circle me-2"></i>New User
 			</a>
 		</div>
 
-		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
-			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
-				<h3 class="card-title mb-0 d-flex align-items-center" style="font-weight: 600;">
-					<i class="fas fa-list me-2" style="color: #F9B233;"></i>
-					All Users
-					<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ users|length }}</span>
-				</h3>
+		<div class="card shadow-sm">
+			<div class="card-header d-flex align-items-center justify-content-between py-2" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+				<div class="d-flex align-items-center">
+					<h3 class="card-title mb-0" style="font-weight: 600; font-size: 1rem;">
+						<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Users
+					</h3>
+				</div>
+				<span class="badge bg-warning text-dark fw-bold">{{ users|length }}
+					items</span>
+			</div>
+			<div class="px-3 py-2 d-flex flex-wrap align-items-center gap-2 bg-light border-bottom">
+				<div class="form-check form-switch m-0 d-flex align-items-center gap-2 ms-auto">
+					<input class="form-check-input m-0" type="checkbox" id="toggleUsersActions" role="switch" aria-label="Show actions column">
+					<label class="form-check-label small text-muted" for="toggleUsersActions" style="user-select:none;">Show actions</label>
+				</div>
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
-					<table id="usersTable" class="table table-sm small table-hover beatpass-table mb-0 display responsive nowrap" style="width:100%; table-layout: fixed;">
-						<thead style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+					<table id="usersTable" class="table table-sm table-hover beatpass-table mb-0">
+						<thead class="table-light">
 							<tr>
-								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2">NAME</th>
-								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2">ROLE</th>
-								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2">EMAIL</th>
-								<th class="text-nowrap small fw-bold text-uppercase py-1 px-2">DATE CREATED</th>
-								<th class="text-center text-nowrap small fw-bold text-uppercase py-1 px-2">ACTIONS</th>
+								<th class="text-nowrap small fw-semibold text-uppercase py-1 px-2">Name</th>
+								<th class="text-nowrap small fw-semibold text-uppercase py-1 px-2">Role</th>
+								<th class="text-nowrap small fw-semibold text-uppercase py-1 px-2">Email</th>
+								<th class="text-nowrap small fw-semibold text-uppercase py-1 px-2">Date Created</th>
+								<th class="text-center text-nowrap small fw-semibold text-uppercase py-1 px-2 d-none">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for user in users %}
 								<tr>
-									<td class="align-middle py-1 px-2 fw-semibold" style="color: #15305A;">
-										{{ user.getFullName ? user.getFullName() : (user.firstName ~ ' ' ~ user.lastName) }}
+									<td class="align-middle py-1 px-2">
+										<span class="fw-semibold small">{{ user.getFullName ? user.getFullName() : (user.firstName ~ ' ' ~ user.lastName) }}</span>
 									</td>
 									<td class="align-middle py-1 px-2">
 										{% if 'ROLE_ADMIN' in user.roles %}
@@ -50,15 +57,19 @@
 											<div class="small text-muted fw-semibold">User</div>
 										{% endif %}
 									</td>
-									<td class="align-middle py-1 px-2 text-truncate" style="max-width:28ch">{{ user.email|default('—') }}</td>
-									<td class="align-middle py-1 px-2">{{ user.createdAt ? user.createdAt|date('Y-m-d H:i') : '—' }}</td>
-									<td class="text-center align-middle py-1 px-2">
-										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
-											<a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded" title="View" style="width:32px;height:32px;font-size:12px;">
-												<i class="fas fa-eye"></i>
+									<td class="align-middle py-1 px-2 text-truncate">
+										<span class="small">{{ user.email|default('—') }}</span>
+									</td>
+									<td class="align-middle py-1 px-2">
+										<span class="small">{{ user.createdAt ? user.createdAt|date('Y-m-d H:i') : '—' }}</span>
+									</td>
+									<td class="text-center align-middle py-1 px-2 d-none">
+										<div class="d-inline-flex align-items-center gap-2">
+											<a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn p-0 d-flex align-items-center justify-content-center rounded-3" title="View" style="width:32px;height:32px;background-color:rgba(26,61,124,0.1);color:#1A3D7C;">
+												<i class="fas fa-eye fa-sm"></i>
 											</a>
-											<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-beatpass-edit p-1 d-inline-flex align-items-center justify-content-center rounded" title="Edit" style="width:32px;height:32px;font-size:12px;">
-												<i class="fas fa-edit"></i>
+											<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn p-0 d-flex align-items-center justify-content-center rounded-3" title="Edit" style="width:32px;height:32px;background-color:rgba(249,178,51,0.15);color:#F9B233;">
+												<i class="fas fa-edit fa-sm"></i>
 											</a>
 											{% include 'user/_delete_form.html.twig' with {'user': user} %}
 										</div>
@@ -66,11 +77,14 @@
 								</tr>
 							{% else %}
 								<tr>
-									<td colspan="6" class="text-center py-5" style="background-color: #ffffff;">
-										<div class="text-muted py-5">
-											<h5 style="color: #1A3D7C; font-weight: 600; margin-bottom: 12px;">No users found</h5>
-											<p style="color: #6c757d;">Create a new user to get started.</p>
-											<a href="{{ path('app_user_new') }}" class="btn btn-sm" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
+									<td colspan="6" class="text-center py-4">
+										<div class="text-muted">
+											<div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 64px; height: 64px;">
+												<i class="fas fa-user fa-2x text-primary opacity-50"></i>
+											</div>
+											<h6 class="text-primary fw-semibold mb-1">No users found</h6>
+											<p class="text-muted small mb-2">Create a new user to get started.</p>
+											<a href="{{ path('app_user_new') }}" class="btn btn-sm btn-primary">
 												<i class="fas fa-plus me-2"></i>Create User
 											</a>
 										</div>
@@ -90,9 +104,9 @@
 	<script>
 		(function ($) {
 $(document).ready(function () {
-$('#usersTable').DataTable({
+var dt = $('#usersTable').DataTable({
 responsive: true,
-dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+dom: "<'row g-0'<'col-auto'l><'col-auto ms-auto'f>><'row'<'col-sm-12'tr>><'row g-0 small'<'col-auto'i><'col-auto ms-auto'p>>",
 pageLength: 10,
 lengthMenu: [
 [
@@ -106,15 +120,39 @@ language: {
 search: '',
 searchPlaceholder: 'Search users...'
 },
+autoWidth: true,
+scrollX: false,
 columnDefs: [
 {
 orderable: false,
-targets: -1
-}, {
 searchable: false,
 targets: -1
 }
 ]
+});
+
+function setActionsVisible(visible) {
+$('#usersTable thead th:last-child, #usersTable tbody td:last-child').toggleClass('d-none', ! visible);
+try {
+localStorage.setItem('users.showActions', visible ? '1' : '0');
+} catch (e) {}
+}
+
+try {
+var stored = localStorage.getItem('users.showActions');
+var initialVisible = stored === '1';
+$('#toggleUsersActions').prop('checked', initialVisible);
+setActionsVisible(initialVisible);
+} catch (e) {
+setActionsVisible(false);
+}
+
+$('#toggleUsersActions').off('change').on('change', function () {
+setActionsVisible($(this).is(':checked'));
+});
+
+dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
+setActionsVisible($('#toggleUsersActions').is(':checked'));
 });
 });
 })(jQuery);

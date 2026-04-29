@@ -61,7 +61,10 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
             if (method_exists($user, 'getIsActive') && !$user->getIsActive()) {
                 throw new CustomUserMessageAuthenticationException('Your account has been disabled.');
             }
-
+             // Check if user's email is verified (skip for admin users)
+            if (method_exists($user, 'isVerified') && !$user->isVerified() && !in_array('ROLE_ADMIN', $user->getRoles())) {
+                throw new CustomUserMessageAuthenticationException('Please verify your email address before logging in. Check your inbox for the verification link.');
+            }
             return $user;
         });
 
@@ -92,6 +95,9 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         } else {
             return new RedirectResponse($this->urlGenerator->generate('app_home'));
         }
+         // Regular users (ROLE_USER only) always go to landing page
+        // Never redirect regular users to admin pages
+        return new RedirectResponse($this->urlGenerator->generate('app_landing'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response

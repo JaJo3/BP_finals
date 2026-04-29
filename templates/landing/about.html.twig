@@ -3,13 +3,13 @@
 {% block title %}About - BeatPass
 {% endblock %}
 
-{% block body_class %}bg-light
-{% endblock %}
+{% block body %}
 
-{% block body_outer %}
+	{# HEADER #}
+	{% include 'partials/header.html.twig' %}
 	{# HERO SECTION - MODERN DARK DESIGN #}
 	<section
-		class="about-hero position-relative overflow-hidden" style="background: var(--brand-primary); padding-top: 100px;">
+		class="about-hero position-relative overflow-hidden" style="background: #1A3D7C; padding-top: 100px;">
 		{# Background Gradient #}
 		<div class="about-hero-bg">
 			<div class="about-hero-glow about-hero-glow-1"></div>
@@ -43,7 +43,7 @@
 							{# Feature 1 #}
 							<div class="col-6 feature-animate">
 								<div class="d-flex align-items-start gap-2">
-									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: var(--brand-primary);">1</div>
+									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: #1A3D7C;">1</div>
 									<div>
 										<h6 class="fw-semibold mb-1 text-white fs-6">Seamless Ticketing</h6>
 										<p class="mb-0 text-white-50 small lh-sm">Real-time updates & secure payments</p>
@@ -54,7 +54,7 @@
 							{# Feature 2 #}
 							<div class="col-6 feature-animate">
 								<div class="d-flex align-items-start gap-2">
-									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: var(--brand-primary);">2</div>
+									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: #1A3D7C;">2</div>
 									<div>
 										<h6 class="fw-semibold mb-1 text-white fs-6">Trusted Platform</h6>
 										<p class="mb-0 text-white-50 small lh-sm">Industry-leading security</p>
@@ -65,7 +65,7 @@
 							{# Feature 3 #}
 							<div class="col-6 feature-animate">
 								<div class="d-flex align-items-start gap-2">
-									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: var(--brand-primary);">3</div>
+									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: #1A3D7C;">3</div>
 									<div>
 										<h6 class="fw-semibold mb-1 text-white fs-6">Community Focused</h6>
 										<p class="mb-0 text-white-50 small lh-sm">Building lasting connections</p>
@@ -76,7 +76,7 @@
 							{# Feature 4 #}
 							<div class="col-6 feature-animate">
 								<div class="d-flex align-items-start gap-2">
-									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: var(--brand-primary);">4</div>
+									<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-2 bg-warning fw-bold fs-6" style="width: 32px; height: 32px; color: #1A3D7C;">4</div>
 									<div>
 										<h6 class="fw-semibold mb-1 text-white fs-6">24/7 Support</h6>
 										<p class="mb-0 text-white-50 small lh-sm">Always here to help you</p>
@@ -86,7 +86,7 @@
 						</div>
 
 						{# CTA BUTTON #}
-						<a href="#mission" class="btn px-4 py-2 fw-semibold bg-warning rounded-2" style="color: var(--brand-primary);">
+						<a href="#mission" class="btn px-4 py-2 fw-semibold bg-warning rounded-2" style="color: #1A3D7C;">
 							Learn Our Mission
 							<i class="bi bi-arrow-down ms-2"></i>
 						</a>
@@ -136,7 +136,7 @@
 			<div class="row justify-content-center">
 				<div class="col-lg-8 text-center">
 					<div class="fade-up js-reveal">
-						<span class="badge rounded-pill px-3 py-2 text-white mb-3" style="background: var(--brand-primary);">Our Mission</span>
+						<span class="badge rounded-pill px-3 py-2 text-white mb-3" style="background: #1A3D7C;">Our Mission</span>
 						<h2 class="display-5 fw-bold text-dark mb-3">Making every event accessible, one ticket at a time</h2>
 						<p class="fs-5 text-secondary lh-lg">We believe that live experiences bring people together and create lasting memories. Our platform bridges the gap between event organizers and attendees, ensuring smooth transactions, transparent pricing, and exceptional support every step of the way.</p>
 					</div>
@@ -151,7 +151,7 @@
 			<div class="row g-4 fade-up js-reveal">
 				<div class="col-6 col-md-3">
 					<div class="text-center p-3 bg-light rounded-4">
-						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: var(--brand-primary);">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: #1A3D7C;">
 							<i class="bi bi-ticket-perforated"></i>
 						</div>
 						<div class="fs-2 fw-bold text-dark">50K+</div>
@@ -160,7 +160,7 @@
 				</div>
 				<div class="col-6 col-md-3">
 					<div class="text-center p-3 bg-light rounded-4">
-						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: var(--brand-primary);">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: #1A3D7C;">
 							<i class="bi bi-calendar-event"></i>
 						</div>
 						<div class="fs-2 fw-bold text-dark">500+</div>
@@ -169,7 +169,7 @@
 				</div>
 				<div class="col-6 col-md-3">
 					<div class="text-center p-3 bg-light rounded-4">
-						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: var(--brand-primary);">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: #1A3D7C;">
 							<i class="bi bi-buildings"></i>
 						</div>
 						<div class="fs-2 fw-bold text-dark">200+</div>
@@ -178,7 +178,7 @@
 				</div>
 				<div class="col-6 col-md-3">
 					<div class="text-center p-3 bg-light rounded-4">
-						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: var(--brand-primary);">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mx-auto mb-2" style="width: 48px; height: 48px; background: #1A3D7C;">
 							<i class="bi bi-star-fill"></i>
 						</div>
 						<div class="fs-2 fw-bold text-dark">4.9</div>
@@ -201,7 +201,7 @@
 			<div class="row g-4">
 				<div class="col-md-6 col-lg-4 fade-up js-reveal" data-delay="0ms">
 					<div class="card h-100 border-0 bg-light rounded-4 p-3">
-						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mb-3" style="width: 44px; height: 44px; background: var(--brand-primary);">
+						<div class="d-flex align-items-center justify-content-center rounded-3 text-white fs-4 mb-3" style="width: 44px; height: 44px; background: #1A3D7C;">
 							<i class="bi bi-shield-check"></i>
 						</div>
 						<h4 class="h5 fw-semibold text-dark mb-2">Trust & Security</h4>
@@ -263,13 +263,13 @@
 			<div class="row align-items-center g-5">
 				<div class="col-lg-6">
 					<div class="fade-up js-reveal">
-						<span class="badge rounded-pill px-3 py-2 text-white mb-3" style="background: var(--brand-primary);">Why Choose BeatPass</span>
+						<span class="badge rounded-pill px-3 py-2 text-white mb-3" style="background: #1A3D7C;">Why Choose BeatPass</span>
 						<h2 class="display-6 fw-bold text-dark mb-3">Everything you need for perfect events</h2>
 						<p class="fs-5 text-secondary mb-4">Powerful features designed for both event organizers and attendees</p>
 
 						<div class="vstack gap-3">
 							<div class="d-flex gap-3 align-items-start p-3 rounded-3 transition-all hover-shadow">
-								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,var(--brand-accent) 0%,#ffc84d 100%); color: var(--brand-primary);">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,#F9B233 0%,#ffc84d 100%); color: #1A3D7C;">
 									<i class="bi bi-ticket-detailed"></i>
 								</div>
 								<div>
@@ -278,7 +278,7 @@
 								</div>
 							</div>
 							<div class="d-flex gap-3 align-items-start p-3 rounded-3 transition-all hover-shadow">
-								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,var(--brand-accent) 0%,#ffc84d 100%); color: var(--brand-primary);">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,#F9B233 0%,#ffc84d 100%); color: #1A3D7C;">
 									<i class="bi bi-credit-card"></i>
 								</div>
 								<div>
@@ -287,7 +287,7 @@
 								</div>
 							</div>
 							<div class="d-flex gap-3 align-items-start p-3 rounded-3 transition-all hover-shadow">
-								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,var(--brand-accent) 0%,#ffc84d 100%); color: var(--brand-primary);">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,#F9B233 0%,#ffc84d 100%); color: #1A3D7C;">
 									<i class="bi bi-graph-up-arrow"></i>
 								</div>
 								<div>
@@ -296,7 +296,7 @@
 								</div>
 							</div>
 							<div class="d-flex gap-3 align-items-start p-3 rounded-3 transition-all hover-shadow">
-								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,var(--brand-accent) 0%,#ffc84d 100%); color: var(--brand-primary);">
+								<div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 fs-4" style="width: 48px; height: 48px; background: linear-gradient(135deg,#F9B233 0%,#ffc84d 100%); color: #1A3D7C;">
 									<i class="bi bi-headset"></i>
 								</div>
 								<div>
@@ -340,7 +340,7 @@
 						<div class="position-absolute" style="bottom: 100px; right: 10px; animation: float-gentle 4s ease-in-out infinite 2s; z-index: 10;">
 							<div class="bg-white p-3 rounded-3 shadow-lg d-flex align-items-center gap-3" style="min-width: 150px;">
 								<div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width: 44px; height: 44px; background: linear-gradient(135deg, rgba(26, 61, 124, 0.15) 0%, rgba(26, 61, 124, 0.05) 100%);">
-									<i class="bi bi-shield-check fs-5" style="color: var(--brand-primary);"></i>
+									<i class="bi bi-shield-check fs-5" style="color: #1A3D7C;"></i>
 								</div>
 								<div>
 									<div class="fw-bold text-dark">Secure</div>
@@ -360,7 +360,7 @@
 			<div class="row justify-content-center mb-5">
 				<div class="col-lg-8 text-center">
 					<div class="mb-5 fade-up js-reveal">
-						<span class="badge rounded-pill px-3 py-2 bg-warning fw-semibold mb-3" style="color: var(--brand-primary);">Our Team</span>
+						<span class="badge rounded-pill px-3 py-2 bg-warning fw-semibold mb-3" style="color: #1A3D7C;">Our Team</span>
 						<h2 class="display-6 fw-bold text-dark mb-3">Meet the people behind BeatPass</h2>
 						<p class="fs-5 text-secondary">A dedicated team of innovators, builders, and event enthusiasts working to transform the ticketing industry.</p>
 					</div>
@@ -390,7 +390,7 @@
 							</div>
 							<div class="p-3">
 								<h5 class="fw-semibold text-dark mb-1">{{ member.name }}</h5>
-								<div class="small fw-semibold mb-2" style="color: var(--brand-primary);">{{ member.role }}</div>
+								<div class="small fw-semibold mb-2" style="color: #1A3D7C;">{{ member.role }}</div>
 								<p class="text-secondary small mb-0">{{ member.bio|default('Passionate about creating amazing event experiences and building products that people love.') }}</p>
 							</div>
 						</div>
@@ -399,4 +399,7 @@
 			</div>
 		</div>
 	</section>
+
+	{# FOOTER #}
+	{% include 'partials/footer.html.twig' %}
 {% endblock %}

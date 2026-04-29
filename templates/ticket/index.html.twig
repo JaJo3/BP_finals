@@ -4,67 +4,73 @@
 {% endblock %}
 
 {% block body %}
-	<div class="content-wrapper">
-
-
-		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h1 class="h3 mb-0" style="color: #1A3D7C; font-weight: 700;">
-				<i class="fas fa-ticket-alt me-2" style="color: #F9B233;"></i>Ticket Management
+	<div class="content-wrapper content-wrapper--tickets pt-0">
+		<div class="d-flex justify-content-between align-items-center mb-2">
+			<h1 class="h5 mb-0" style="color: #1A3D7C;">
+				<i class="fas fa-ticket-alt me-2 text-warning"></i>Ticket Management
 			</h1>
-			<a href="{{ path('admin_ticket_new', event is defined ? {'eventId': event.id} : {}) }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.15s ease;">
+			<a href="{{ path('admin_ticket_new', event is defined ? {'eventId': event.id} : {}) }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C;">
 				<i class="fas fa-plus-circle me-2"></i>New Ticket
 			</a>
 		</div>
 
 		<!-- Tickets Table -->
-		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
-			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
-				<h3 class="card-title mb-0" style="font-weight: 600;">
-					<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Tickets
-					<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ tickets|length }}</span>
-				</h3>
+		<div class="card shadow-sm">
+			<div class="card-header d-flex align-items-center justify-content-between py-2" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+				<div class="d-flex align-items-center">
+					<h3 class="card-title mb-0" style="font-weight: 600; font-size: 1rem;">
+						<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Tickets
+					</h3>
+				</div>
+				<span class="badge bg-warning text-dark fw-bold">{{ tickets|length }}
+					items</span>
+			</div>
+			<div class="px-3 py-2 d-flex flex-wrap align-items-center gap-2 bg-light border-bottom">
+				<div class="form-check form-switch m-0 d-flex align-items-center gap-2 ms-auto">
+					<input class="form-check-input m-0" type="checkbox" id="toggleTicketsActions" role="switch" aria-label="Show actions column">
+					<label class="form-check-label small text-muted" for="toggleTicketsActions" style="user-select:none;">Show actions</label>
+				</div>
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
-					<table id="ticketsTable" class="table table-sm small table-hover beatpass-table mb-0 display responsive nowrap" style="width:100%; table-layout: fixed;">
-						<thead style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+					<table id="ticketsTable" class="table table-sm table-hover beatpass-table mb-0">
+						<thead class="table-light">
 							<tr>
-								<th class="col-name text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:25%">Event</th>
-								<th class="col-type text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:15%">Type</th>
-								<th class="col-price text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:15%">Price</th>
-								<th class="col-quantity text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:15%">Quantity</th>
-								<th class="col-status text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:15%">Status</th>
-								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center" style="width:15%">Actions</th>
+								<th class="col-name text-nowrap small fw-semibold text-uppercase py-1 px-2">Event</th>
+								<th class="col-type text-nowrap small fw-semibold text-uppercase py-1 px-2">Type</th>
+								<th class="col-price text-nowrap small fw-semibold text-uppercase py-1 px-2">Price</th>
+								<th class="col-quantity text-nowrap small fw-semibold text-uppercase py-1 px-2">Quantity</th>
+								<th class="col-status text-nowrap small fw-semibold text-uppercase py-1 px-2">Status</th>
+								<th class="actions text-nowrap small fw-semibold text-uppercase py-1 px-2 text-center d-none">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for ticket in tickets %}
 								<tr>
-									<td class="col-name align-middle text-truncate py-1 px-2" style="max-width: 28ch;">
-										<strong class="text-nowrap" style="color: #1A3D7C;">{{ ticket.event.eventName }}</strong>
+									<td class="col-name align-middle text-truncate py-1 px-2">
+										<span class="fw-semibold small">{{ ticket.event.eventName }}</span>
 									</td>
 									<td class="col-type align-middle py-1 px-2">
-										<span style="color: #15305A; font-weight: 700;">{{ ticket.ticketType }}</span>
+										<span class="small fw-semibold">{{ ticket.ticketType }}</span>
 									</td>
 									<td class="col-price align-middle text-truncate py-1 px-2">
-										₱{{ ticket.price|number_format(2, '.', ',') }}
+										<span class="small">₱{{ ticket.price|number_format(2, '.', ',') }}</span>
 									</td>
 									<td class="col-quantity align-middle text-truncate py-1 px-2">
-										{{ ticket.quantity }}
+										<span class="small">{{ ticket.quantity }}</span>
 									</td>
 									<td class="col-status align-middle text-center py-1 px-2">
-										<span class="small fw-semibold {% if ticket.quantity > 0 %}text-success{% else %}text-danger{% endif %}">
-											{{ ticket.quantity > 0 ? 'Available' : 'Sold Out' }}
-										</span>
+										{% set statusBadgeClass = ticket.quantity > 0 ? 'bg-success' : 'bg-danger' %}
+										<span class="badge {{ statusBadgeClass }} small">{{ ticket.quantity > 0 ? 'Available' : 'Sold Out' }}</span>
 									</td>
-									<td class="actions text-center align-middle">
-										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
-											<a href="{{ path('admin_ticket_show', {'id': ticket.id}) }}" class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded" style="width:32px;height:32px;font-size:12px;" title="View">
-												<i class="fas fa-eye"></i>
+									<td class="actions text-center align-middle py-1 px-2 d-none">
+										<div class="d-inline-flex align-items-center gap-2">
+											<a href="{{ path('admin_ticket_show', {'id': ticket.id}) }}" class="btn p-0 d-flex align-items-center justify-content-center rounded-3" style="width:32px;height:32px;background-color:rgba(26,61,124,0.1);color:#1A3D7C;" title="View">
+												<i class="fas fa-eye fa-sm"></i>
 											</a>
 											{% if isAdmin or (currentUserId and ticket.createdBy and ticket.createdBy.id == currentUserId) %}
-												<a href="{{ path('admin_ticket_edit', {'id': ticket.id}) }}" class="btn btn-sm btn-beatpass-edit p-1 d-inline-flex align-items-center justify-content-center rounded" style="width:32px;height:32px;font-size:12px;" title="Edit">
-													<i class="fas fa-edit"></i>
+												<a href="{{ path('admin_ticket_edit', {'id': ticket.id}) }}" class="btn p-0 d-flex align-items-center justify-content-center rounded-3" style="width:32px;height:32px;background-color:rgba(249,178,51,0.15);color:#F9B233;" title="Edit">
+													<i class="fas fa-edit fa-sm"></i>
 												</a>
 											{% endif %}
 											{% if isAdmin or (currentUserId and ticket.createdBy and ticket.createdBy.id == currentUserId) %}
@@ -75,14 +81,14 @@
 								</tr>
 							{% else %}
 								<tr>
-									<td colspan="6" class="text-center py-5">
-										<div class="text-muted py-5">
-											<div style="width: 120px; height: 120px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-												<i class="fas fa-ticket-alt fa-3x" style="color: #1A3D7C; opacity: 0.6;"></i>
+									<td colspan="6" class="text-center py-4">
+										<div class="text-muted">
+											<div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 64px; height: 64px;">
+												<i class="fas fa-ticket-alt fa-2x text-primary opacity-50"></i>
 											</div>
-											<h5 style="color: #1A3D7C; font-weight: 600; margin-bottom: 12px;">No tickets found</h5>
-											<p style="color: #6c757d; font-size: 1.05em; margin-bottom: 24px;">Try adjusting your filters or create a new ticket.</p>
-											<a href="{{ path('admin_ticket_new', event is defined ? {'eventId': event.id} : {}) }}" class="btn btn-sm" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
+											<h6 class="text-primary fw-semibold mb-1">No tickets found</h6>
+											<p class="text-muted small mb-2">Try adjusting your filters or create a new ticket.</p>
+											<a href="{{ path('admin_ticket_new', event is defined ? {'eventId': event.id} : {}) }}" class="btn btn-sm btn-primary">
 												<i class="fas fa-plus me-2"></i>Create First Ticket
 											</a>
 										</div>
@@ -107,9 +113,9 @@ var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').firs
 
 if (hasDataRows) { // Prevent double-init by checking if DataTable already exists
 if (! $.fn.DataTable.isDataTable('#ticketsTable')) {
-$('#ticketsTable').DataTable({
+var dt = $('#ticketsTable').DataTable({
 responsive: true,
-dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+dom: "<'row g-0'<'col-auto'l><'col-auto ms-auto'f>><'row'<'col-sm-12'tr>><'row g-0 small'<'col-auto'i><'col-auto ms-auto'p>>",
 pageLength: 10,
 lengthMenu: [
 [
@@ -123,15 +129,39 @@ language: {
 search: '',
 searchPlaceholder: 'Search tickets...'
 },
+autoWidth: true,
+scrollX: false,
 columnDefs: [
 {
 orderable: false,
-targets: -1
-}, {
 searchable: false,
 targets: -1
 }
 ]
+});
+
+function setActionsVisible(visible) {
+$('#ticketsTable thead th.actions, #ticketsTable tbody td.actions').toggleClass('d-none', ! visible);
+try {
+localStorage.setItem('tickets.showActions', visible ? '1' : '0');
+} catch (e) {}
+}
+
+try {
+var stored = localStorage.getItem('tickets.showActions');
+var initialVisible = stored === '1';
+$('#toggleTicketsActions').prop('checked', initialVisible);
+setActionsVisible(initialVisible);
+} catch (e) {
+setActionsVisible(false);
+}
+
+$('#toggleTicketsActions').off('change').on('change', function () {
+setActionsVisible($(this).is(':checked'));
+});
+
+dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
+setActionsVisible($('#toggleTicketsActions').is(':checked'));
 });
 }
 }
@@ -144,10 +174,12 @@ if (window.jQuery)
 initTicketsTable();
 
 
+
 });
 } else {
 if (window.jQuery) 
 initTicketsTable();
+
 
 
 }
@@ -158,10 +190,12 @@ if (window.jQuery)
 initTicketsTable();
 
 
+
 });
 document.addEventListener('turbo:frame-load', function (e) {
 if (window.jQuery) 
 initTicketsTable();
+
 
 
 });

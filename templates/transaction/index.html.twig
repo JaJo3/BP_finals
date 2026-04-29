@@ -4,41 +4,45 @@
 {% endblock %}
 
 {% block body %}
-	<div class="content-wrapper">
-		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h1 class="h3 mb-0 d-flex align-items-center" style="color: #1A3D7C; font-weight: 700; gap: 12px;">
-				<i class="fas fa-exchange-alt me-2;" style="color: #F9B233;"></i>
-				<span>Transactions</span>
+	<div class="content-wrapper content-wrapper--transactions pt-0">
+		<div class="d-flex justify-content-between align-items-center mb-2">
+			<h1 class="h5 mb-0" style="color: #1A3D7C;">
+				<i class="fas fa-exchange-alt me-2 text-warning"></i>Transactions
 			</h1>
-
-			<div class="d-flex gap-2">
-				<a href="{{ path('transaction_new') }}" class="btn btn-sm" style="background-color: #1A3D7C; color: white; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
-					<i class="fas fa-plus-circle me-2"></i>Create
-				</a>
-			</div>
+			<a href="{{ path('transaction_new') }}" class="btn btn-sm btn-primary" style="background-color: #1A3D7C; border-color: #1A3D7C;">
+				<i class="fas fa-plus-circle me-2"></i>Create Transaction
+			</a>
 		</div>
 
-
-		<div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #e9ecef;">
-			<div class="card-header" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
-				<h3 class="card-title mb-0" style="font-weight: 600;">
-					<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Transactions
-					<span class="badge bg-light text-dark ms-2" style="background-color: #F9B233 !important; color: #1A3D7C !important; font-weight: 600;">{{ transactions|default([])|length }}</span>
-				</h3>
+		<div class="card shadow-sm">
+			<div class="card-header d-flex align-items-center justify-content-between py-2" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none;">
+				<div class="d-flex align-items-center">
+					<h3 class="card-title mb-0" style="font-weight: 600; font-size: 1rem;">
+						<i class="fas fa-list me-2" style="color: #F9B233;"></i>All Transactions
+					</h3>
+				</div>
+				<span class="badge bg-warning text-dark fw-bold">{{ transactions|default([])|length }}
+					items</span>
+			</div>
+			<div class="px-3 py-2 d-flex flex-wrap align-items-center gap-2 bg-light border-bottom">
+				<div class="form-check form-switch m-0 d-flex align-items-center gap-2 ms-auto">
+					<input class="form-check-input m-0" type="checkbox" id="toggleTransactionsActions" role="switch" aria-label="Show actions column">
+					<label class="form-check-label small text-muted" for="toggleTransactionsActions" style="user-select:none;">Show actions</label>
+				</div>
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive">
-					<table id="transactionTable" class="table table-sm small table-hover beatpass-table mb-0 display responsive nowrap" style="width:100%; table-layout: fixed;">
-						<thead style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+					<table id="transactionTable" class="table table-sm table-hover beatpass-table mb-0">
+						<thead class="table-light">
 							<tr>
-								<th class="col-id text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:8%">ID</th>
-								<th class="col-buyer text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:18%">Buyer</th>
-								<th class="col-event text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:20%">Event</th>
-								<th class="col-amount text-end text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:10%">Amount</th>
-								<th class="col-status text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:10%">Status</th>
-								<th class="col-method text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:10%">Method</th>
-								<th class="col-created text-nowrap small fw-bold text-uppercase py-1 px-2" style="width:14%">Created</th>
-								<th class="actions text-nowrap small fw-bold text-uppercase py-1 px-2 text-center" style="width:10%">Actions</th>
+								<th class="col-id text-nowrap small fw-semibold text-uppercase py-1 px-2">ID</th>
+								<th class="col-buyer text-nowrap small fw-semibold text-uppercase py-1 px-2">Buyer</th>
+								<th class="col-event text-nowrap small fw-semibold text-uppercase py-1 px-2">Event</th>
+								<th class="col-amount text-end text-nowrap small fw-semibold text-uppercase py-1 px-2">Amount</th>
+								<th class="col-status text-nowrap small fw-semibold text-uppercase py-1 px-2">Status</th>
+								<th class="col-method text-nowrap small fw-semibold text-uppercase py-1 px-2">Method</th>
+								<th class="col-created text-nowrap small fw-semibold text-uppercase py-1 px-2">Created</th>
+								<th class="actions text-nowrap small fw-semibold text-uppercase py-1 px-2 text-center d-none">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -47,31 +51,31 @@
 									<td class="col-id align-middle py-1 px-2" style="width:8%">{{ tx.id }}</td>
 									<td class="col-buyer align-middle text-truncate py-1 px-2" style="max-width:22ch">{{ tx.user ? (tx.user.getFullName() ?? tx.user.email) : '—' }}<br><small class="text-muted">{{ tx.user ? tx.user.email : '' }}</small>
 									</td>
-									<td class="col-event align-middle text-truncate py-1 px-2" style="max-width:30ch">
-										<strong class="text-nowrap" style="color:#1A3D7C;">{{ tx.event ? tx.event.eventName : '—' }}</strong>
+									<td class="col-event align-middle text-truncate py-1 px-2">
+										<span class="fw-semibold small">{{ tx.event ? tx.event.eventName : '—' }}</span>
 									</td>
-									<td class="col-amount text-end align-middle text-truncate py-1 px-2" data-order="{{ tx.totalAmount }}" style="text-align: right; width:10%">₱{{ tx.totalAmount|number_format(2, '.', ',') }}</td>
+									<td class="col-amount text-end align-middle text-truncate py-1 px-2" data-order="{{ tx.totalAmount }}">
+										<span class="small">₱{{ tx.totalAmount|number_format(2, '.', ',') }}</span>
+									</td>
 									<td class="col-status align-middle text-center py-1 px-2">
 										{% set status = tx.paymentStatus %}
-										<span class="small fw-semibold
-											{% if status == 'paid' %} text-success
-											{% elseif status == 'pending' %} text-warning
-											{% elseif status == 'refunded' %} text-secondary
-											{% else %} text-danger
-											{% endif %}">
-											{{ status|upper }}
-										</span>
+										{% set statusBadgeClass = status == 'paid' ? 'bg-success' : (status == 'pending' ? 'bg-warning' : (status == 'refunded' ? 'bg-secondary' : 'bg-danger')) %}
+										<span class="badge {{ statusBadgeClass }} small">{{ status|upper }}</span>
 									</td>
-									<td class="col-method align-middle text-truncate py-1 px-2">{{ tx.paymentMethod ?? '—' }}</td>
-									<td class="col-created text-end align-middle text-truncate py-1 px-2" data-order="{{ tx.createdAt ? tx.createdAt.format('Y-m-d H:i') : '' }}" style="text-align: right">{{ tx.createdAt ? tx.createdAt.format('Y-m-d H:i') : '—' }}</td>
-									<td class="actions text-center align-middle">
-										<div class="btn-action-group d-inline-flex align-items-center" style="gap: 6px;">
-											<button class="btn btn-sm btn-beatpass-primary p-1 d-inline-flex align-items-center justify-content-center rounded view-transaction-btn" data-id="{{ tx.id }}" data-csrf="{{ csrf_token('transaction_action_' ~ tx.id) }}" title="View details" style="width:32px;height:32px;font-size:12px;">
-												<i class="fas fa-eye"></i>
+									<td class="col-method align-middle text-truncate py-1 px-2">
+										<span class="small">{{ tx.paymentMethod ?? '—' }}</span>
+									</td>
+									<td class="col-created text-end align-middle text-truncate py-1 px-2" data-order="{{ tx.createdAt ? tx.createdAt.format('Y-m-d H:i') : '' }}">
+										<span class="small">{{ tx.createdAt ? tx.createdAt.format('Y-m-d H:i') : '—' }}</span>
+									</td>
+									<td class="actions text-center align-middle py-1 px-2 d-none">
+										<div class="d-inline-flex align-items-center gap-2">
+											<button class="btn p-0 d-flex align-items-center justify-content-center rounded-3 view-transaction-btn" data-id="{{ tx.id }}" data-csrf="{{ csrf_token('transaction_action_' ~ tx.id) }}" title="View details" style="width:32px;height:32px;background-color:rgba(26,61,124,0.1);color:#1A3D7C;">
+												<i class="fas fa-eye fa-sm"></i>
 											</button>
 											{% if isAdmin or (currentUserId and tx.createdBy and tx.createdBy.id == currentUserId) %}
-												<button class="btn btn-sm btn-beatpass-delete p-1 d-inline-flex align-items-center justify-content-center rounded delete-transaction-btn" data-id="{{ tx.id }}" data-token="{{ csrf_token('transaction_delete_' ~ tx.id) }}" data-url="{{ path('admin_transaction_delete', {'id': tx.id}) }}" title="Delete" style="width:32px;height:32px;font-size:12px;">
-													<i class="fas fa-trash"></i>
+												<button class="btn p-0 d-flex align-items-center justify-content-center rounded-3 delete-transaction-btn" data-id="{{ tx.id }}" data-token="{{ csrf_token('transaction_delete_' ~ tx.id) }}" data-url="{{ path('admin_transaction_delete', {'id': tx.id}) }}" title="Delete" style="width:32px;height:32px;background-color:rgba(220,53,69,0.1);color:#dc3545;">
+													<i class="fas fa-trash fa-sm"></i>
 												</button>
 											{% endif %}
 										</div>
@@ -79,14 +83,14 @@
 								</tr>
 							{% else %}
 								<tr>
-									<td colspan="8" class="text-center py-5" style="background-color: #ffffff;">
-										<div class="text-muted py-5">
-											<div style="width: 120px; height: 120px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-												<i class="fas fa-exchange-alt fa-3x" style="color: #1A3D7C; opacity: 0.6;"></i>
+									<td colspan="8" class="text-center py-4">
+										<div class="text-muted">
+											<div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 64px; height: 64px;">
+												<i class="fas fa-exchange-alt fa-2x text-primary opacity-50"></i>
 											</div>
-											<h5 style="color: #1A3D7C; font-weight: 600; margin-bottom: 12px;">No transactions yet</h5>
-											<p style="color: #6c757d; font-size: 1.05em; margin-bottom: 24px;">There are no transactions to display. Use the create button to add one, or check filters.</p>
-											<a href="{{ path('transaction_new') }}" class="btn btn-sm" style="background: linear-gradient(135deg, #1A3D7C 0%, #15305A 100%); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600;">
+											<h6 class="text-primary fw-semibold mb-1">No transactions yet</h6>
+											<p class="text-muted small mb-2">There are no transactions to display. Use the create button to add one, or check filters.</p>
+											<a href="{{ path('transaction_new') }}" class="btn btn-sm btn-primary">
 												<i class="fas fa-plus me-2"></i>Create First Transaction
 											</a>
 										</div>
@@ -139,9 +143,9 @@ var tableBody = $('#transactionTable tbody');
 var hasDataRows = tableBody.find('tr').length > 0 && ! tableBody.find('tr').first().find('td').attr('colspan');
 
 if (hasDataRows) {
-$('#transactionTable').DataTable({
+var dt = $('#transactionTable').DataTable({
 responsive: true,
-dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+dom: "<'row g-0'<'col-auto'l><'col-auto ms-auto'f>><'row'<'col-sm-12'tr>><'row g-0 small'<'col-auto'i><'col-auto ms-auto'p>>",
 pageLength: 10,
 lengthMenu: [
 [
@@ -155,11 +159,11 @@ language: {
 search: '',
 searchPlaceholder: 'Search transactions...'
 },
+autoWidth: true,
+scrollX: false,
 columnDefs: [
 {
 orderable: false,
-targets: -1
-}, {
 searchable: false,
 targets: -1
 }, {
@@ -173,6 +177,30 @@ targets: 6
 order: [
 [6, 'desc']
 ]
+});
+
+function setActionsVisible(visible) {
+$('#transactionTable thead th:last-child, #transactionTable tbody td:last-child').toggleClass('d-none', ! visible);
+try {
+localStorage.setItem('transactions.showActions', visible ? '1' : '0');
+} catch (e) {}
+}
+
+try {
+var stored = localStorage.getItem('transactions.showActions');
+var initialVisible = stored === '1';
+$('#toggleTransactionsActions').prop('checked', initialVisible);
+setActionsVisible(initialVisible);
+} catch (e) {
+setActionsVisible(false);
+}
+
+$('#toggleTransactionsActions').off('change').on('change', function () {
+setActionsVisible($(this).is(':checked'));
+});
+
+dt.on('draw.dt responsive-display.dt responsive-resize.dt', function () {
+setActionsVisible($('#toggleTransactionsActions').is(':checked'));
 });
 }
 

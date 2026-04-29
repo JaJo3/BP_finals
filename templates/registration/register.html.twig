@@ -6,6 +6,7 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style>
+		/* Hide main navbar on registration page - page specific */
 		#mainNavbar {
 			display: none !important;
 		}
@@ -13,60 +14,276 @@
 {% endblock %}
 
 {% block body %}
-	<div class="d-flex vh-100 align-items-center justify-content-center w-100" style="background: linear-gradient(160deg, #eef2f7 0%, #e0e7ef 40%, #d4dce8 100%);">
-		<div class="card border-0 shadow-sm rounded-3" style="max-width: 400px; width: 95%;">
-			<div class="d-flex flex-column align-items-center justify-content-center pt-4 pb-3 px-4 border-bottom">
-				<img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass" class="d-block" style="width: 120px; height: auto;">
-				<h1 class="m-0 fw-bold" style="font-size: 1.5rem; color: #1A3D7C;">Register</h1>
+	<div class="auth-page d-flex vh-100 align-items-start justify-content-center w-100 p-3 p-sm-4 pt-5" style="overflow-y: auto; min-height: 100svh; background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 25%, #2d1b4e 50%, #1a1f3a 75%, #0f172a 100%);">
+		<div
+			class="position-relative" style="width: 100%; max-width: 450px;">
+			{# Logo: Above the card with overlap #}
+			<div class="text-center position-absolute start-50 translate-middle-x" style="top: 10px; z-index: 10;">
+				<img src="{{ asset('images/beatpass-logo.png') }}" alt="BeatPass" class="d-block mx-auto" style="width: 140px; height: auto;">
 			</div>
-
-			<div class="card-body p-4">
-				{{ form_errors(registrationForm) }}
-
-				{{ form_start(registrationForm) }}
-
-				<div class="mb-3">
-					{{ form_label(registrationForm.username, 'Username', {'label_attr': {'class': 'form-label small mb-1'}}) }}
-					{{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Enter your username'}}) }}
-					{{ form_errors(registrationForm.username) }}
+			<div class="auth-card card shadow-lg rounded-4 border-0 auth-animate w-100 overflow-hidden" style="max-width: 450px; margin-top: 30px; padding-top: 70px;">
+				<div class="card-body text-center d-flex flex-column align-items-center pb-0 px-3 px-sm-4 pt-0">
+					<h1 class="fs-3 fw-bold text-primary mb-0 auth-animate auth-animate-delay-1" style="color: #17366C !important; letter-spacing: -0.5px;">Create Account</h1>
+					<p class="text-muted small mb-1 auth-animate auth-animate-delay-1" style="font-size: 0.8rem;">Join BeatPass and start discovering live music</p>
 				</div>
 
-				<div class="mb-3">
-					{{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'form-label small mb-1'}}) }}
-					{{ form_widget(registrationForm.email, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Enter your email'}}) }}
-					{{ form_errors(registrationForm.email) }}
-				</div>
+				<div
+					class="card-body p-3 p-sm-4 pt-0">
+					{# Flash messages for success only (errors will be shown under fields) #}
+					{% for type, messages in app.flashes %}
+						{% for message in messages %}
+							{% if type == 'success' %}
+								<div class="flash-general d-flex align-items-center gap-1 mb-2 small" style="font-size: 0.75rem; color: #198754;">
+									<i class="bi bi-check-circle"></i>
+									<span>{{ message }}</span>
+								</div>
+							{% endif %}
+						{% endfor %}
+					{% endfor %}
 
-				<div class="mb-3">
-					{{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'form-label small mb-1'}}) }}
-					{{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Enter your password'}}) }}
-					{{ form_errors(registrationForm.plainPassword) }}
-				</div>
+					{{ form_start(registrationForm, {'attr': {'autocomplete': 'off', 'novalidate': 'novalidate'}}) }}
 
-				<div class="mb-3 form-check">
-					{{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
-					{{ form_label(registrationForm.agreeTerms, 'I agree to terms', {'label_attr': {'class': 'form-check-label'}}) }}
-					{{ form_errors(registrationForm.agreeTerms) }}
-				</div>
+					{# First Name and Last Name - Side by Side using Bootstrap Grid #}
+					<div
+						class="row g-2 mb-1 auth-animate auth-animate-delay-2">
+						{# First Name input with icon #}
+						<div class="col-md-6">
+							<label class="form-label small fw-semibold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px; color: #1f2937;">First Name</label>
+							<div class="input-group">
+								<span class="input-group-text bg-light border-end-0" style="border-color: #e5e7eb; border-radius: 0.5rem 0 0 0.5rem;">
+									<i class="bi bi-person text-muted"></i>
+								</span>
+								{{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control bg-light border-start-0 ps-0', 'style': 'border-color: #e5e7eb; border-radius: 0 0.5rem 0.5rem 0;'}, 'errors': false}) }}
+							</div>
+							{% if fieldErrors.firstName is defined %}
+								<div data-error-field="firstName" class="d-flex align-items-center gap-1 mt-1 small" style="font-size: 0.75rem; color: #dc3545;">
+									<i class="bi bi-exclamation-circle"></i>
+									<span>{{ fieldErrors.firstName }}</span>
+								</div>
+							{% endif %}
+						</div>
 
-				<div class="alert alert-info small mb-3" style="font-size: 0.9rem;">
-					<i class="bi bi-info-circle me-1"></i>
-					After registration, you'll receive a verification email. You must verify your email before you can log in.
-				</div>
+						{# Last Name input with icon #}
+						<div class="col-md-6">
+							<label class="form-label small fw-semibold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px; color: #1f2937;">Last Name</label>
+							<div class="input-group">
+								<span class="input-group-text bg-light border-end-0" style="border-color: #e5e7eb; border-radius: 0.5rem 0 0 0.5rem;">
+									<i class="bi bi-person text-muted"></i>
+								</span>
+								{{ form_widget(registrationForm.lastName, {'attr': {'class': 'form-control bg-light border-start-0 ps-0', 'style': 'border-color: #e5e7eb; border-radius: 0 0.5rem 0.5rem 0;'}, 'errors': false}) }}
+							</div>
+							{% if fieldErrors.lastName is defined %}
+								<div data-error-field="lastName" class="d-flex align-items-center gap-1 mt-1 small" style="font-size: 0.75rem; color: #dc3545;">
+									<i class="bi bi-exclamation-circle"></i>
+									<span>{{ fieldErrors.lastName }}</span>
+								</div>
+							{% endif %}
+						</div>
+					</div>
 
-				<div class="d-grid mb-3">
-					<button type="submit" class="btn btn-lg fw-semibold" style="background-color: #1A3D7C; color: #fff; border: none;">
-						Register
+					{# Email input with icon #}
+					<div class="mb-1 auth-animate auth-animate-delay-3">
+						<label class="form-label small fw-semibold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px; color: #1f2937;">Email Address</label>
+						<div class="input-group">
+							<span class="input-group-text bg-light border-end-0" style="border-color: #e5e7eb; border-radius: 0.5rem 0 0 0.5rem;">
+								<i class="bi bi-envelope text-muted"></i>
+							</span>
+							{{ form_widget(registrationForm.email, {'attr': {'class': 'form-control bg-light border-start-0 ps-0', 'style': 'border-color: #e5e7eb; border-radius: 0 0.5rem 0.5rem 0;'}, 'errors': false}) }}
+						</div>
+						{% if fieldErrors.email is defined %}
+							<div data-error-field="email" class="d-flex align-items-center gap-1 mt-1 small" style="font-size: 0.75rem; color: #dc3545;">
+								<i class="bi bi-exclamation-circle"></i>
+								<span>{{ fieldErrors.email }}</span>
+							</div>
+						{% endif %}
+					</div>
+
+					{# Password input with icon and visibility toggle #}
+					<div class="mb-1 auth-animate auth-animate-delay-3">
+						<label class="form-label small fw-semibold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px; color: #1f2937;">Password</label>
+						<div class="input-group">
+							<span class="input-group-text bg-light border-end-0" style="border-color: #e5e7eb; border-radius: 0.5rem 0 0 0.5rem;">
+								<i class="bi bi-lock text-muted"></i>
+							</span>
+							{{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control bg-light border-start-0 border-end-0 ps-0 flex-grow-1', 'style': 'border-color: #e5e7eb;'}, 'errors': false}) }}
+							<button type="button" class="input-group-text bg-light border-start-0" id="passwordToggleNew" tabindex="-1" aria-label="Toggle password visibility" style="border-color: #e5e7eb; border-radius: 0 0.5rem 0.5rem 0; cursor: pointer; flex-shrink: 0;">
+								<i class="bi bi-eye text-muted"></i>
+							</button>
+						</div>
+						{% if fieldErrors.plainPassword is defined %}
+							<div data-error-field="password" class="d-flex align-items-center gap-1 mt-1 small" style="font-size: 0.75rem; color: #dc3545;">
+								<i class="bi bi-exclamation-circle"></i>
+								<span>{{ fieldErrors.plainPassword }}</span>
+							</div>
+						{% endif %}
+					</div>
+
+					{# Confirm Password #}
+					<div class="mb-1 auth-animate auth-animate-delay-4">
+						<label class="form-label small fw-semibold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px; color: #1f2937;">Confirm Password</label>
+						<div class="input-group">
+							<span class="input-group-text bg-light border-end-0" style="border-color: #e5e7eb; border-radius: 0.5rem 0 0 0.5rem;">
+								<i class="bi bi-lock-check text-muted"></i>
+							</span>
+							{{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control bg-light border-start-0 border-end-0 ps-0 flex-grow-1', 'style': 'border-color: #e5e7eb;'}, 'errors': false}) }}
+							<button type="button" class="input-group-text bg-light border-start-0" id="passwordToggleConfirm" tabindex="-1" aria-label="Toggle password visibility" style="border-color: #e5e7eb; border-radius: 0 0.5rem 0.5rem 0; cursor: pointer; flex-shrink: 0;">
+								<i class="bi bi-eye text-muted"></i>
+							</button>
+						</div>
+						{% if fieldErrors.plainPassword_second is defined %}
+							<div data-error-field="confirmPassword" class="d-flex align-items-center gap-1 mt-1 small" style="font-size: 0.75rem; color: #dc3545;">
+								<i class="bi bi-exclamation-circle"></i>
+								<span>{{ fieldErrors.plainPassword_second }}</span>
+							</div>
+						{% endif %}
+					</div>
+
+					{# Terms checkbox - compact inline style #}
+					<div class="form-check form-check-inline mb-2 d-flex align-items-center gap-2 auth-animate auth-animate-delay-4">
+						{{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input mt-0', 'id': 'agreeTerms', 'style': 'width: 1rem; height: 1rem;'}, 'errors': false}) }}
+						{{ form_label(registrationForm.agreeTerms, 'I agree to Terms of Service', {'label_attr': {'class': 'form-check-label small', 'for': 'agreeTerms', 'style': 'font-size: 0.75rem;'}, 'errors': false}) }}
+					</div>
+					{% if fieldErrors.agreeTerms is defined %}
+						<div data-error-field="agreeTerms" class="d-flex align-items-center gap-1 mb-2 small" style="font-size: 0.75rem; color: #dc3545;">
+							<i class="bi bi-exclamation-circle"></i>
+							<span>{{ fieldErrors.agreeTerms }}</span>
+						</div>
+					{% endif %}
+
+					{# Info alert - subtle text only #}
+					<div class="text-muted small mb-2 auth-animate auth-animate-delay-4 d-flex align-items-center gap-1" style="font-size: 0.65rem;">
+						<i class="bi bi-info-circle"></i>
+						<span>We'll send a verification email after registration</span>
+					</div>
+
+					{# Register button #}
+					<button type="submit" class="btn w-100 fw-bold py-2 text-uppercase shadow-sm auth-animate auth-animate-delay-5 text-white d-flex align-items-center justify-content-center gap-2 mb-2" style="border-radius: 0.5rem; background: #1a3d7c; border: none; font-size: 0.9rem;">
+						<i class="bi bi-person-plus"></i>
+						<span>CREATE ACCOUNT</span>
 					</button>
-				</div>
-
-				{{ form_end(registrationForm) }}
-
-				<div class="text-center small" style="color: #6B7280;">
-					Already have an account?
-					<a href="{{ path('app_login') }}" class="text-primary text-decoration-none fw-500">Log in</a>
+					{# Login prompt #}
+					<div class="text-center text-muted small pt-1">
+						<span style="font-size: 0.75rem;">Already have an account?</span>
+						<a href="{{ path('app_login') }}" class="fw-bold link-primary text-decoration-none" style="color: #1a3d7c; font-size: 0.75rem;">Log in</a>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		document.addEventListener('DOMContentLoaded', function () { // Get all form fields
+const firstNameInput = document.getElementById('registration_form_firstName');
+const lastNameInput = document.getElementById('registration_form_lastName');
+const emailInput = document.getElementById('registration_form_email');
+const passwordInput = document.getElementById('registration_form_plainPassword_first');
+const confirmPasswordInput = document.getElementById('registration_form_plainPassword_second');
+const passwordToggleNew = document.getElementById('passwordToggleNew');
+const passwordToggleConfirm = document.getElementById('passwordToggleConfirm');
+
+// Check if form has errors (submitted with validation errors)
+const hasFormErrors = document.querySelectorAll('[data-error-field]').length > 0;
+
+// Only clear inputs on FRESH page load (no form errors)
+// If form has errors, preserve user input so they can see what they entered
+if (! hasFormErrors) { // Clear inputs immediately
+const inputs = [
+firstNameInput,
+lastNameInput,
+emailInput,
+passwordInput,
+confirmPasswordInput
+];
+inputs.forEach(function (input) {
+if (input) {
+input.value = '';
+input.defaultValue = '';
+}
+});
+
+// Also clear after a small delay to beat browser auto-fill
+setTimeout(function () {
+inputs.forEach(function (input) {
+if (input) 
+input.value = '';
+
+
+
+});
+}, 50);
+}
+
+// Function to hide error messages when user starts typing
+function hideErrorMessages() {
+document.querySelectorAll('.flash-general, [data-error-field]').forEach(function (el) {
+el.style.display = 'none';
+});
+}
+
+// Hide errors when user starts typing in any field
+[
+firstNameInput,
+lastNameInput,
+emailInput,
+passwordInput,
+confirmPasswordInput
+].forEach(function (input) {
+if (input) {
+input.addEventListener('input', hideErrorMessages);
+}
+});
+
+
+// Password visibility toggle function
+function setupPasswordToggle(button, inputId) {
+if (! button) 
+return;
+
+
+
+button.addEventListener('click', function (e) {
+e.preventDefault();
+const input = document.getElementById(inputId);
+if (input) {
+const isPassword = input.type === 'password';
+input.type = isPassword ? 'text' : 'password';
+
+const icon = this.querySelector('i');
+if (icon) {
+icon.classList.toggle('bi-eye');
+icon.classList.toggle('bi-eye-slash');
+}
+}
+});
+}
+
+// Setup password toggles
+setupPasswordToggle(passwordToggleNew, 'registration_form_plainPassword_first');
+setupPasswordToggle(passwordToggleConfirm, 'registration_form_plainPassword_second');
+
+// Real-time password matching validation (visual feedback only)
+if (passwordInput && confirmPasswordInput) {
+function checkPasswordMatch() {
+const password = passwordInput.value;
+const confirmPassword = confirmPasswordInput.value;
+
+if (confirmPassword === '') { // Reset to default
+confirmPasswordInput.style.borderColor = '#e5e7eb';
+confirmPasswordInput.style.backgroundColor = '#f9fafb';
+} else if (password === confirmPassword) { // Match - green
+confirmPasswordInput.style.borderColor = '#10b981';
+confirmPasswordInput.style.backgroundColor = '#f0fdf4';
+} else { // No match - red
+confirmPasswordInput.style.borderColor = '#ef4444';
+confirmPasswordInput.style.backgroundColor = '#fef2f2';
+}
+}
+
+passwordInput.addEventListener('input', checkPasswordMatch);
+confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+}
+});
+	</script>
 {% endblock %}
